@@ -11,7 +11,7 @@ namespace CopaFilmes.Api.StartupConfigure
 {
     public static class SegurancaStartup
     {
-        public static void ConfigureJwtToken(IServiceCollection services, IConfiguration configuration)
+        public static void ConfigurarJwtToken(IServiceCollection services, IConfiguration configuration)
         {
             var signingConfigurations = new SigningConfigurations();
 

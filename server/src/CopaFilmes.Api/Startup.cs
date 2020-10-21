@@ -1,7 +1,3 @@
-using CopaFilmes.Api.Externo;
-using CopaFilmes.Api.Repositorios;
-using CopaFilmes.Api.Servicos;
-using CopaFilmes.Api.Servicos.Login;
 using CopaFilmes.Api.StartupConfigure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,18 +21,10 @@ namespace CopaFilmes.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            SegurancaStartup.ConfigureJwtToken(services, Configuration);
+            SegurancaStartup.ConfigurarJwtToken(services, Configuration);
+            CorsStartup.Configurar(services, Configuration);
             SwaggerStartup.Configurar(services);
-
-            services.AddHttpClient();
-
-            services.AddSingleton<Endpoints>();
-
-            services.AddScoped<IRecursos, Recursos>();
-
-            services.AddScoped<ILoginServico, LoginServico>();
-
-            services.AddScoped<IFilmeRepositorio, FilmeRepositorio>();
+            DependencyInjectionStartup.Configurar(services);
 
             services.AddControllers();
         }
@@ -64,6 +52,8 @@ namespace CopaFilmes.Api
             var options = new RewriteOptions();
             options.AddRedirect("^$", "swagger");
             app.UseRewriter(options);
+
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {

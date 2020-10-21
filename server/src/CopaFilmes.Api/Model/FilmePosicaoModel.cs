@@ -1,7 +1,8 @@
-﻿namespace CopaFilmes.Api.Entidades
+﻿namespace CopaFilmes.Api.Model
 {
-    public class Filme
+    public sealed class FilmePosicaoModel
     {
+        public int Posicao { get; set; }
         public string Id { get; set; }
         public string Titulo { get; set; }
         public int Ano { get; set; }

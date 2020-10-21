@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CopaFilmes.Api.Servicos.Login
 {
-    public class LoginServico : ILoginServico
+    internal class LoginServico : ILoginServico
     {
         private readonly TokenConfigurations _tokenConfigurations;
         private readonly SigningConfigurations _signingConfigurations;
