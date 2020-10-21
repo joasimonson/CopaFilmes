@@ -2,7 +2,7 @@
 
 namespace CopaFilmes.Api.Servicos.Login
 {
-    public class LoginResult
+    public sealed class LoginResult
     {
         public bool Autenticado { get; set; }
         public DateTime Criacao { get; set; }

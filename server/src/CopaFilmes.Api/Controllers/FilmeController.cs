@@ -1,5 +1,4 @@
-﻿using CopaFilmes.Api.Entidades;
-using CopaFilmes.Api.Repositorios;
+﻿using CopaFilmes.Api.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -8,31 +7,32 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CopaFilmes.Api.Servicos;
 
 namespace CopaFilmes.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [Authorize(JwtBearerDefaults.AuthenticationScheme)]
     public class FilmeController : ControllerBase
     {
         private readonly ILogger<FilmeController> _logger;
-        private readonly IFilmeRepositorio _filmeRepositorio;
+        private readonly IFilmeServico _filmeServico;
 
-        public FilmeController(ILogger<FilmeController> logger, IFilmeRepositorio filmeRepositorio)
+        public FilmeController(ILogger<FilmeController> logger, IFilmeServico filmeDominio)
         {
             _logger = logger;
-            _filmeRepositorio = filmeRepositorio;
+            _filmeServico = filmeDominio;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Filme>>> Get()
+        public async Task<ActionResult<IEnumerable<FilmeModel>>> Get()
         {
-            IEnumerable<Filme> filmes;
+            IEnumerable<FilmeModel> filmes;
 
             try
             {
-                filmes = await _filmeRepositorio.ObterFilmesAsync();
+                filmes = await _filmeServico.ObterFilmesAsync();
             }
             catch (Exception ex)
             {
