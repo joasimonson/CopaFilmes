@@ -1,0 +1,30 @@
+.card-filme {
+    display: flex;
+    flex-direction: row;
+    background: var(--color-secondary);
+}
+
+.card-filme .selection {
+    display: flex;
+    place-items: center;
+    padding: 1.2rem;
+}
+
+.card-filme .info-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0;
+}
+
+.card-filme .info-card .titulo {
+    color: var(--color-tertiary);
+}
+
+.card-filme .info-card .ano {
+    color: var(--color-primary);
+}
+
+input[type=checkbox].check {
+    height: 20px;
+    width: 20px;
+}
