@@ -1,6 +1,6 @@
 ﻿using CopaFilmes.Api.Dominio;
+using CopaFilmes.Api.Externo;
 using CopaFilmes.Api.Model;
-using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,18 +9,16 @@ namespace CopaFilmes.Api.Servicos.Campeonato
 {
     public class CampeonatoServico : ICampeonatoServico
     {
-        private readonly ICampeonatoParSimplesDominio _campeonatoParSimples;
-        private readonly int _qtdeFilmesDisputa;
+        private readonly ICampeonatoDominio _campeonatoParSimples;
 
-        public CampeonatoServico(ICampeonatoParSimplesDominio campeonatoParSimples, IConfiguration configuration)
+        public CampeonatoServico(ICampeonatoDominio campeonatoParSimples)
         {
             _campeonatoParSimples = campeonatoParSimples;
-            _qtdeFilmesDisputa = configuration.GetValue<int>("QtdeFilmesDisputa");
         }
 
         public async Task<IEnumerable<FilmePosicaoModel>> Disputar(IEnumerable<CampeonatoRequest> campeonato)
         {
-            if (campeonato.Count() != _qtdeFilmesDisputa)
+            if (campeonato is null || campeonato.Count() != Parametros.MAX_PARTICIPANTES_CAMPEONATO)
             {
                 throw new QtdeFilmesDisputaIncorretaException();
             }

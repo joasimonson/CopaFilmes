@@ -1,30 +1,77 @@
-﻿using CopaFilmes.Api.Model;
+﻿using CopaFilmes.Api.Extensions;
+using CopaFilmes.Api.Externo;
+using CopaFilmes.Api.Model;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CopaFilmes.Api.Servicos.Campeonato
+namespace CopaFilmes.Api.Dominio.Campeonato
 {
-    public abstract class ChaveCampeonato
+    internal abstract class ChaveCampeonato
     {
         protected readonly int _qtdeParticipantes;
-        public ICollection<Partida> Partidas { get; protected set; }
+        protected readonly IEnumerable<FilmeModel> _participantes;
+        protected readonly ICollection<Partida> _partidas;
+        public readonly bool ChaveFinalistas;
 
-        protected ChaveCampeonato(IEnumerable<FilmeModel> filmesCampeonato)
+        protected ChaveCampeonato(IEnumerable<FilmeModel> participantes)
         {
-            _qtdeParticipantes = filmesCampeonato.Count();
+            if (!participantes.Count().EhPar())
+            {
+                throw new QtdeIncorretaRegraChaveamentoException(Parametros.MAX_PARTICIPANTES_CAMPEONATO);
+            }
 
-            Partidas = new List<Partida>();
+            _qtdeParticipantes = participantes.Count();
+            _participantes = participantes;
+            _partidas = new List<Partida>();
 
-            MontarChaveamento(filmesCampeonato);
+            ChaveFinalistas = _qtdeParticipantes == 2;
         }
 
-        protected abstract void MontarChaveamento(IEnumerable<FilmeModel> filmesCampeonato);
+        public abstract IEnumerable<Partida> MontarChaveamento();
+
+        protected virtual void AdicionarPartida(FilmeModel desafiante, FilmeModel desafiado)
+        {
+            _partidas.Add(new Partida(desafiante, desafiado));
+        }
 
         public virtual IEnumerable<FilmeModel> Disputar()
         {
-            var filmesGanhadores = Partidas.Select(d => d.Disputar());
+            var ganhadores = _partidas.Select(d => d.Disputar());
 
-            return filmesGanhadores;
+            return ganhadores;
+        }
+
+        public virtual IEnumerable<FilmeModel> ObterParticipantes()
+        {
+            return _participantes;
+        }
+
+        public virtual IEnumerable<FilmePosicaoModel> ObterParticipantesPosicao()
+        {
+            if (_partidas.Count() == 0)
+            {
+                throw new ChaveNaoMontadaException();
+            }
+
+            var filmesPosicao = new List<FilmePosicaoModel>();
+
+            for (int i = 0; i < _partidas.Count(); i++)
+            {
+                var partida = _partidas.ElementAt(i);
+
+                IEnumerable<FilmePosicaoModel> participantesPartida = partida.ObterParticipantes().Select((f, index) => new FilmePosicaoModel()
+                {
+                    Posicao = index + 1,
+                    Id = f.Id,
+                    Titulo = f.Titulo,
+                    Nota = f.Nota,
+                    Ano = f.Ano
+                });
+
+                filmesPosicao.AddRange(participantesPartida);
+            }
+
+            return filmesPosicao;
         }
     }
 }
