@@ -1,22 +1,33 @@
 ﻿using CopaFilmes.Api.Model;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
-namespace CopaFilmes.Api.Servicos.Campeonato
+[assembly: InternalsVisibleTo("CopaFilmes.Api.Test")]
+
+namespace CopaFilmes.Api.Dominio.Campeonato
 {
-    public class Partida
+    internal class Partida
     {
-        public FilmeModel Primeiro;
-        public FilmeModel Segundo;
+        private readonly IEnumerable<FilmeModel> _participantes;
+
+        public Partida(FilmeModel desafiante, FilmeModel desafiado)
+        {
+            _participantes = new List<FilmeModel>()
+            {
+                { desafiante },
+                { desafiado }
+            };
+        }
 
         public FilmeModel Disputar()
         {
-            FilmeModel[] participantes = new FilmeModel[]
-            {
-                Primeiro,
-                Segundo
-            };
+            return ObterParticipantes().First();
+        }
 
-            return participantes.OrderByDescending(p => p.Nota).ThenBy(p => p.Titulo).First();
+        public IEnumerable<FilmeModel> ObterParticipantes()
+        {
+            return _participantes.OrderByDescending(p => p.Nota).ThenBy(p => p.Titulo);
         }
     }
 }

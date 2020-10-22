@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace CopaFilmes.Api.Dominio
 {
-    public interface ICampeonatoParSimplesDominio
+    public interface ICampeonatoDominio
     {
         Task<IEnumerable<FilmePosicaoModel>> Disputar(string[] idsParticipantes);
     }
