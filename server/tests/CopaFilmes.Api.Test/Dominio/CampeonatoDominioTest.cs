@@ -1,7 +1,5 @@
-﻿using AutoBogus;
-using CopaFilmes.Api.Dominio;
+﻿using CopaFilmes.Api.Dominio;
 using CopaFilmes.Api.Dominio.Campeonato;
-using CopaFilmes.Api.Dominio.Filme;
 using CopaFilmes.Api.Model;
 using CopaFilmes.Api.Test.Builders;
 using FakeItEasy;
@@ -9,8 +7,7 @@ using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.Json;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace CopaFilmes.Api.Test.Dominio
@@ -32,43 +29,43 @@ namespace CopaFilmes.Api.Test.Dominio
         }
 
         [Fact]
-        public void Disputar_DeveRetornarFinalistas()
+        public async Task Disputar_DeveRetornarFinalistas()
         {
             //Arrange
             var finalistas = ChaveEtapaBuilder.Novo().ComChaveFinalistas().ObterParticipantes();
             var idsParticipantes = _participantes.Select(p => p.Id).ToArray();
 
             //Act
-            var finalistasDisputa = _campeonatoDominio.Disputar(idsParticipantes);
+            var finalistasDisputa = await _campeonatoDominio.Disputar(idsParticipantes);
 
             //Assert
             finalistasDisputa.Should().BeEquivalentTo(finalistasDisputa);
         }
 
         [Fact]
-        public void Disputar_DeveGerarFalhaAoGerarChaveComParticipantesInvalidos()
+        public async Task Disputar_DeveGerarFalhaAoGerarChaveComParticipantesInvalidos()
         {
             //Arrange
             string[] participantesInvalidos = null;
 
             //Act
-            Action act = () => _campeonatoDominio.Disputar(participantesInvalidos);
+            Func<Task> act = async () => await _campeonatoDominio.Disputar(participantesInvalidos);
 
             //Assert
-            act.Should().Throw<QtdeIncorretaRegraChaveamentoException>();
+            await act.Should().ThrowAsync<QtdeIncorretaRegraChaveamentoException>();
         }
 
         [Fact]
-        public void Disputar_DeveGerarFalhaAoGerarChaveComListaVaziaDeParticipantes()
+        public async Task Disputar_DeveGerarFalhaAoGerarChaveComListaVaziaDeParticipantes()
         {
             //Arrange
             var participantesInvalidos = Array.Empty<string>();
 
             //Act
-            Action act = () => _campeonatoDominio.Disputar(participantesInvalidos);
-
+            Func<Task> act = async () => await _campeonatoDominio.Disputar(participantesInvalidos);
+            
             //Assert
-            act.Should().Throw<QtdeIncorretaRegraChaveamentoException>();
+            await act.Should().ThrowAsync<Exception>();
         }
     }
 }
