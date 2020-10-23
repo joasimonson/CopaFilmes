@@ -1,5 +1,4 @@
-﻿using CopaFilmes.Api.Extensions;
-using CopaFilmes.Api.Externo;
+﻿using CopaFilmes.Api.Externo;
 using CopaFilmes.Api.Model;
 using System;
 using System.Collections.Generic;
@@ -51,6 +50,8 @@ namespace CopaFilmes.Api.Dominio.Campeonato
             var filmesGanhadores = chaveDisputa.Disputar();
 
             var chaveEtapa = new ChaveEtapa(filmesGanhadores);
+
+            chaveEtapa.MontarChaveamento();
 
             if (chaveEtapa.ChaveFinalistas)
             {

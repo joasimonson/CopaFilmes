@@ -10,7 +10,8 @@ namespace CopaFilmes.Api.Test.Builders
     {
         public FilmeModelFaker()
         {
-            RuleFor(c => c.Nota, r => UtilFaker.Nota())
+            RuleFor(c => c.Id, r => r.Random.Guid().ToString())
+            .RuleFor(c => c.Nota, r => UtilFaker.Nota())
             .RuleFor(c => c.Ano, r => r.Random.Int(DateTime.MinValue.Year, DateTime.Today.Year));
         }
 

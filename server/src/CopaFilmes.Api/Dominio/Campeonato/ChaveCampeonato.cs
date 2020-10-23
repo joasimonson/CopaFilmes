@@ -15,7 +15,7 @@ namespace CopaFilmes.Api.Dominio.Campeonato
 
         protected ChaveCampeonato(IEnumerable<FilmeModel> participantes)
         {
-            if (!participantes.Count().EhPar())
+            if (participantes is null || participantes.Count() == 0 || !participantes.Count().EhPar())
             {
                 throw new QtdeIncorretaRegraChaveamentoException(Parametros.MAX_PARTICIPANTES_CAMPEONATO);
             }
