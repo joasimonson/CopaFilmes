@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import PageHeader from '../../components/PageHeader';
@@ -8,10 +8,31 @@ import CardPosicao from './CardPosicao';
 import { FilmesStore } from '../../stores/store';
 
 import './styles.css';
+import { FilmePosicao } from '../../types/model';
 
 function Resultado() {
-    const filmesResultado = FilmesStore.useState(s => s.filmesResultado);
     const disputandoCampeonato = FilmesStore.useState(s => s.disputandoCampeonato);
+    const [filmes, setFilmes] = useState<FilmePosicao[]>([]);
+    let filmesResultado = FilmesStore.useState(s => s.filmesResultado);
+
+    useEffect(() => {
+        if (disputandoCampeonato) {
+            return;
+        }
+        
+        let filmes = filmesResultado;
+        if (!filmes || filmes.length === 0) {
+            const json = localStorage.getItem("filmesResultado") || "";
+
+            if (!json) {
+                return;
+            }
+
+            const obj: FilmePosicao[] = JSON.parse(json);
+            filmes = obj;
+        }
+        setFilmes(filmes);
+    }, [disputandoCampeonato])
 
     return (
         <div id="page-resultado" className="container-page">
@@ -21,7 +42,7 @@ function Resultado() {
             />
             <main>
                 <LoadingDefault loading={disputandoCampeonato}>
-                    {filmesResultado.length === 0 ?
+                    {filmes.length === 0 ?
                         (
                             <span className="info">
                                 Nos desculpe, algo deu errado.
@@ -30,8 +51,8 @@ function Resultado() {
                         :
                         (
                             <div className="lista-resultado">
-                                {filmesResultado?.map(item =>
-                                    <CardPosicao filme={item} />
+                                {filmes?.map(item =>
+                                    <CardPosicao key={item.id} filme={item} />
                                 )}
                             </div>
                         )

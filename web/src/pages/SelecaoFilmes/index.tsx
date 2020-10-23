@@ -23,7 +23,7 @@ function SelecaoFilmes() {
     useEffect(() => {
         async function obterFilmesAsync() {
             const filmesResponse = await obterFilmes();
-            
+
             setFilmes(filmesResponse);
             setLoading(false);
         }
@@ -63,6 +63,8 @@ function SelecaoFilmes() {
         FilmesStore.update(s => { s.disputandoCampeonato = true; });
 
         const filmesResponse = await gerarDisputaCampeonato(filmesSelecionados);
+
+        localStorage.setItem("filmesResultado", JSON.stringify(filmesResponse));
         
         FilmesStore.update(f => { f.filmesResultado = filmesResponse });
         FilmesStore.update(s => { s.disputandoCampeonato = false; });
