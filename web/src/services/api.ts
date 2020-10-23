@@ -1,26 +1,50 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { getConfig } from '../config';
 
 const api = axios.create({
     baseURL: getConfig("URL_API"),
 });
 
-export const getAuth = async (url: string) => {
-    const config = await getConfigRequest();
+export const getAuth = async (url: string) : Promise<AxiosResponse> => {
+    async function get(config: any) {
+        return await api.get(url, config)
+    }
 
-    return await api.get(url, config);
+    const response = await enviarComRetentativa(get);
+
+    return response
 }
 
-export const postAuth = async (url: string, data: any) => {
-    const config = await getConfigRequest();
+export const postAuth = async (url: string, data: any) : Promise<AxiosResponse> => {
+    async function post(config: any) {
+        return await api.post(url, data, config)
+    }
+    const response = await enviarComRetentativa(post);
 
-    return await api.post(url, data, config);
+    return response;
 }
 
-const getConfigRequest = async () => {
+const enviarComRetentativa = async (execute: any) : Promise<AxiosResponse> => {
+    let config = await getConfigRequest();
+
+    let response;
+
+    for (let i = 0; i < 2; i++) {
+        try {
+            response = await execute(config);
+        } catch (error) {
+            console.error(error);
+            config = await getConfigRequest(true);
+        }
+    }
+
+    return response;
+}
+
+const getConfigRequest = async (autenticar: boolean = false) => {
     let token = sessionStorage.getItem("token");
 
-    if (!token || token === "undefined") {
+    if (autenticar || !token || token === "undefined") {
         const usuario = getConfig('usuario');
         const senha = getConfig('senha');
 
