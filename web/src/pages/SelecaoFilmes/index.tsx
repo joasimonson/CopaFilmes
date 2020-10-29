@@ -3,15 +3,14 @@ import { Link } from 'react-router-dom';
 
 import PageHeader from '../../components/PageHeader';
 import CardFilme from './CardFilme';
-
-import { Filme } from '../../types/model';
+import LoadingDefault from '../../components/LoadingDefault';
 
 import { obterFilmes, gerarDisputaCampeonato } from '../../services/FilmeService';
 import { getConfigDynamic } from '../../config';
 import { FilmesStore } from '../../stores/store';
+import { Filme } from '../../types/model';
 
 import './styles.css';
-import LoadingDefault from '../../components/LoadingDefault';
 
 function SelecaoFilmes() {
     const [loading, setLoading] = useState<boolean>(true);
@@ -21,14 +20,12 @@ function SelecaoFilmes() {
     const [totalFilmesSelecionados, setTotalFilmesSelecionados] = useState<number>(0);
 
     useEffect(() => {
-        async function obterFilmesAsync() {
+        (async function obterFilmesAsync() {
             const filmesResponse = await obterFilmes();
 
             setFilmes(filmesResponse);
             setLoading(false);
-        }
-
-        obterFilmesAsync();
+        })();
 
         const totalFilmesCampeonato = getConfigDynamic<number>('TotalFilmesCampeonato');
         setTotalFilmesCampeonato(totalFilmesCampeonato);
@@ -60,14 +57,14 @@ function SelecaoFilmes() {
             return;
         }
         
-        FilmesStore.update(s => { s.disputandoCampeonato = true; });
+        FilmesStore.update(s => { s.disputandoCampeonato = true });
 
         const filmesResponse = await gerarDisputaCampeonato(filmesSelecionados);
 
         localStorage.setItem("filmesResultado", JSON.stringify(filmesResponse));
         
         FilmesStore.update(f => { f.filmesResultado = filmesResponse });
-        FilmesStore.update(s => { s.disputandoCampeonato = false; });
+        FilmesStore.update(s => { s.disputandoCampeonato = false });
     }
     
     return (
@@ -80,7 +77,7 @@ function SelecaoFilmes() {
                 <div className="info-counter">
                     <span>
                         Selecionados <br />
-                        {totalFilmesSelecionados} de {totalFilmesCampeonato} filmes
+                        <span data-testid="total-filmes-selecionados">{totalFilmesSelecionados}</span> de <span data-testid="total-filmes-max">{totalFilmesCampeonato}</span> filmes
                     </span>
                 </div>
                 
@@ -90,13 +87,13 @@ function SelecaoFilmes() {
                 <LoadingDefault loading={loading}>
                     {filmes.length === 0 ?
                         (
-                            <span className="info">
+                            <span className="info" data-testid="info-indisponivel">
                                 Ops... Parece que os filmes não estão disponíveis.
                             </span>
                         )
                         :
                         (
-                            <div className="lista-filmes">
+                            <div className="lista-filmes" data-testid="lista-filmes">
                                 {filmes.map(item =>
                                     <CardFilme key={item.id} filme={item} handleSelecao={handleFilmeSelecionado}/>
                                 )}
@@ -106,7 +103,7 @@ function SelecaoFilmes() {
                 </LoadingDefault>
             </main>
         </div>
-    );
+    )
 }
 
 export default SelecaoFilmes;

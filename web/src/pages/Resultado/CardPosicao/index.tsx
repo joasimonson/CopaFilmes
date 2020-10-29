@@ -12,13 +12,13 @@ const CardPosicao: React.FC<CardPosicaoProps> = (props) => {
     const { filme } = props;
 
     return (
-        <div className="card-posicao">
+        <div className="card-posicao" data-testid="card-posicao">
             <div className="posicao">
-                <span>{filme.posicao}º</span>
+                <span data-testid="card-posicao-numposicao">{filme.posicao}º</span>
             </div>
             <div className="info-card">
-                <span className="titulo">{filme.titulo}</span>
-                <span className="ano">{filme.ano}</span>
+                <span className="titulo" data-testid="card-posicao-titulo">{filme.titulo}</span>
+                <span className="ano" data-testid="card-posicao-ano">{filme.ano}</span>
             </div>
         </div>
     );

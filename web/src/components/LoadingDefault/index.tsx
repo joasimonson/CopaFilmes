@@ -16,10 +16,10 @@ const LoadingDefault: React.FC<LoadingDefaultProps> = (props) => {
         <>
             {!props.loading ? props.children :
                 <div className="info">
-                    <Spinner animation="border" role="status">
+                    <Spinner animation="border" role="status" data-testid="component-loading">
                         <span className="sr-only">{msg}</span>
                     </Spinner>
-                    <span className="">{msg}</span>
+                    <span data-testid="loading-msg">{msg}</span>
                 </div>
             }
         </>

@@ -12,11 +12,11 @@ const PageHeader: React.FC<PageHeaderProps> = (props) => {
         <header className="page-header">
             <div className="page-header-top">
                 <h4>CAMPEONATO DE FILMES</h4>
-                <h1>{props.titulo}</h1>
+                <h1 data-testid="page-header-titulo">{props.titulo}</h1>
             </div>
             <hr />
             <div className="page-header-content">
-                {props.descricao && <p>{props.descricao}</p>}
+                {props.descricao && <p data-testid="page-header-descricao">{props.descricao}</p>}
             </div>
         </header>
     );
