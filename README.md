@@ -47,7 +47,7 @@ $ dotnet run -p .\src\CopaFilmes.Api\CopaFilmes.Api.csproj
 ```shell
 $ cd web
 ```
-> Instale as dependências em cada repositório
+> Instale as dependências
 ```shell
 $ npm install
 # ou
