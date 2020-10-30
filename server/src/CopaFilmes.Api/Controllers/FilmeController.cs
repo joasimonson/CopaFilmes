@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CopaFilmes.Api.Servicos;
+using Microsoft.Extensions.Caching.Memory;
+using CopaFilmes.Api.Externo;
 
 namespace CopaFilmes.Api.Controllers
 {
@@ -17,11 +19,13 @@ namespace CopaFilmes.Api.Controllers
     public class FilmeController : ControllerBase
     {
         private readonly ILogger<FilmeController> _logger;
+        private readonly IMemoryCache _memoryCache;
         private readonly IFilmeServico _filmeServico;
 
-        public FilmeController(ILogger<FilmeController> logger, IFilmeServico filmeDominio)
+        public FilmeController(ILogger<FilmeController> logger, IMemoryCache memoryCache, IFilmeServico filmeDominio)
         {
             _logger = logger;
+            _memoryCache = memoryCache;
             _filmeServico = filmeDominio;
         }
 
@@ -32,7 +36,13 @@ namespace CopaFilmes.Api.Controllers
 
             try
             {
-                filmes = await _filmeServico.ObterFilmesAsync();
+                filmes = await _memoryCache.GetOrCreateAsync("filmesResponse", async entry =>
+                {
+                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(Parametros.MEMORYCACHE_MINUTESFROMEXPIRE);
+                    entry.SetPriority(CacheItemPriority.High);
+
+                    return await _filmeServico.ObterFilmesAsync();
+                });
             }
             catch (Exception ex)
             {

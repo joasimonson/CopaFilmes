@@ -26,6 +26,7 @@ namespace CopaFilmes.Api
             SwaggerStartup.Configurar(services);
             DependencyInjectionStartup.Configurar(services);
 
+            services.AddMemoryCache();
             services.AddControllers();
         }
 
