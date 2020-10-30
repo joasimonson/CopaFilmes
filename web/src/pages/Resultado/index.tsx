@@ -6,9 +6,9 @@ import LoadingDefault from '../../components/LoadingDefault';
 import CardPosicao from './CardPosicao';
 
 import { FilmesStore } from '../../stores/store';
+import { FilmePosicao } from '../../types/model';
 
 import './styles.css';
-import { FilmePosicao } from '../../types/model';
 
 function Resultado() {
     const disputandoCampeonato = FilmesStore.useState(s => s.disputandoCampeonato);
@@ -22,6 +22,7 @@ function Resultado() {
         
         let filmes = filmesResultado;
         if (!filmes || filmes.length === 0) {
+            debugger;
             const json = localStorage.getItem("filmesResultado") || "";
 
             if (!json) {
@@ -57,7 +58,7 @@ function Resultado() {
                             </div>
                         )
                     }
-                </LoadingDefault>    
+                </LoadingDefault>
             </main>
             <footer>
                 <Link to="/" className="btn-default">NOVO CAMPEONATO</Link>
