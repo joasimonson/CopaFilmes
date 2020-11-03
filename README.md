@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/64697a5f938a47cb9b90f00f76b50ccc)](https://app.codacy.com/gh/joasimonson/CopaFilmes?utm_source=github.com&utm_medium=referral&utm_content=joasimonson/CopaFilmes&utm_campaign=Badge_Grade_Settings)
 [![Board Status](https://dev.azure.com/gitjoasimonson/c628e767-f76a-41bc-8a7a-25ab051c5730/a03e55ba-45d9-47a7-8145-af66c265c597/_apis/work/boardbadge/8c6ef803-c79c-4279-9108-138c05963fb1)](https://dev.azure.com/gitjoasimonson/c628e767-f76a-41bc-8a7a-25ab051c5730/_boards/board/t/a03e55ba-45d9-47a7-8145-af66c265c597/Microsoft.RequirementCategory)
 # :pushpin: Copa do Mundo de Filmes
 * [O que é o projeto](#about)
