@@ -13,7 +13,7 @@
     "@types/react": "^17.0.14",
     "@types/react-dom": "^16.9.0",
     "@types/react-global-configuration": "^1.3.1",
-    "@types/react-router-dom": "^5.1.6",
+    "@types/react-router-dom": "^5.1.8",
     "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
     "pullstate": "^1.19.1",
