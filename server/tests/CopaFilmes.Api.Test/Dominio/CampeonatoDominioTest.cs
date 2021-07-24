@@ -52,7 +52,7 @@ namespace CopaFilmes.Api.Test.Dominio
             Func<Task> act = async () => await _campeonatoDominio.Disputar(participantesInvalidos);
 
             //Assert
-            await act.Should().ThrowAsync<QtdeIncorretaRegraChaveamentoException>();
+            await act.Should().ThrowAsync<ArgumentException>();
         }
 
         [Fact]
@@ -65,7 +65,7 @@ namespace CopaFilmes.Api.Test.Dominio
             Func<Task> act = async () => await _campeonatoDominio.Disputar(participantesInvalidos);
             
             //Assert
-            await act.Should().ThrowAsync<QtdeIncorretaRegraChaveamentoException>();
+            await act.Should().ThrowAsync<ArgumentException>();
         }
     }
 }
