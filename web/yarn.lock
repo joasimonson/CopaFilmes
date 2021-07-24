@@ -9806,14 +9806,14 @@ react-error-overlay@^6.0.8:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.8.tgz#474ed11d04fc6bda3af643447d85e9127ed6b5de"
   integrity sha512-HvPuUQnLp5H7TouGq3kzBeioJmXms1wHy9EGjz2OURWBp4qZO6AfGEcnxts1D/CbwPLRAgTMPCEgYhA3sEM4vw==
 
-react-global-configuration@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/react-global-configuration/-/react-global-configuration-1.4.0.tgz#c6f41ec8a69a5f9d15b472cc7067b4230cec7633"
-  integrity sha512-aLSDwjy0W1Gv3G/XsnbzrwbXvUvLcNe0umIYkD5aK45Bs0CtJR/ioNX4KyMpMejF5SDp0/74KclY+Ow36ZAt0g==
+react-global-configuration@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/react-global-configuration/-/react-global-configuration-1.4.1.tgz#49ea1bfe531a58e82aacfa180e02deef80bf7cd4"
+  integrity sha512-Sop75icLBD6H8R+h57OH4Tu4/aWelqMizZ8My43RA93LEd0Cyxy71p5bxsbXSwNU7i1xFb/ScbuUOlL5+4DJhg==
   dependencies:
     deep-freeze "0.0.1"
     object-assign "^4.1.1"
-    serialize-javascript "^2.1.0"
+    serialize-javascript "^4.0.0"
 
 react-is@^16.12.0, react-is@^16.3.2, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
   version "16.13.1"
@@ -10623,7 +10623,7 @@ send@0.17.1:
     range-parser "~1.2.1"
     statuses "~1.5.0"
 
-serialize-javascript@^2.1.0, serialize-javascript@^2.1.2:
+serialize-javascript@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-2.1.2.tgz#ecec53b0e0317bdc95ef76ab7074b7384785fa61"
   integrity sha512-rs9OggEUF0V4jUSecXazOYsLfu7OGK2qIn3c7IPBiffz32XniEp/TX9Xmc9LQfK2nQ2QKHvZ2oygKUGU0lG4jQ==
