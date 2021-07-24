@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace CopaFilmes.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
     {
@@ -24,9 +25,13 @@ namespace CopaFilmes.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost]
+        [ProducesResponseType(typeof(LoginResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(LoginResult), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Post([FromBody] LoginRequest login)
         {
-            if (String.IsNullOrWhiteSpace(login.Usuario) || String.IsNullOrWhiteSpace(login.Senha))
+            if (string.IsNullOrWhiteSpace(login.Usuario) || string.IsNullOrWhiteSpace(login.Senha))
             {
                 return BadRequest();
             }
@@ -35,9 +40,9 @@ namespace CopaFilmes.Api.Controllers
             {
                 var result = await _loginService.AutenticarAsync(login);
 
-                if (result is null)
+                if (result is null || !result.Autenticado)
                 {
-                    return NotFound();
+                    return NotFound(result);
                 }
                 else
                 {
