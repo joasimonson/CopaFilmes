@@ -1,12 +1,12 @@
-﻿using CopaFilmes.Api.Test.Builders;
+﻿using CopaFilmes.Api.Test.Common.Builders;
 using FluentAssertions;
 using Xunit;
 
-namespace CopaFilmes.Api.Test.Dominio.Campeonato
+namespace CopaFilmes.Api.Test.Unit.Dominio.Campeonato
 {
     public class ChaveClassificacaoTest
     {
-        public readonly FilmeModelFaker _filmeModelFaker;
+        private readonly FilmeModelFaker _filmeModelFaker;
 
         public ChaveClassificacaoTest()
         {

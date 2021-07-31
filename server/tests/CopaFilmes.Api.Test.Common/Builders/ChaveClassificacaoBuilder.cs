@@ -2,7 +2,7 @@
 using CopaFilmes.Api.Model;
 using System.Collections.Generic;
 
-namespace CopaFilmes.Api.Test.Builders
+namespace CopaFilmes.Api.Test.Common.Builders
 {
     internal class ChaveClassificacaoBuilder : ChaveCampeonatoBuilder<ChaveClassificacaoBuilder, ChaveClassificacao>
     {

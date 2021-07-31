@@ -2,7 +2,7 @@
 using Bogus;
 using System.Linq;
 
-namespace CopaFilmes.Api.Test.Builders
+namespace CopaFilmes.Api.Test.Common.Builders
 {
     internal static class UtilFaker
     {

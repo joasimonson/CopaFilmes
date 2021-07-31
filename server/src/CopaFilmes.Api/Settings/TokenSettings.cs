@@ -1,6 +1,6 @@
-namespace CopaFilmes.Api.Servicos.Login
+namespace CopaFilmes.Api.Settings
 {
-    internal sealed class TokenConfigurations
+    public sealed class TokenSettings
     {
         public string Audience { get; set; }
         public string Issuer { get; set; }

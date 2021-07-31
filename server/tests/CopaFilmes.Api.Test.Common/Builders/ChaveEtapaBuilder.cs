@@ -2,7 +2,7 @@
 using CopaFilmes.Api.Model;
 using System.Collections.Generic;
 
-namespace CopaFilmes.Api.Test.Builders
+namespace CopaFilmes.Api.Test.Common.Builders
 {
     internal class ChaveEtapaBuilder
     {
@@ -78,7 +78,7 @@ namespace CopaFilmes.Api.Test.Builders
                 _participantes = _filmeModelFaker.GenerateDifferentList();
             }
 
-            var chave = new ChaveEtapa(_participantes);
+            ChaveEtapa chave = null; // new ChaveEtapa(_participantes);
 
             if (!_semChaveamento)
             {

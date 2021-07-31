@@ -1,9 +1,9 @@
-﻿using CopaFilmes.Api.Servicos.Login;
+﻿using CopaFilmes.Api.Extensions;
+using CopaFilmes.Api.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 
@@ -13,15 +13,10 @@ namespace CopaFilmes.Api.StartupConfigure
     {
         public static void ConfigurarJwtToken(IServiceCollection services, IConfiguration configuration)
         {
-            var signingConfigurations = new SigningConfigurations();
+            var signingSettings = new SigningSettings();
+            services.AddSingleton(signingSettings);
 
-            services.AddSingleton(signingConfigurations);
-
-            var sectionTokenConfigurations = configuration.GetSection("TokenConfigurations");
-            var tokenConfigurations = new TokenConfigurations();
-            new ConfigureFromConfigurationOptions<TokenConfigurations>(sectionTokenConfigurations)
-                .Configure(tokenConfigurations);
-            services.AddSingleton(tokenConfigurations);
+            var tokenSettings = configuration.GetSettings<TokenSettings>();
 
             services.AddAuthentication(opt =>
             {
@@ -34,9 +29,9 @@ namespace CopaFilmes.Api.StartupConfigure
                 opt.SaveToken = true;
                 opt.TokenValidationParameters = new TokenValidationParameters
                 {
-                    IssuerSigningKey = signingConfigurations.Key,
-                    ValidAudience = tokenConfigurations.Audience,
-                    ValidIssuer = tokenConfigurations.Issuer,
+                    IssuerSigningKey = signingSettings.Key,
+                    ValidAudience = tokenSettings.Audience,
+                    ValidIssuer = tokenSettings.Issuer,
                     ValidateIssuerSigningKey = true,
                     ValidateIssuer = true,
                     ValidateAudience = true,

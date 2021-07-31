@@ -1,6 +1,7 @@
 ﻿using CopaFilmes.Api.Extensions;
-using CopaFilmes.Api.Externo;
 using CopaFilmes.Api.Model;
+using CopaFilmes.Api.Settings;
+using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,11 +14,11 @@ namespace CopaFilmes.Api.Dominio.Campeonato
         protected readonly ICollection<Partida> _partidas;
         public readonly bool ChaveFinalistas;
 
-        protected ChaveCampeonato(IEnumerable<FilmeModel> participantes)
+        protected ChaveCampeonato(IOptions<SystemSettings> systemSettings, IEnumerable<FilmeModel> participantes)
         {
             if (participantes is null || participantes.Count() == 0 || !participantes.Count().EhPar())
             {
-                throw new QtdeIncorretaRegraChaveamentoException(Parametros.MAX_PARTICIPANTES_CAMPEONATO);
+                throw new QtdeIncorretaRegraChaveamentoException(systemSettings.Value.MaximoParticipantesCampeonato);
             }
 
             _qtdeParticipantes = participantes.Count();

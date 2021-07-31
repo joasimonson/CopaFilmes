@@ -1,14 +1,14 @@
 using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 
-namespace CopaFilmes.Api.Servicos.Login
+namespace CopaFilmes.Api.Settings
 {
-    internal sealed class SigningConfigurations
+    public sealed class SigningSettings
     {
         public SecurityKey Key { get; set; }
         public SigningCredentials Credentials { get; set; }
 
-        public SigningConfigurations()
+        public SigningSettings()
         {
             using (var provider = new RSACryptoServiceProvider(2048))
             {

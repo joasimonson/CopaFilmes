@@ -1,7 +1,7 @@
 ﻿using CopaFilmes.Api.Dominio;
 using CopaFilmes.Api.Dominio.Campeonato;
 using CopaFilmes.Api.Model;
-using CopaFilmes.Api.Test.Builders;
+using CopaFilmes.Api.Test.Common.Builders;
 using FakeItEasy;
 using FluentAssertions;
 using System;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CopaFilmes.Api.Test.Dominio
+namespace CopaFilmes.Api.Test.Unit.Dominio
 {
     public class CampeonatoDominioTest
     {
@@ -21,7 +21,7 @@ namespace CopaFilmes.Api.Test.Dominio
         public CampeonatoDominioTest()
         {
             _filmeDominio = A.Fake<IFilmeDominio>();
-            _campeonatoDominio = new CampeonatoDominio(_filmeDominio);
+            _campeonatoDominio = null; // new CampeonatoDominio(_filmeDominio);
 
             _participantes = ChaveClassificacaoBuilder.Novo().ComParticipantesFixos().ObterParticipantes();
 

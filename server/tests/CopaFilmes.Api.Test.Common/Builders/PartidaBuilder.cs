@@ -2,8 +2,12 @@
 using CopaFilmes.Api.Model;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
-namespace CopaFilmes.Api.Test.Builders
+[assembly: InternalsVisibleTo("CopaFilmes.Api.Test.Unit")]
+[assembly: InternalsVisibleTo("CopaFilmes.Api.Test.Integration")]
+
+namespace CopaFilmes.Api.Test.Common.Builders
 {
     internal class PartidaBuilder
     {

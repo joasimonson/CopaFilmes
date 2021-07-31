@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CopaFilmes.Api.Extensions;
+using CopaFilmes.Api.Settings;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -10,16 +12,15 @@ namespace CopaFilmes.Api.Servicos.Login
 {
     internal class LoginServico : ILoginServico
     {
-        private readonly TokenConfigurations _tokenConfigurations;
-        private readonly SigningConfigurations _signingConfigurations;
         private readonly string ACCESS_KEY;
+        private readonly TokenSettings _tokenSettings;
+        private readonly SigningSettings _signingSettings;
 
-        public LoginServico(IConfiguration configuration, SigningConfigurations signingConfigurations, TokenConfigurations tokenConfigurations)
+        public LoginServico(IConfiguration configuration)
         {
             ACCESS_KEY = configuration.GetValue<string>("AccessKey");
-
-            _signingConfigurations = signingConfigurations;
-            _tokenConfigurations = tokenConfigurations;
+            _signingSettings = configuration.GetSettings<SigningSettings>();
+            _tokenSettings = configuration.GetSettings<TokenSettings>(); ;
         }
 
         public async Task<LoginResult> AutenticarAsync(LoginRequest login)
@@ -32,7 +33,7 @@ namespace CopaFilmes.Api.Servicos.Login
             if (ACCESS_KEY == login.Senha)
             {
                 DateTime createDate = DateTime.Now;
-                DateTime expirationDate = createDate + TimeSpan.FromMinutes(_tokenConfigurations.Minutes);
+                DateTime expirationDate = createDate + TimeSpan.FromMinutes(_tokenSettings.Minutes);
 
                 string token = await Task.FromResult(GenereteJwtToken(login.Usuario, createDate, expirationDate));
 
@@ -81,9 +82,9 @@ namespace CopaFilmes.Api.Servicos.Login
 
             var securityToken = handler.CreateToken(new SecurityTokenDescriptor()
             {
-                Issuer = _tokenConfigurations.Issuer,
-                Audience = _tokenConfigurations.Audience,
-                SigningCredentials = _signingConfigurations.Credentials,
+                Issuer = _tokenSettings.Issuer,
+                Audience = _tokenSettings.Audience,
+                SigningCredentials = _signingSettings.Credentials,
                 Subject = claimsIdentity,
                 NotBefore = createDate,
                 Expires = expirationDate

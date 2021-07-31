@@ -1,10 +1,8 @@
-﻿using AutoBogus;
-using Bogus;
-using CopaFilmes.Api.Dominio;
+﻿using CopaFilmes.Api.Dominio;
 using CopaFilmes.Api.Dominio.Filme;
-using CopaFilmes.Api.Externo;
 using CopaFilmes.Api.Model;
-using CopaFilmes.Api.Test.Builders;
+using CopaFilmes.Api.Settings;
+using CopaFilmes.Api.Test.Common.Builders;
 using FluentAssertions;
 using Flurl.Http;
 using Flurl.Http.Testing;
@@ -14,21 +12,20 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CopaFilmes.Api.Test.Dominio
+namespace CopaFilmes.Api.Test.Unit.Dominio
 {
     public class FilmeDominioTest
     {
         private readonly HttpTest _httpTest;
+        private readonly ApiFilmesSettings _apiFilmesConfiguration;
         private readonly IFilmeDominio _filmeDominio;
         private readonly IEnumerable<FilmeModel> _filmes;
 
         public FilmeDominioTest()
         {
             _httpTest = new HttpTest();
-
+            _filmeDominio = null; // new FilmeDominio();
             _filmes = FilmeModelFaker.Novo().Generate(8);
-
-            _filmeDominio = new FilmeDominio();
         }
 
         [Fact]
@@ -41,7 +38,8 @@ namespace CopaFilmes.Api.Test.Dominio
             await _filmeDominio.ObterFilmesAsync();
 
             //Assert
-            _httpTest.ShouldHaveCalled(Parametros.URI_FILMES)
+            _httpTest
+                .ShouldHaveCalled(_apiFilmesConfiguration.URL_FILMES)
                 .WithVerb(HttpMethod.Get)
                 .Times(1);
         }
@@ -56,7 +54,9 @@ namespace CopaFilmes.Api.Test.Dominio
             Func<Task> act = async () => await _filmeDominio.ObterFilmesAsync();
 
             //Assert
-            await act.Should().ThrowAsync<FlurlHttpTimeoutException>();
+            await act
+                .Should()
+                .ThrowAsync<FlurlHttpTimeoutException>();
         }
 
         [Fact]
@@ -70,7 +70,9 @@ namespace CopaFilmes.Api.Test.Dominio
             Func<Task> act = async () => await _filmeDominio.ObterFilmesAsync();
 
             //Assert
-            await act.Should().ThrowAsync<FlurlHttpException>()
+            await act
+                .Should()
+                .ThrowAsync<FlurlHttpException>()
                 .WithMessage("*Response could not be deserialized to JSON*");
         }
 
@@ -84,7 +86,9 @@ namespace CopaFilmes.Api.Test.Dominio
             var filmes = await _filmeDominio.ObterFilmesAsync();
 
             //Assert
-            filmes.Should().BeEquivalentTo(_filmes);
+            filmes
+                .Should()
+                .BeEquivalentTo(_filmes);
         }
     }
 }

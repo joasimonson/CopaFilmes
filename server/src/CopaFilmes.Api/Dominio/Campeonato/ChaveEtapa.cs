@@ -1,16 +1,20 @@
 ﻿using CopaFilmes.Api.Model;
+using CopaFilmes.Api.Settings;
+using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("CopaFilmes.Api.Test")]
+[assembly: InternalsVisibleTo("CopaFilmes.Api.Test.Unit")]
+[assembly: InternalsVisibleTo("CopaFilmes.Api.Test.Common")]
+[assembly: InternalsVisibleTo("CopaFilmes.Api.Test.Integration")]
 
 namespace CopaFilmes.Api.Dominio.Campeonato
 {
     internal class ChaveEtapa : ChaveCampeonato
     {
-        public ChaveEtapa(IEnumerable<FilmeModel> participantes)
-            : base(participantes)
+        public ChaveEtapa(IOptions<SystemSettings> systemSettings, IEnumerable<FilmeModel> participantes)
+            : base(systemSettings, participantes)
         {
 
         }

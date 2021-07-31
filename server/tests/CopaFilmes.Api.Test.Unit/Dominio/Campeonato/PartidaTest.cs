@@ -1,9 +1,8 @@
-﻿using CopaFilmes.Api.Test.Builders;
+﻿using CopaFilmes.Api.Test.Common.Builders;
 using FluentAssertions;
-using System.Diagnostics;
 using Xunit;
 
-namespace CopaFilmes.Api.Test.Dominio.Campeonato
+namespace CopaFilmes.Api.Test.Unit.Dominio.Campeonato
 {
     public class PartidaTest
     {

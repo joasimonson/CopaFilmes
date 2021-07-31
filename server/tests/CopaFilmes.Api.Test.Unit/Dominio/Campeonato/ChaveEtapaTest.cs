@@ -1,14 +1,14 @@
 ﻿using CopaFilmes.Api.Dominio.Campeonato;
-using CopaFilmes.Api.Test.Builders;
+using CopaFilmes.Api.Test.Common.Builders;
 using FluentAssertions;
 using System.Linq;
 using Xunit;
 
-namespace CopaFilmes.Api.Test.Dominio.Campeonato
+namespace CopaFilmes.Api.Test.Unit.Dominio.Campeonato
 {
     public class ChaveEtapaTest
     {
-        public readonly FilmeModelFaker _filmeModelFaker;
+        private readonly FilmeModelFaker _filmeModelFaker;
 
         public ChaveEtapaTest()
         {
@@ -22,7 +22,7 @@ namespace CopaFilmes.Api.Test.Dominio.Campeonato
         {
             //Arrange
             var participantes = _filmeModelFaker.Generate(qtdeParticipantes);
-            var chave = new ChaveEtapa(participantes);
+            ChaveEtapa chave = null; // new ChaveEtapa(participantes);
 
             //Act
             var partidas = chave.MontarChaveamento();
