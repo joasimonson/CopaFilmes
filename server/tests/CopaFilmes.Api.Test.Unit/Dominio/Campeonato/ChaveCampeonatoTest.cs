@@ -1,5 +1,4 @@
-﻿using CopaFilmes.Api.Dominio.Campeonato;
-using CopaFilmes.Api.Model;
+﻿using CopaFilmes.Api.Model;
 using CopaFilmes.Api.Test.Common.Builders;
 using FluentAssertions;
 using System;
@@ -10,39 +9,30 @@ namespace CopaFilmes.Api.Test.Unit.Dominio.Campeonato
 {
     public class ChaveCampeonatoTest
     {
-        private readonly FilmeModelFaker _filmeModelFaker;
-
-        public ChaveCampeonatoTest()
-        {
-            _filmeModelFaker = new FilmeModelFaker();
-        }
-
-        [Theory]
-        [InlineData(3)]
-        [InlineData(5)]
-        public void ChaveCampeonato_DeveGerarFalhaComNumeroParticipantesIncorreto(int qtdeParticipantesIncorreta)
+        [Fact]
+        public void ChaveCampeonato_DeveGerarFalhaComNumeroParticipantesIncorreto()
         {
             //Arrange
-            var filmes = _filmeModelFaker.Generate(qtdeParticipantesIncorreta);
+            var qtdeParticipantesIncorreta = UtilFaker.FakerHub.Random.Odd(1, 99);
 
             //Act
-            //Action act = () => { var chave = new ChaveClassificacao(filmes); };
+            Action act = () => { ChaveClassificacaoBuilder.Novo().ComParticipantes(qtdeParticipantesIncorreta).Build(); };
 
             //Assert
-            //act.Should().Throw<QtdeIncorretaRegraChaveamentoException>();
+            act.Should().Throw<Exception>().WithInnerException<QtdeIncorretaRegraChaveamentoException>();
         }
 
         [Fact]
         public void ChaveCampeonato_DeveGerarFalhaAoGerarChaveComParticipantesNulo()
         {
             //Arrange
-            IEnumerable<FilmeModel> participantesInvalidos = null;
+            List<FilmeModel> participantesInvalidos = null;
 
             //Act
-            //Action act = () => { var chave = new ChaveClassificacao(participantesInvalidos); };
+            Action act = () => { ChaveClassificacaoBuilder.Novo().ComParticipantes(participantesInvalidos).Build(); };
 
             //Assert
-            //act.Should().Throw<QtdeIncorretaRegraChaveamentoException>();
+            act.Should().Throw<Exception>().WithInnerException<QtdeIncorretaRegraChaveamentoException>();
         }
 
         [Fact]
@@ -52,10 +42,10 @@ namespace CopaFilmes.Api.Test.Unit.Dominio.Campeonato
             var participantesInvalidos = new List<FilmeModel>();
 
             //Act
-            //Action act = () => { var chave = new ChaveClassificacao(participantesInvalidos); };
+            Action act = () => { ChaveClassificacaoBuilder.Novo().ComParticipantes(participantesInvalidos).Build(); };
 
             //Assert
-            //act.Should().Throw<QtdeIncorretaRegraChaveamentoException>();
+            act.Should().Throw<Exception>().WithInnerException<QtdeIncorretaRegraChaveamentoException>();
         }
 
         [Fact]

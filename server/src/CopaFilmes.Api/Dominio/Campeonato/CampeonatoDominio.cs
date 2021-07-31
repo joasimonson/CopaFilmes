@@ -10,21 +10,20 @@ namespace CopaFilmes.Api.Dominio.Campeonato
 {
     internal class CampeonatoDominio : ICampeonatoDominio
     {
-        private readonly IOptions<SystemSettings> _systemSettingsOptions;
-        private readonly SystemSettings _systemSettings;
+        private readonly IOptions<SystemSettings> _systemSettings;
         private readonly IFilmeDominio _filmeDominio;
 
         public CampeonatoDominio(IOptions<SystemSettings> systemSettings, IFilmeDominio filmeDominio)
         {
-            _systemSettings = systemSettings.Value;
+            _systemSettings = systemSettings;
             _filmeDominio = filmeDominio;
         }
 
         public async Task<IEnumerable<FilmePosicaoModel>> Disputar(string[] idsParticipantes)
         {
-            if (idsParticipantes is null || idsParticipantes.Length != _systemSettings.MaximoParticipantesCampeonato)
+            if (idsParticipantes is null || idsParticipantes.Length != _systemSettings.Value.MaximoParticipantesCampeonato)
             {
-                throw new QtdeIncorretaRegraChaveamentoException(_systemSettings.MaximoParticipantesCampeonato);
+                throw new QtdeIncorretaRegraChaveamentoException(_systemSettings.Value.MaximoParticipantesCampeonato);
             }
 
             var filmes = await _filmeDominio.ObterFilmesAsync();
@@ -38,7 +37,7 @@ namespace CopaFilmes.Api.Dominio.Campeonato
 
         private IEnumerable<FilmePosicaoModel> DisputarCampeonato(IEnumerable<FilmeModel> filmesCampeonato)
         {
-            var chaveClassificacao = new ChaveClassificacao(_systemSettingsOptions, filmesCampeonato);
+            var chaveClassificacao = new ChaveClassificacao(_systemSettings, filmesCampeonato);
 
             chaveClassificacao.MontarChaveamento();
 
@@ -53,7 +52,7 @@ namespace CopaFilmes.Api.Dominio.Campeonato
         {
             var filmesGanhadores = chaveDisputa.Disputar();
 
-            var chaveEtapa = new ChaveEtapa(_systemSettingsOptions, filmesGanhadores);
+            var chaveEtapa = new ChaveEtapa(_systemSettings, filmesGanhadores);
 
             chaveEtapa.MontarChaveamento();
 

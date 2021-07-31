@@ -1,5 +1,7 @@
 ﻿using CopaFilmes.Api.Dominio.Campeonato;
 using CopaFilmes.Api.Model;
+using CopaFilmes.Api.Test.Common.Util;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -26,9 +28,16 @@ namespace CopaFilmes.Api.Test.Common.Builders
             return Activator.CreateInstance<TBuilder>();
         }
 
+        internal ChaveCampeonatoBuilder<TBuilder, TChave> ComParticipantes(int participantes)
+        {
+            _participantes = _filmeModelFaker.Generate(participantes);
+            return this;
+        }
+
         internal ChaveCampeonatoBuilder<TBuilder, TChave> ComParticipantes(List<FilmeModel> participantes)
         {
             _participantes = participantes;
+            _semParticipantes = participantes is null;
             return this;
         }
 
@@ -56,7 +65,7 @@ namespace CopaFilmes.Api.Test.Common.Builders
                 _participantes = _filmeModelFaker.GenerateDifferentList();
             }
 
-            var chave = Activator.CreateInstance(typeof(TChave), _participantes) as TChave;
+            var chave = Activator.CreateInstance(typeof(TChave), Options.Create(ConfigManager.SystemSettings), _participantes) as TChave;
 
             if (!_semChaveamento)
             {

@@ -1,9 +1,12 @@
 ﻿using CopaFilmes.Api.Dominio;
 using CopaFilmes.Api.Dominio.Campeonato;
 using CopaFilmes.Api.Model;
+using CopaFilmes.Api.Settings;
 using CopaFilmes.Api.Test.Common.Builders;
+using CopaFilmes.Api.Test.Common.Util;
 using FakeItEasy;
 using FluentAssertions;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,14 +17,16 @@ namespace CopaFilmes.Api.Test.Unit.Dominio
 {
     public class CampeonatoDominioTest
     {
-        private readonly IEnumerable<FilmeModel> _participantes;
         private readonly IFilmeDominio _filmeDominio;
         private readonly ICampeonatoDominio _campeonatoDominio;
+        private readonly SystemSettings _systemSettings;
+        private readonly IEnumerable<FilmeModel> _participantes;
 
         public CampeonatoDominioTest()
         {
+            _systemSettings = ConfigManager.SystemSettings;
             _filmeDominio = A.Fake<IFilmeDominio>();
-            _campeonatoDominio = null; // new CampeonatoDominio(_filmeDominio);
+            _campeonatoDominio = new CampeonatoDominio(Options.Create(_systemSettings), _filmeDominio);
 
             _participantes = ChaveClassificacaoBuilder.Novo().ComParticipantesFixos().ObterParticipantes();
 
@@ -32,7 +37,6 @@ namespace CopaFilmes.Api.Test.Unit.Dominio
         public async Task Disputar_DeveRetornarFinalistas()
         {
             //Arrange
-            var finalistas = ChaveEtapaBuilder.Novo().ComChaveFinalistas().ObterParticipantes();
             var idsParticipantes = _participantes.Select(p => p.Id).ToArray();
 
             //Act

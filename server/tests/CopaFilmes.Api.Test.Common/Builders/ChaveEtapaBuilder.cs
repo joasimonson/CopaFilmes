@@ -4,29 +4,8 @@ using System.Collections.Generic;
 
 namespace CopaFilmes.Api.Test.Common.Builders
 {
-    internal class ChaveEtapaBuilder
+    internal class ChaveEtapaBuilder : ChaveCampeonatoBuilder<ChaveEtapaBuilder, ChaveEtapa>
     {
-        private readonly FilmeModelFaker _filmeModelFaker;
-        private List<FilmeModel> _participantes;
-        private bool _semParticipantes;
-        private bool _semChaveamento;
-
-        public ChaveEtapaBuilder()
-        {
-            _filmeModelFaker = new FilmeModelFaker();
-        }
-
-        internal static ChaveEtapaBuilder Novo()
-        {
-            return new ChaveEtapaBuilder();
-        }
-
-        internal ChaveEtapaBuilder ComParticipantes(List<FilmeModel> participantes)
-        {
-            _participantes = participantes;
-            return this;
-        }
-
         internal ChaveEtapaBuilder ComChaveEtapa1()
         {
             _participantes = new List<FilmeModel>
@@ -49,43 +28,9 @@ namespace CopaFilmes.Api.Test.Common.Builders
             return this;
         }
 
-        internal ChaveEtapaBuilder SemChaveamento()
-        {
-            _semChaveamento = true;
-            return this;
-        }
-
-        internal ChaveEtapaBuilder SemParticipantes()
-        {
-            _semParticipantes = true;
-            return this;
-        }
-
-        internal IEnumerable<FilmeModel> ObterParticipantes()
-        {
-            return _participantes;
-        }
-
         internal FilmeModel ObterFinalista()
         {
             return _filmeModelFaker.ComTitulo("Vingadores: Guerra Infinita").ComNota(8.8m).Generate();
-        }
-
-        internal ChaveEtapa Build()
-        {
-            if (_participantes is null && !_semParticipantes)
-            {
-                _participantes = _filmeModelFaker.GenerateDifferentList();
-            }
-
-            ChaveEtapa chave = null; // new ChaveEtapa(_participantes);
-
-            if (!_semChaveamento)
-            {
-                chave.MontarChaveamento();
-            }
-            
-            return chave;
         }
     }
 }
