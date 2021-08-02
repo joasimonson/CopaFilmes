@@ -1,10 +1,5 @@
-﻿using CopaFilmes.Api.Dominio.Campeonato;
-using CopaFilmes.Api.Dominio.Filme;
-using CopaFilmes.Api.Dominio;
-using CopaFilmes.Api.Servicos.Campeonato;
-using CopaFilmes.Api.Servicos.Filme;
-using CopaFilmes.Api.Servicos.Login;
-using CopaFilmes.Api.Servicos;
+﻿using CopaFilmes.Api.Test.Common.Util;
+using Flurl.Http.Testing;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -12,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Net.Http;
 
 namespace CopaFilmes.Api.Test.Integration
 {
@@ -20,8 +16,11 @@ namespace CopaFilmes.Api.Test.Integration
     {
         protected WebApplicationFactory<TStartup> Factory { get; }
 
-        public readonly IConfiguration Configuration;
-        public readonly IServiceProvider Services;
+        internal readonly IConfiguration Configuration;
+        internal readonly IServiceProvider Services;
+        internal readonly HttpClient HttpClient;
+        internal readonly ConfigRunTests ConfigRunTests;
+        internal readonly HttpTest HttpTest;
 
         public BaseFixture()
         {
@@ -32,11 +31,21 @@ namespace CopaFilmes.Api.Test.Integration
                     .UseEnvironment(Environments.Development)
                     .ConfigureTestServices(ConfigureTestServices));
 
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            ConfigRunTests = config.GetSetting<ConfigRunTests>();
             Services = Factory.Services;
             Configuration = Factory.Services.GetService<IConfiguration>();
+            HttpClient = Factory.CreateClient();
+            HttpTest = new HttpTest();
         }
 
-        protected virtual void ConfigureTestServices(IServiceCollection serviceCollection) { }
+        protected virtual void ConfigureTestServices(IServiceCollection services)
+        {
+            services.AddHttpClient();
+        }
 
         public void Dispose()
         {
@@ -47,21 +56,11 @@ namespace CopaFilmes.Api.Test.Integration
         protected virtual void Dispose(bool disposing)
         {
             Factory?.Dispose();
+            HttpClient.Dispose();
         }
     }
 
-    public class Fixture : BaseFixture<Startup>
+    public class BaseFixture : BaseFixture<Startup>
     {
-        protected override void ConfigureTestServices(IServiceCollection services)
-        {
-            services.AddSingleton<IFilmeDominio, FilmeDominio>();
-            services.AddSingleton<ICampeonatoDominio, CampeonatoDominio>();
-
-            services.AddSingleton<ILoginServico, LoginServico>();
-            services.AddSingleton<ICampeonatoServico, CampeonatoServico>();
-            services.AddSingleton<IFilmeServico, FilmeServico>();
-
-            services.AddSingleton<Fixture>();
-        }
     }
 }

@@ -14,8 +14,8 @@ namespace CopaFilmes.Api.Test.Common.Util
                 .Build();
         }
 
-        internal static ApiFilmesSettings ApiFilmesSettings => GetSection<ApiFilmesSettings>();
-        internal static SystemSettings SystemSettings => GetSection<SystemSettings>();
-        internal static TSetting GetSection<TSetting>() => Configuration.GetSection(typeof(TSetting).Name).Get<TSetting>();
+        internal static ApiFilmesSettings ApiFilmesSettings => Configuration.GetSetting<ApiFilmesSettings>();
+        internal static SystemSettings SystemSettings => Configuration.GetSetting<SystemSettings>();
+        internal static TSetting GetSetting<TSetting>(this IConfiguration configuration) => configuration.GetSection(typeof(TSetting).Name).Get<TSetting>();
     }
 }

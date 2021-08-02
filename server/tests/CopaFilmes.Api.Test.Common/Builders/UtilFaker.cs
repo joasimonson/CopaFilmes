@@ -6,11 +6,13 @@ namespace CopaFilmes.Api.Test.Common.Builders
 {
     internal static class UtilFaker
     {
+        public static readonly IAutoFaker Faker;
         public static readonly Faker FakerHub;
         public static readonly AutoFaker<string> FakerString;
 
         static UtilFaker()
         {
+            Faker = AutoFaker.Create();
             FakerHub = new Faker();
             FakerString = new AutoFaker<string>();
         }

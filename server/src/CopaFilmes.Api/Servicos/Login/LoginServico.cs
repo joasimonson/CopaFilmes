@@ -1,4 +1,5 @@
 ﻿using CopaFilmes.Api.Extensions;
+using CopaFilmes.Api.Resources;
 using CopaFilmes.Api.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -16,16 +17,16 @@ namespace CopaFilmes.Api.Servicos.Login
         private readonly TokenSettings _tokenSettings;
         private readonly SigningSettings _signingSettings;
 
-        public LoginServico(IConfiguration configuration)
+        public LoginServico(IConfiguration configuration, SigningSettings signingSettings)
         {
             ACCESS_KEY = configuration.GetValue<string>("AccessKey");
-            _signingSettings = configuration.GetSettings<SigningSettings>();
             _tokenSettings = configuration.GetSettings<TokenSettings>(); ;
+            _signingSettings = signingSettings;
         }
 
         public async Task<LoginResult> AutenticarAsync(LoginRequest login)
         {
-            if (String.IsNullOrWhiteSpace(login.Usuario) || String.IsNullOrWhiteSpace(login.Senha))
+            if (string.IsNullOrWhiteSpace(login.Usuario) || string.IsNullOrWhiteSpace(login.Senha))
             {
                 return Falha();
             }
@@ -54,7 +55,7 @@ namespace CopaFilmes.Api.Servicos.Login
                 Expiracao = expirationDate,
                 Token = token,
                 Usuario = usuario,
-                Mensagem = "Login efetuado com sucesso"
+                Mensagem = Messages.Login_S001
             };
         }
 
@@ -63,7 +64,7 @@ namespace CopaFilmes.Api.Servicos.Login
             return new LoginResult
             {
                 Autenticado = false,
-                Mensagem = "Falha ao autenticar"
+                Mensagem = Messages.Login_F001
             };
         }
 
