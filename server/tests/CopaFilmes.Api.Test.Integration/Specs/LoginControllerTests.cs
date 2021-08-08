@@ -1,73 +1,53 @@
 ﻿using AutoBogus;
 using CopaFilmes.Api.Resources;
-using CopaFilmes.Api.Servicos;
 using CopaFilmes.Api.Servicos.Login;
+using CopaFilmes.Api.Settings;
 using CopaFilmes.Api.Test.Common.Util;
-using FakeItEasy;
+using CopaFilmes.Api.Test.Integration.Fixtures;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace CopaFilmes.Api.Test.Integration.Specs
 {
-    public class LoginControllerTest : BaseFixture
+    public class LoginControllerTests : BaseFixture
     {
-        internal readonly ILoginServico LoginServicoFake;
-        internal readonly LoginRequest Login;
+        private readonly LoginRequest Login;
 
-        public LoginControllerTest()
+        public LoginControllerTests()
         {
-            LoginServicoFake = A.Fake<ILoginServico>();
-
             Login = new AutoFaker<LoginRequest>().RuleFor(l => l.Senha, Configuration.GetSection("AccessKey").Value).Generate();
-        }
-
-        protected override void ConfigureTestServices(IServiceCollection services)
-        {
-            base.ConfigureTestServices(services);
-            //services.AddScoped(_ => LoginServicoFake);
         }
 
         [Fact]
         public async Task Post_DeveRetornarOk_QuandoTokenForGeradoCorretamente()
         {
+            var expected = new
+            {
+                Autenticado = true,
+                Mensagem = Messages.Login_S001
+            };
             var response = await HttpClient.PostAsync(ConfigRunTests.EndpointLogin, Login.AsHttpContent());
 
-            response
-                .Should()
-                .Be200Ok()
-                .And
-                .Satisfy<LoginResult>(r =>
-                    r.Autenticado = true
-                    && r.Mensagem == Messages.Login_S001
-                );
-        }
-
-        [Fact]
-        public async Task Post_DeveretornarInternalServerError_QuandoHouverFalhaNaGeracaoDoTokenDeAcesso()
-        {
-            var response = await HttpClient.PostAsync(ConfigRunTests.EndpointLogin, Login.AsHttpContent());
-
-            response.Should().Be500InternalServerError();
+            response.Should().Be200Ok().And.BeAs(expected);
         }
 
         [Fact]
         public async Task Post_DeveRetornarNotFound_QuandoSenhaForIncorreta()
         {
+            var expected = new
+            {
+                Autenticado = false,
+                Mensagem = Messages.Login_F001
+            };
             var loginIncorreto = new AutoFaker<LoginRequest>().Generate();
 
             var response = await HttpClient.PostAsync(ConfigRunTests.EndpointLogin, loginIncorreto.AsHttpContent());
 
-            response
-                .Should()
-                .Be404NotFound()
-                .And
-                .Satisfy<LoginResult>(r =>
-                    r.Autenticado = false
-                    && r.Mensagem == Messages.Login_F001
-                );
+            response.Should().Be404NotFound().And.BeAs(expected);
         }
 
         [Theory]
@@ -83,6 +63,30 @@ namespace CopaFilmes.Api.Test.Integration.Specs
         {
             yield return new object[] { new AutoFaker<LoginRequest>().RuleFor(l => l.Usuario, string.Empty).Generate() };
             yield return new object[] { new AutoFaker<LoginRequest>().RuleFor(l => l.Senha, string.Empty).Generate() };
+        }
+    }
+
+    public class LoginControllerTestFailCase : BaseFixture
+    {
+        private readonly LoginRequest Login;
+
+        public LoginControllerTestFailCase()
+        {
+            Login = new AutoFaker<LoginRequest>().RuleFor(l => l.Senha, Configuration.GetSection("AccessKey").Value).Generate();
+        }
+
+        protected override void ConfigureTestServices(IServiceCollection services)
+        {
+            base.ConfigureTestServices(services);
+            services.AddSingleton(Options.Create(new TokenSettings() { }));
+        }
+
+        [Fact]
+        public async Task Post_DeveretornarInternalServerError_QuandoHouverFalhaNaGeracaoDoTokenDeAcesso()
+        {
+            var response = await HttpClient.PostAsync(ConfigRunTests.EndpointLogin, Login.AsHttpContent());
+
+            response.Should().Be500InternalServerError();
         }
     }
 }

@@ -4,7 +4,7 @@ using Xunit;
 
 namespace CopaFilmes.Api.Test.Unit.Dominio.Campeonato
 {
-    public class PartidaTest
+    public class PartidaTests
     {
         [Theory]
         [InlineData(10, 0)]

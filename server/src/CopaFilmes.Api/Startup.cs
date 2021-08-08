@@ -32,6 +32,7 @@ namespace CopaFilmes.Api
             CorsStartup.Configurar(services, Configuration);
             SwaggerStartup.Configurar(services);
             DependencyInjectionStartup.Configurar(services);
+            SettingsStartup.Configurar(services, Configuration);
 
             services.AddMemoryCache();
             services.AddControllers();

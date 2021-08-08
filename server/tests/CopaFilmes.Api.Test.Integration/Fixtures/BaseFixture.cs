@@ -1,4 +1,4 @@
-﻿using CopaFilmes.Api.Test.Common.Util;
+﻿using CopaFilmes.Api.Extensions;
 using Flurl.Http.Testing;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -9,7 +9,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Net.Http;
 
-namespace CopaFilmes.Api.Test.Integration
+namespace CopaFilmes.Api.Test.Integration.Fixtures
 {
     public class BaseFixture<TStartup> : IDisposable
         where TStartup : class
@@ -35,7 +35,7 @@ namespace CopaFilmes.Api.Test.Integration
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            ConfigRunTests = config.GetSetting<ConfigRunTests>();
+            ConfigRunTests = config.GetSettings<ConfigRunTests>();
             Services = Factory.Services;
             Configuration = Factory.Services.GetService<IConfiguration>();
             HttpClient = Factory.CreateClient();

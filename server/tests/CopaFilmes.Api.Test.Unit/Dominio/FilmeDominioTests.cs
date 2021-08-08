@@ -1,12 +1,9 @@
 ﻿using CopaFilmes.Api.Dominio;
 using CopaFilmes.Api.Dominio.Filme;
 using CopaFilmes.Api.Model;
-using CopaFilmes.Api.Settings;
 using CopaFilmes.Api.Test.Common.Builders;
-using CopaFilmes.Api.Test.Common.Util;
 using FluentAssertions;
 using Flurl.Http;
-using Flurl.Http.Testing;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -16,17 +13,13 @@ using Xunit;
 
 namespace CopaFilmes.Api.Test.Unit.Dominio
 {
-    public class FilmeDominioTest
+    public class FilmeDominioTests : BaseTests
     {
-        private readonly HttpTest _httpTest;
-        private readonly ApiFilmesSettings _apiFilmesSettings;
         private readonly IFilmeDominio _filmeDominio;
         private readonly IEnumerable<FilmeModel> _filmes;
 
-        public FilmeDominioTest()
+        public FilmeDominioTests()
         {
-            _httpTest = new HttpTest();
-            _apiFilmesSettings = ConfigManager.ApiFilmesSettings;
             _filmeDominio = new FilmeDominio(Options.Create(_apiFilmesSettings));
             _filmes = FilmeModelFaker.Novo().Generate(8);
         }

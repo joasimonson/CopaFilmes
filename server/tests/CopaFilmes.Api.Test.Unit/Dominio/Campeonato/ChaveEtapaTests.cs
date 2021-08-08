@@ -5,7 +5,7 @@ using Xunit;
 
 namespace CopaFilmes.Api.Test.Unit.Dominio.Campeonato
 {
-    public class ChaveEtapaTest
+    public class ChaveEtapaTests
     {
         [Theory]
         [InlineData(4)]

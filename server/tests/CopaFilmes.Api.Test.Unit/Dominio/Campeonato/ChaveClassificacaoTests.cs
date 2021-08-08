@@ -4,11 +4,11 @@ using Xunit;
 
 namespace CopaFilmes.Api.Test.Unit.Dominio.Campeonato
 {
-    public class ChaveClassificacaoTest
+    public class ChaveClassificacaoTests
     {
         private readonly FilmeModelFaker _filmeModelFaker;
 
-        public ChaveClassificacaoTest()
+        public ChaveClassificacaoTests()
         {
             _filmeModelFaker = new FilmeModelFaker();
         }

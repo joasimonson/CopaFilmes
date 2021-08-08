@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CopaFilmes.Api.Settings
 {
-    public sealed class SigningSettings
+    internal sealed class SigningSettings
     {
         public SecurityKey Key { get; set; }
         public SigningCredentials Credentials { get; set; }

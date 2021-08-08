@@ -1,4 +1,5 @@
-﻿using CopaFilmes.Api.Settings;
+﻿using CopaFilmes.Api.Extensions;
+using CopaFilmes.Api.Settings;
 using Microsoft.Extensions.Configuration;
 
 namespace CopaFilmes.Api.Test.Common.Util
@@ -14,8 +15,9 @@ namespace CopaFilmes.Api.Test.Common.Util
                 .Build();
         }
 
-        internal static ApiFilmesSettings ApiFilmesSettings => Configuration.GetSetting<ApiFilmesSettings>();
-        internal static SystemSettings SystemSettings => Configuration.GetSetting<SystemSettings>();
-        internal static TSetting GetSetting<TSetting>(this IConfiguration configuration) => configuration.GetSection(typeof(TSetting).Name).Get<TSetting>();
+        internal static ApiFilmesSettings ApiFilmesSettings => Configuration.GetSettings<ApiFilmesSettings>();
+        internal static SystemSettings SystemSettings => Configuration.GetSettings<SystemSettings>();
+        internal static TokenSettings TokenSettings => Configuration.GetSettings<TokenSettings>();
+        internal static SigningSettings SigningSettings = new SigningSettings();
     }
 }

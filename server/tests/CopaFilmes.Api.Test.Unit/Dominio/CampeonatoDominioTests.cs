@@ -1,9 +1,7 @@
 ﻿using CopaFilmes.Api.Dominio;
 using CopaFilmes.Api.Dominio.Campeonato;
 using CopaFilmes.Api.Model;
-using CopaFilmes.Api.Settings;
 using CopaFilmes.Api.Test.Common.Builders;
-using CopaFilmes.Api.Test.Common.Util;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
@@ -15,16 +13,14 @@ using Xunit;
 
 namespace CopaFilmes.Api.Test.Unit.Dominio
 {
-    public class CampeonatoDominioTest
+    public class CampeonatoDominioTests : BaseTests
     {
         private readonly IFilmeDominio _filmeDominio;
         private readonly ICampeonatoDominio _campeonatoDominio;
-        private readonly SystemSettings _systemSettings;
         private readonly IEnumerable<FilmeModel> _participantes;
 
-        public CampeonatoDominioTest()
+        public CampeonatoDominioTests()
         {
-            _systemSettings = ConfigManager.SystemSettings;
             _filmeDominio = A.Fake<IFilmeDominio>();
             _campeonatoDominio = new CampeonatoDominio(Options.Create(_systemSettings), _filmeDominio);
 

@@ -7,7 +7,7 @@ using Xunit;
 
 namespace CopaFilmes.Api.Test.Unit.Dominio.Campeonato
 {
-    public class ChaveCampeonatoTest
+    public class ChaveCampeonatoTests
     {
         [Fact]
         public void ChaveCampeonato_DeveGerarFalhaComNumeroParticipantesIncorreto()
