@@ -18,6 +18,6 @@ namespace CopaFilmes.Api.Test.Common.Util
         internal static ApiFilmesSettings ApiFilmesSettings => Configuration.GetSettings<ApiFilmesSettings>();
         internal static SystemSettings SystemSettings => Configuration.GetSettings<SystemSettings>();
         internal static TokenSettings TokenSettings => Configuration.GetSettings<TokenSettings>();
-        internal static SigningSettings SigningSettings = new SigningSettings();
+        internal static readonly SigningSettings SigningSettings = new SigningSettings();
     }
 }

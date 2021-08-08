@@ -8,6 +8,7 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -15,11 +16,14 @@ namespace CopaFilmes.Api.Test.Integration.Specs
 {
     public class LoginControllerTests : BaseFixture
     {
-        private readonly LoginRequest Login;
+        private readonly LoginRequest _login;
+        private readonly HttpClient _client;
 
         public LoginControllerTests()
         {
-            Login = new AutoFaker<LoginRequest>().RuleFor(l => l.Senha, Configuration.GetSection("AccessKey").Value).Generate();
+            var accessKey = GetConfiguration().GetSection("AccessKey").Value;
+            _login = new AutoFaker<LoginRequest>().RuleFor(l => l.Senha, accessKey).Generate();
+            _client = GetDefaultHttpClient();
         }
 
         [Fact]
@@ -30,7 +34,7 @@ namespace CopaFilmes.Api.Test.Integration.Specs
                 Autenticado = true,
                 Mensagem = Messages.Login_S001
             };
-            var response = await HttpClient.PostAsync(ConfigRunTests.EndpointLogin, Login.AsHttpContent());
+            var response = await _client.PostAsync(ConfigRunTests.EndpointLogin, _login.AsHttpContent());
 
             response.Should().Be200Ok().And.BeAs(expected);
         }
@@ -45,7 +49,7 @@ namespace CopaFilmes.Api.Test.Integration.Specs
             };
             var loginIncorreto = new AutoFaker<LoginRequest>().Generate();
 
-            var response = await HttpClient.PostAsync(ConfigRunTests.EndpointLogin, loginIncorreto.AsHttpContent());
+            var response = await _client.PostAsync(ConfigRunTests.EndpointLogin, loginIncorreto.AsHttpContent());
 
             response.Should().Be404NotFound().And.BeAs(expected);
         }
@@ -54,7 +58,7 @@ namespace CopaFilmes.Api.Test.Integration.Specs
         [MemberData(nameof(GerarLoginIncorreto))]
         public async Task Post_DeveRetornarBadRequest_QuandoUsuarioOuSenhaNaoForemPreenchidos(LoginRequest loginIncorreto)
         {
-            var response = await HttpClient.PostAsync(ConfigRunTests.EndpointLogin, loginIncorreto.AsHttpContent());
+            var response = await _client.PostAsync(ConfigRunTests.EndpointLogin, loginIncorreto.AsHttpContent());
 
             response.Should().Be400BadRequest();
         }
@@ -68,23 +72,27 @@ namespace CopaFilmes.Api.Test.Integration.Specs
 
     public class LoginControllerTestWithMock : BaseFixture
     {
-        private readonly LoginRequest Login;
+        private readonly LoginRequest _login;
+        private readonly HttpClient _client;
 
         public LoginControllerTestWithMock()
         {
-            Login = new AutoFaker<LoginRequest>().RuleFor(l => l.Senha, Configuration.GetSection("AccessKey").Value).Generate();
+            var accessKey = GetConfiguration().GetSection("AccessKey").Value;
+            _login = new AutoFaker<LoginRequest>().RuleFor(l => l.Senha, accessKey).Generate();
+            _client = GetDefaultHttpClient();
         }
 
         protected override void ConfigureTestServices(IServiceCollection services)
         {
             base.ConfigureTestServices(services);
-            services.AddSingleton(Options.Create(new TokenSettings() { }));
+            var settings = new TokenSettings();
+            services.AddSingleton(Options.Create(settings));
         }
 
         [Fact]
         public async Task Post_DeveretornarInternalServerError_QuandoHouverFalhaNaGeracaoDoTokenDeAcesso()
         {
-            var response = await HttpClient.PostAsync(ConfigRunTests.EndpointLogin, Login.AsHttpContent());
+            var response = await _client.PostAsync(ConfigRunTests.EndpointLogin, _login.AsHttpContent());
 
             response.Should().Be500InternalServerError();
         }

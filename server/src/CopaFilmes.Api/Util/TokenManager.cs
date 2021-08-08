@@ -30,7 +30,7 @@ namespace CopaFilmes.Api.Util
             DateTime createDate = DateTime.Now;
             DateTime expirationDate = createDate + TimeSpan.FromMinutes(_tokenSettings.Minutes);
 
-            return await Task.FromResult(GenereteJwtToken(user, createDate, expirationDate));
+            return await Task.FromResult(GenereteJwtToken(user, createDate, expirationDate)).ConfigureAwait(false);
         }
 
         private Token GenereteJwtToken(string user, DateTime createDate, DateTime expirationDate)
@@ -46,7 +46,7 @@ namespace CopaFilmes.Api.Util
 
             var handler = new JwtSecurityTokenHandler();
 
-            var securityToken = handler.CreateToken(new SecurityTokenDescriptor()
+            var securityToken = handler.CreateToken(new SecurityTokenDescriptor
             {
                 Issuer = _tokenSettings.Issuer,
                 Audience = _tokenSettings.Audience,
@@ -58,7 +58,7 @@ namespace CopaFilmes.Api.Util
 
             string token = handler.WriteToken(securityToken);
 
-            return new Token()
+            return new Token
             {
                 Criacao = createDate,
                 Expiracao = expirationDate,

@@ -14,13 +14,14 @@ namespace CopaFilmes.Api.Test.Integration.Fixtures
 {
     public class ApiTokenFixture : BaseFixture
     {
-        public readonly LoginRequest LoginRequest;
+        private readonly LoginRequest _loginRequest;
         private readonly HttpClient _client;
 
         public ApiTokenFixture()
         {
-            LoginRequest = new AutoFaker<LoginRequest>().RuleFor(l => l.Senha, Configuration.GetSection("AccessKey").Value).Generate();
-            _client = CreateClient();
+            var accessKey = GetConfiguration().GetSection("AccessKey").Value;
+            _loginRequest = new AutoFaker<LoginRequest>().RuleFor(l => l.Senha, accessKey).Generate();
+            _client = GetDefaultHttpClient();
         }
 
         protected override void ConfigureTestServices(IServiceCollection services)
@@ -33,23 +34,17 @@ namespace CopaFilmes.Api.Test.Integration.Fixtures
 
         public async Task<HttpClient> GetAuthenticatedClient()
         {
-            var result = await CreateAccessToken();
+            var result = await CreateAccessToken().ConfigureAwait(false);
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.Token);
             return _client;
         }
 
         private async Task<LoginResult> CreateAccessToken()
         {
-            var response = await HttpClient.PostAsync(ConfigRunTests.EndpointLogin, LoginRequest.AsHttpContent());
+            var response = await _client.PostAsync(ConfigRunTests.EndpointLogin, _loginRequest.AsHttpContent());
             var jsonResponse = await response.Content.ReadAsStringAsync();
             var login = JsonConvert.DeserializeObject<LoginResult>(jsonResponse);
             return login;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            _client.Dispose();
-            base.Dispose(disposing);
         }
     }
 }

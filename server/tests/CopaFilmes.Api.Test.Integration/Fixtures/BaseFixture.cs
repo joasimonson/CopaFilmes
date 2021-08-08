@@ -15,14 +15,15 @@ namespace CopaFilmes.Api.Test.Integration.Fixtures
     {
         protected WebApplicationFactory<TStartup> Factory { get; }
 
-        public readonly IConfiguration Configuration;
-        public readonly IServiceProvider Services;
-        public readonly HttpClient HttpClient;
+        private readonly HttpClient HttpClient;
         internal readonly ConfigRunTests ConfigRunTests;
 
+        public IConfiguration GetConfiguration() => Factory.Services.GetService<IConfiguration>();
         public IConfiguration GetTestConfiguration() => new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-
+        public HttpClient GetDefaultHttpClient() => HttpClient;
         public virtual HttpClient CreateClient() => Factory.CreateClient();
+
+        public TService GetService<TService>() => Factory.Services.GetService<TService>();
 
         public BaseFixture()
         {
@@ -36,8 +37,6 @@ namespace CopaFilmes.Api.Test.Integration.Fixtures
             var config = GetTestConfiguration();
 
             ConfigRunTests = config.GetSettings<ConfigRunTests>();
-            Services = Factory.Services;
-            Configuration = Factory.Services.GetService<IConfiguration>();
             HttpClient = CreateClient();
         }
 

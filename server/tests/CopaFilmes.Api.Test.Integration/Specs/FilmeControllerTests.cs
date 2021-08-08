@@ -92,7 +92,7 @@ namespace CopaFilmes.Api.Test.Integration.Specs
 
         public void Dispose()
         {
-            var cacheMemory = _apiTokenFixture.Services.GetService<IMemoryCache>();
+            var cacheMemory = _apiTokenFixture.GetService<IMemoryCache>();
             cacheMemory.Remove(_systemSettings.FilmesCacheKey);
             _wireMockServer.Dispose();
         }
@@ -123,7 +123,7 @@ namespace CopaFilmes.Api.Test.Integration.Specs
         [Fact]
         public async Task Post_DeveUsarMemoryCache()
         {
-            var response = await _httpClient.GetAsync(_endpoint);
+            await _httpClient.GetAsync(_endpoint);
 
             object cache;
             A.CallTo(() => MemoryCacheFake

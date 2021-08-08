@@ -6,7 +6,6 @@ using CopaFilmes.Api.Servicos.Campeonato;
 using CopaFilmes.Api.Servicos.Filme;
 using CopaFilmes.Api.Servicos.Login;
 using CopaFilmes.Api.Util;
-using Flurl.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CopaFilmes.Api.StartupConfigure
@@ -23,8 +22,6 @@ namespace CopaFilmes.Api.StartupConfigure
             services.AddScoped<IFilmeServico, FilmeServico>();
 
             services.AddScoped<TokenManager>();
-
-            //services.AddTransient<IFlurlClient, FlurlClient>();
 
             services.AddControllers();
         }
