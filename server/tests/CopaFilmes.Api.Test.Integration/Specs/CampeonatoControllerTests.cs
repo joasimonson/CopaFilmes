@@ -20,7 +20,6 @@ namespace CopaFilmes.Api.Test.Integration.Specs
     [Collection(nameof(ApiTestCollection))]
     public class CampeonatoControllerTests : IDisposable
     {
-        private readonly ApiTokenFixture _apiTokenFixture;
         private readonly SystemSettings _systemSettings;
         private readonly HttpClient _httpClient;
         private readonly string _endpoint;
@@ -28,12 +27,11 @@ namespace CopaFilmes.Api.Test.Integration.Specs
 
         public CampeonatoControllerTests(ApiTokenFixture apiTokenFixture)
         {
-            _apiTokenFixture = apiTokenFixture;
             _systemSettings = ConfigManager.SystemSettings;
-            _endpoint = _apiTokenFixture.ConfigRunTests.EndpointCampeonato;
-            _httpClient = _apiTokenFixture.GetAuthenticatedClient().GetAwaiter().GetResult();
+            _endpoint = apiTokenFixture.ConfigRunTests.EndpointCampeonato;
+            _httpClient = apiTokenFixture.GetAuthenticatedClient().GetAwaiter().GetResult();
 
-            _wireMockServer = WireMockServer.Start(_apiTokenFixture.ConfigRunTests.ServerPort);
+            _wireMockServer = WireMockServer.Start(apiTokenFixture.ConfigRunTests.ServerPort);
         }
 
         [Fact]
@@ -74,7 +72,7 @@ namespace CopaFilmes.Api.Test.Integration.Specs
             var participantes = chaveCampeonato.ObterParticipantes();
             var chaveFinalistas = ChaveEtapaBuilder.Novo().ComChaveFinalistas().Build();
             var finalistas = chaveFinalistas.ObterParticipantes().Select(f => new { f.Titulo, f.Nota }).ToArray();
-            var request = participantes.Select(p => new CampeonatoRequest() { IdFilme = p.Id }).ToArray();
+            var request = participantes.Select(p => new CampeonatoRequest { IdFilme = p.Id }).ToArray();
 
             _wireMockServer
                 .Given(Request

@@ -21,7 +21,7 @@ namespace CopaFilmes.Api.Test.Integration.Fixtures
         public IConfiguration GetConfiguration() => Factory.Services.GetService<IConfiguration>();
         public IConfiguration GetTestConfiguration() => new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
         public HttpClient GetDefaultHttpClient() => HttpClient;
-        public virtual HttpClient CreateClient() => Factory.CreateClient();
+        public HttpClient CreateClient() => Factory.CreateClient();
 
         public TService GetService<TService>() => Factory.Services.GetService<TService>();
 
