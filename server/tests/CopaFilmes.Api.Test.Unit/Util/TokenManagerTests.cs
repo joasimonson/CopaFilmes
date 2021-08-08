@@ -1,11 +1,9 @@
 ﻿using CopaFilmes.Api.Settings;
-using CopaFilmes.Api.Test.Common.Util;
+using CopaFilmes.Api.Test.Common.Builders;
 using CopaFilmes.Api.Util;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -17,7 +15,7 @@ namespace CopaFilmes.Api.Test.Unit.Util
 
         public TokenManagerTests()
         {
-            _usuario = _faker.Person.FirstName;
+            _usuario = UtilFaker.FakerHub.Person.FirstName;
         }
 
         [Fact]
@@ -64,7 +62,7 @@ namespace CopaFilmes.Api.Test.Unit.Util
         [Fact]
         public async Task GenerateJwtTokenAsync_DeveRetornarFalhaAoTentarGerarTokenComIntervaloDeValidadeInvalido()
         {
-            _tokenSettings.Minutes = _faker.Random.Int(int.MinValue, 0);
+            _tokenSettings.Minutes = UtilFaker.FakerHub.Random.Int(int.MinValue, 0);
             var tokenManager = CriarTokenManager(_tokenSettings);
 
             Func<Task> act = async () => await tokenManager.GenerateJwtToken(_usuario);

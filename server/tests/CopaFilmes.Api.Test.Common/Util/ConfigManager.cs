@@ -11,7 +11,7 @@ namespace CopaFilmes.Api.Test.Common.Util
         static ConfigManager()
         {
             Configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
+                .AddJsonFile("appsettings.common.json")
                 .Build();
         }
 

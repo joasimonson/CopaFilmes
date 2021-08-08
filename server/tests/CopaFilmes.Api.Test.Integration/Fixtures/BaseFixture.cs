@@ -1,5 +1,4 @@
 ﻿using CopaFilmes.Api.Extensions;
-using Flurl.Http.Testing;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -20,7 +19,10 @@ namespace CopaFilmes.Api.Test.Integration.Fixtures
         internal readonly IServiceProvider Services;
         internal readonly HttpClient HttpClient;
         internal readonly ConfigRunTests ConfigRunTests;
-        internal readonly HttpTest HttpTest;
+
+        public IConfiguration GetTestConfiguration() => new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+
+        public virtual HttpClient CreateClient() => Factory.CreateClient();
 
         public BaseFixture()
         {
@@ -31,15 +33,12 @@ namespace CopaFilmes.Api.Test.Integration.Fixtures
                     .UseEnvironment(Environments.Development)
                     .ConfigureTestServices(ConfigureTestServices));
 
-            var config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .Build();
+            var config = GetTestConfiguration();
 
             ConfigRunTests = config.GetSettings<ConfigRunTests>();
             Services = Factory.Services;
             Configuration = Factory.Services.GetService<IConfiguration>();
-            HttpClient = Factory.CreateClient();
-            HttpTest = new HttpTest();
+            HttpClient = CreateClient();
         }
 
         protected virtual void ConfigureTestServices(IServiceCollection services)

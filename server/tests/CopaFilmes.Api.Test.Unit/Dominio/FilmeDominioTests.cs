@@ -3,7 +3,9 @@ using CopaFilmes.Api.Dominio.Filme;
 using CopaFilmes.Api.Model;
 using CopaFilmes.Api.Test.Common.Builders;
 using FluentAssertions;
+using Flurl;
 using Flurl.Http;
+using Flurl.Http.Configuration;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -28,6 +30,7 @@ namespace CopaFilmes.Api.Test.Unit.Dominio
         public async Task ObterFilmesAsync_DeveChamarEndpointFilmes()
         {
             //Arrange
+            var url = Url.Combine(_apiFilmesSettings.Url, _apiFilmesSettings.EndpointFilmes);
             _httpTest.RespondWithJson(_filmes);
 
             //Act
@@ -35,7 +38,7 @@ namespace CopaFilmes.Api.Test.Unit.Dominio
 
             //Assert
             _httpTest
-                .ShouldHaveCalled(_apiFilmesSettings.URL_FILMES)
+                .ShouldHaveCalled(url)
                 .WithVerb(HttpMethod.Get)
                 .Times(1);
         }

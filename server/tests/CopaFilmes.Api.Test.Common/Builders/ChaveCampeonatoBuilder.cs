@@ -14,7 +14,7 @@ namespace CopaFilmes.Api.Test.Common.Builders
     internal abstract class ChaveCampeonatoBuilder<TBuilder, TChave> where TChave : ChaveCampeonato
     {
         protected readonly FilmeModelFaker _filmeModelFaker;
-        protected List<FilmeModel> _participantes;
+        protected IEnumerable<FilmeModel> _participantes;
         protected bool _semParticipantes;
         protected bool _semChaveamento;
 
@@ -34,7 +34,7 @@ namespace CopaFilmes.Api.Test.Common.Builders
             return this;
         }
 
-        internal ChaveCampeonatoBuilder<TBuilder, TChave> ComParticipantes(List<FilmeModel> participantes)
+        internal ChaveCampeonatoBuilder<TBuilder, TChave> ComParticipantes(IEnumerable<FilmeModel> participantes)
         {
             _participantes = participantes;
             _semParticipantes = participantes is null;
