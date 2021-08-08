@@ -15,9 +15,9 @@ namespace CopaFilmes.Api.Test.Integration.Fixtures
     {
         protected WebApplicationFactory<TStartup> Factory { get; }
 
-        internal readonly IConfiguration Configuration;
-        internal readonly IServiceProvider Services;
-        internal readonly HttpClient HttpClient;
+        public readonly IConfiguration Configuration;
+        public readonly IServiceProvider Services;
+        public readonly HttpClient HttpClient;
         internal readonly ConfigRunTests ConfigRunTests;
 
         public IConfiguration GetTestConfiguration() => new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();

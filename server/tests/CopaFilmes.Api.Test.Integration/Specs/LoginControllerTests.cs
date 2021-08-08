@@ -66,11 +66,11 @@ namespace CopaFilmes.Api.Test.Integration.Specs
         }
     }
 
-    public class LoginControllerTestFailCase : BaseFixture
+    public class LoginControllerTestWithMock : BaseFixture
     {
         private readonly LoginRequest Login;
 
-        public LoginControllerTestFailCase()
+        public LoginControllerTestWithMock()
         {
             Login = new AutoFaker<LoginRequest>().RuleFor(l => l.Senha, Configuration.GetSection("AccessKey").Value).Generate();
         }

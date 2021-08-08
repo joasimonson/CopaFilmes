@@ -31,7 +31,7 @@ namespace CopaFilmes.Api.Test.Integration.Specs
             _apiTokenFixture = apiTokenFixture;
             _systemSettings = ConfigManager.SystemSettings;
             _endpoint = _apiTokenFixture.ConfigRunTests.EndpointCampeonato;
-            _httpClient = _apiTokenFixture.CreateAuthenticatedClient().GetAwaiter().GetResult();
+            _httpClient = _apiTokenFixture.GetAuthenticatedClient().GetAwaiter().GetResult();
 
             _wireMockServer = WireMockServer.Start(_apiTokenFixture.ConfigRunTests.ServerPort);
         }
@@ -50,6 +50,9 @@ namespace CopaFilmes.Api.Test.Integration.Specs
         [Fact]
         public async Task Post_DeveRetornarInternalServerError_QuandoFalhaAoRetornarListaDeFilmes()
         {
+            var participantes = _systemSettings.MaximoParticipantesCampeonato;
+            var request = new AutoFaker<CampeonatoRequest>().Generate(participantes);
+
             _wireMockServer
                 .Given(Request
                     .Create()
@@ -58,9 +61,6 @@ namespace CopaFilmes.Api.Test.Integration.Specs
                 .RespondWith(Response
                     .Create()
                     .WithNotFound());
-
-            var participantes = _systemSettings.MaximoParticipantesCampeonato;
-            var request = new AutoFaker<CampeonatoRequest>().Generate(participantes);
 
             var response = await _httpClient.PostAsync(_endpoint, request.AsHttpContent());
 

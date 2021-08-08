@@ -14,8 +14,9 @@ using System.Threading.Tasks;
 
 namespace CopaFilmes.Api.Controllers
 {
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
-    [Route("api/[controller]")]
     [Authorize(JwtBearerDefaults.AuthenticationScheme)]
     public class FilmeController : ControllerBase
     {
@@ -33,32 +34,27 @@ namespace CopaFilmes.Api.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<FilmeModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<FilmeModel>>> Get()
         {
-            IEnumerable<FilmeModel> filmesResponse;
-
             try
             {
-                filmesResponse = await _memoryCache.GetOrCreateAsync(nameof(filmesResponse), async entry =>
+                var filmesResponse = await _memoryCache.GetOrCreateAsync(_systemSettings.FilmesCacheKey, async entry =>
                 {
                     entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(_systemSettings.MemoryCacheMinutesExpire);
                     entry.SetPriority(CacheItemPriority.High);
 
                     return await _filmeServico.ObterFilmesAsync();
                 });
+
+                return Ok(filmesResponse);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-            
-            if (filmesResponse is null)
-            {
-                return NoContent();
-            }
-
-            return Ok(filmesResponse);
         }
     }
 }

@@ -15,10 +15,12 @@ namespace CopaFilmes.Api.Test.Integration.Fixtures
     public class ApiTokenFixture : BaseFixture
     {
         public readonly LoginRequest LoginRequest;
+        private readonly HttpClient _client;
 
         public ApiTokenFixture()
         {
             LoginRequest = new AutoFaker<LoginRequest>().RuleFor(l => l.Senha, Configuration.GetSection("AccessKey").Value).Generate();
+            _client = CreateClient();
         }
 
         protected override void ConfigureTestServices(IServiceCollection services)
@@ -29,12 +31,11 @@ namespace CopaFilmes.Api.Test.Integration.Fixtures
             services.AddScoped(_ => opt);
         }
 
-        public async Task<HttpClient> CreateAuthenticatedClient()
+        public async Task<HttpClient> GetAuthenticatedClient()
         {
             var result = await CreateAccessToken();
-            var client = CreateClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.Token);
-            return client;
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.Token);
+            return _client;
         }
 
         private async Task<LoginResult> CreateAccessToken()
@@ -43,6 +44,12 @@ namespace CopaFilmes.Api.Test.Integration.Fixtures
             var jsonResponse = await response.Content.ReadAsStringAsync();
             var login = JsonConvert.DeserializeObject<LoginResult>(jsonResponse);
             return login;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _client.Dispose();
+            base.Dispose(disposing);
         }
     }
 }

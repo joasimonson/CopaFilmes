@@ -1,7 +1,6 @@
 ﻿using CopaFilmes.Api.Model;
 using CopaFilmes.Api.Servicos;
 using CopaFilmes.Api.Servicos.Campeonato;
-using CopaFilmes.Api.Servicos.Login;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
