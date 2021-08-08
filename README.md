@@ -38,8 +38,6 @@ $ dotnet test
 $ dotnet run -p .\src\CopaFilmes.Api\CopaFilmes.Api.csproj
 ```
 
-> ***Nota**: Caso a raiz URL gerada na API não seja: https://localhost:44313, é necessário fazer a alteração no arquivo \copafilmes\web\src\config.ts*
-
 ## 🔖 Front
 *   [Layout Web](https://www.figma.com/file/85XOrFgiB0nKqKZD8GSdWp/Copa-de-Filmes?node-id=6%3A66)
 
