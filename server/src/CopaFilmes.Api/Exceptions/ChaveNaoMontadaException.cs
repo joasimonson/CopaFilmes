@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace CopaFilmes.Api
 {
     [Serializable]
-    class ChaveNaoMontadaException : Exception
+    public class ChaveNaoMontadaException : Exception
     {
         public ChaveNaoMontadaException()
         {
