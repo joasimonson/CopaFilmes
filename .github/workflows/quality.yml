@@ -1,5 +1,6 @@
 name: Quality
 on:
+  workflow_dispatch:
   push:
     branches:
       - feature/code-coverage
