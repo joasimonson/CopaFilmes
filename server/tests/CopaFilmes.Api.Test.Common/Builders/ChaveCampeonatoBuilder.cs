@@ -18,7 +18,7 @@ namespace CopaFilmes.Api.Test.Common.Builders
         protected bool _semParticipantes;
         protected bool _semChaveamento;
 
-        public ChaveCampeonatoBuilder()
+        protected ChaveCampeonatoBuilder()
         {
             _filmeModelFaker = new FilmeModelFaker();
         }

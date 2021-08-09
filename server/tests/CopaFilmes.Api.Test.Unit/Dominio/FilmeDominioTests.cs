@@ -5,7 +5,6 @@ using CopaFilmes.Api.Test.Common.Builders;
 using FluentAssertions;
 using Flurl;
 using Flurl.Http;
-using Flurl.Http.Configuration;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;

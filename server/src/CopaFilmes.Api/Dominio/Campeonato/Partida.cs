@@ -13,7 +13,7 @@ namespace CopaFilmes.Api.Dominio.Campeonato
 
         public Partida(FilmeModel desafiante, FilmeModel desafiado)
         {
-            _participantes = new List<FilmeModel>()
+            _participantes = new List<FilmeModel>
             {
                 { desafiante },
                 { desafiado }
