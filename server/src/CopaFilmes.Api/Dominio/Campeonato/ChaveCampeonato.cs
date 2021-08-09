@@ -60,7 +60,7 @@ namespace CopaFilmes.Api.Dominio.Campeonato
             {
                 var partida = _partidas.ElementAt(i);
 
-                IEnumerable<FilmePosicaoModel> participantesPartida = partida.ObterParticipantes().Select((f, index) => new FilmePosicaoModel()
+                IEnumerable<FilmePosicaoModel> participantesPartida = partida.ObterParticipantes().Select((f, index) => new FilmePosicaoModel
                 {
                     Posicao = index + 1,
                     Id = f.Id,

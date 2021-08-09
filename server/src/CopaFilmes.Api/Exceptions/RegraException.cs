@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace CopaFilmes.Api
 {
     [Serializable]
-    internal class RegraException : Exception
+    public class RegraException : Exception
     {
         public RegraException()
         {
