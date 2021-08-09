@@ -5,6 +5,7 @@ using CopaFilmes.Api.Servicos;
 using CopaFilmes.Api.Servicos.Campeonato;
 using CopaFilmes.Api.Servicos.Filme;
 using CopaFilmes.Api.Servicos.Login;
+using CopaFilmes.Api.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CopaFilmes.Api.StartupConfigure
@@ -19,6 +20,8 @@ namespace CopaFilmes.Api.StartupConfigure
             services.AddScoped<ILoginServico, LoginServico>();
             services.AddScoped<ICampeonatoServico, CampeonatoServico>();
             services.AddScoped<IFilmeServico, FilmeServico>();
+
+            services.AddScoped<TokenManager>();
 
             services.AddControllers();
         }
