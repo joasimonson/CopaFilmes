@@ -1,0 +1,14 @@
+{
+  "name": "mocks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "mocks.js",
+  "scripts": {
+    "start": "nodemon --watch . --exec npx json-server ./mocks.js --port 3090"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "json-server": "^0.16.3",
+    "nodemon": "^2.0.12"
+  }
+}
