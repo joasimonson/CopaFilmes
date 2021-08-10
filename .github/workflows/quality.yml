@@ -40,6 +40,8 @@ jobs:
       - name: Install SonarCloud scanner
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         run: dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
+      - name: Install report generator
+        run: dotnet tool update dotnet-reportgenerator-globaltool -g
       - name: Install project dependencies
         run: dotnet restore
       - name: Test and analyze
@@ -47,6 +49,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          ./.sonar/scanner/dotnet-sonarscanner begin /k:"joasimonson_CopaFilmes" /o:"joasimonson" /d:sonar.login="db2c388d58b34e3e8dd84b7b5edc6e9e424f8a43" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.cobertura.xml"
+          ./.sonar/scanner/dotnet-sonarscanner begin /k:"joasimonson_CopaFilmes" /o:"joasimonson" /d:sonar.login="db2c388d58b34e3e8dd84b7b5edc6e9e424f8a43" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.coverageReportPaths=".\sonarqubecoverage\SonarQube.xml"
           dotnet test --collect:"XPlat Code Coverage" --logger trx --results-directory ./TestResults/ /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+          reportgenerator "-reports:*\TestResults\*\coverage.cobertura.xml" "-targetdir:sonarqubecoverage" "-reporttypes:SonarQube"
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="db2c388d58b34e3e8dd84b7b5edc6e9e424f8a43"
