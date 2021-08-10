@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - fix/code-coverage
     paths:
       - ./server/**
   pull_request:
