@@ -52,5 +52,4 @@ jobs:
           fail_ci_if_error: true
           files: '**/coverage.cobertura.xml'
           name: CopaFilmes
-          path_to_write_report: ./TestResults/codecov_report.txt
           verbose: true
