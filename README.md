@@ -41,7 +41,7 @@ $ cd server
 $ dotnet restore
 $ dotnet build
 $ dotnet test
-$ dotnet run -p .\src\CopaFilmes.Api\CopaFilmes.Api.csproj
+$ dotnet run
 ```
 
 ## 🔖 Front
