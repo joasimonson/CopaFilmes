@@ -50,5 +50,4 @@ jobs:
           token: cd3f2972-2dcf-40b4-b265-c3197665c1eb
           directory: ./TestResults/
           fail_ci_if_error: true
-          files: '**/coverage.cobertura.xml'
           verbose: true
