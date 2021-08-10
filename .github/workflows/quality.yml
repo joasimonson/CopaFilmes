@@ -24,25 +24,9 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.x
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v1
-        with:
-          path: ~\sonar\cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-      - name: Cache SonarCloud scanner
-        id: cache-sonar-scanner
-        uses: actions/cache@v1
-        with:
-          path: .\.sonar\scanner
-          key: ${{ runner.os }}-sonar-scanner
-          restore-keys: ${{ runner.os }}-sonar-scanner
-      - name: Install SonarCloud scanner
-        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-        run: dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
       - name: Install project dependencies
         run: dotnet restore
       - name: Test
         run: dotnet test --collect:"XPlat Code Coverage" --logger trx --results-directory ./TestResults/ /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
       - name: Upload coverage to Codecov
-        run: bash <(curl https://codecov.io/bash) -t cd3f2972-2dcf-40b4-b265-c3197665c1eb -f ./TestResults/coverage.cobertura.xml
+        run: bash <(curl https://codecov.io/bash) -t cd3f2972-2dcf-40b4-b265-c3197665c1eb -f ./TestResults/**/coverage.cobertura.xml
