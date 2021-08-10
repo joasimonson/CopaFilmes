@@ -45,9 +45,4 @@ jobs:
       - name: Test
         run: dotnet test --collect:"XPlat Code Coverage" --logger trx --results-directory ./TestResults/ /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
-        with:
-          token: cd3f2972-2dcf-40b4-b265-c3197665c1eb
-          directory: ./TestResults/
-          fail_ci_if_error: true
-          verbose: true
+        run: bash <(curl https://codecov.io/bash) -t cd3f2972-2dcf-40b4-b265-c3197665c1eb -f ./TestResults/coverage.cobertura.xml
