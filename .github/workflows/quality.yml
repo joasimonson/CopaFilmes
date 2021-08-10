@@ -1,13 +1,10 @@
 name: Quality
 on:
   workflow_dispatch:
+  pull_request:
   push:
     branches:
       - fix/code-coverage
-    paths:
-      - ./server/**
-  pull_request:
-    types: [opened, synchronize, reopened]
     
 defaults:
   run:
