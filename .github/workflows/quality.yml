@@ -26,7 +26,9 @@ jobs:
           dotnet-version: 5.0.x
       - name: Install project dependencies
         run: dotnet restore
+      - name: Report generator
+        run: dotnet tool update --global dotnet-reportgenerator-globaltool
       - name: Test
         run: dotnet test --collect:"XPlat Code Coverage" --logger trx --results-directory ./TestResults/ /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
       - name: Upload coverage to Codecov
-        run: bash <(curl https://codecov.io/bash) -t cd3f2972-2dcf-40b4-b265-c3197665c1eb -f ./TestResults/**/coverage.cobertura.xml
+        run: bash <(curl https://codecov.io/bash) -t cd3f2972-2dcf-40b4-b265-c3197665c1eb
