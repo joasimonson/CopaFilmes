@@ -51,7 +51,7 @@ jobs:
         run: |
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"joasimonson_CopaFilmes" /o:"joasimonson" /d:sonar.login="db2c388d58b34e3e8dd84b7b5edc6e9e424f8a43" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.coverageReportPaths="./sonarqubecoverage/SonarQube.xml"
           dotnet test --collect:"XPlat Code Coverage" --logger trx --results-directory ./TestResults/ /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-          reportgenerator "-reports:*/TestResults/*/coverage.cobertura.xml" "-targetdir:sonarqubecoverage" "-reporttypes:SonarQube"
+          reportgenerator "-reports:./TestResults/**/coverage.cobertura.xml" "-targetdir:sonarqubecoverage" "-reporttypes:SonarQube"
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="db2c388d58b34e3e8dd84b7b5edc6e9e424f8a43"
       
       - name: Upload coverage to Codecov
