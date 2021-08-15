@@ -48,7 +48,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"joasimonson_CopaFilmes" /o:"joasimonson" /d:sonar.login="db2c388d58b34e3e8dd84b7b5edc6e9e424f8a43" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="./**/coverage.opencover.xml"
-          dotnet test --logger trx --results-directory ./TestResults/ /p:CollectCoverage=true /p:CoverletOutputFormat=\"json,opencover,cobertura\" /p:CoverletOutput=TestResults/ /p:Exclude=\"[CopaFilmes.Api.Test.*]*\" /p:ExcludeByFile=\"**/*.Designer.cs\"
+          dotnet test --collect:"XPlat Code Coverage" --logger trx --results-directory ./TestResults/ /p:CollectCoverage=true /p:CoverletOutputFormat=\"json,opencover,cobertura\" /p:CoverletOutput=../../TestResults/ /p:Exclude=\"[CopaFilmes.Api.Test.*]*\" /p:ExcludeByFile=\"**/*.Designer.cs\" /p:MergeWith="../../TestResults/coverage.json" -m:1
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="db2c388d58b34e3e8dd84b7b5edc6e9e424f8a43"
       #- name: Analyse and report to SonarCloud with ReportGenerator
       #  run: |
