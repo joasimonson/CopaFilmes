@@ -6,6 +6,7 @@
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/joasimonson/CopaFilmes/blob/master/LICENSE)
 
 [![Sonar Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=joasimonson_CopaFilmes&metric=alert_status)](https://sonarcloud.io/project/issues?id=joasimonson_CopaFilmes)
+[![Sonar Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=joasimonson_CopaFilmes&metric=vulnerabilities)](https://sonarcloud.io/project/issues?id=joasimonson_CopaFilmes&resolved=false&types=VULNERABILITY)
 [![Sonar Bugs](https://sonarcloud.io/api/project_badges/measure?project=joasimonson_CopaFilmes&metric=bugs)](https://sonarcloud.io/project/issues?id=joasimonson_CopaFilmes&resolved=false&types=BUG)
 [![Sonar Code Smells](https://sonarcloud.io/api/project_badges/measure?project=joasimonson_CopaFilmes&metric=code_smells)](https://sonarcloud.io/project/issues?id=joasimonson_CopaFilmes&resolved=false&types=CODE_SMELL)
 [![Sonar Coverage](https://sonarcloud.io/api/project_badges/measure?project=joasimonson_CopaFilmes&metric=coverage)](https://sonarcloud.io/component_measures?id=joasimonson_CopaFilmes&metric=coverage)
