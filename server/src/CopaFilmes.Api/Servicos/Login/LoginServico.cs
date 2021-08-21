@@ -1,42 +1,33 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Principal;
+﻿using CopaFilmes.Api.Resources;
+using CopaFilmes.Api.Util;
+using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
 namespace CopaFilmes.Api.Servicos.Login
 {
     internal class LoginServico : ILoginServico
     {
-        private readonly TokenConfigurations _tokenConfigurations;
-        private readonly SigningConfigurations _signingConfigurations;
         private readonly string ACCESS_KEY;
+        private readonly TokenManager _tokenManager;
 
-        public LoginServico(IConfiguration configuration, SigningConfigurations signingConfigurations, TokenConfigurations tokenConfigurations)
+        public LoginServico(IConfiguration configuration, TokenManager tokenManager)
         {
             ACCESS_KEY = configuration.GetValue<string>("AccessKey");
-
-            _signingConfigurations = signingConfigurations;
-            _tokenConfigurations = tokenConfigurations;
+            _tokenManager = tokenManager;
         }
 
         public async Task<LoginResult> AutenticarAsync(LoginRequest login)
         {
-            if (String.IsNullOrWhiteSpace(login.Usuario) || String.IsNullOrWhiteSpace(login.Senha))
+            if (string.IsNullOrWhiteSpace(login.Usuario) || string.IsNullOrWhiteSpace(login.Senha))
             {
                 return Falha();
             }
 
             if (ACCESS_KEY == login.Senha)
             {
-                DateTime createDate = DateTime.Now;
-                DateTime expirationDate = createDate + TimeSpan.FromMinutes(_tokenConfigurations.Minutes);
+                var token = await _tokenManager.GenerateJwtToken(login.Usuario);
 
-                string token = await Task.FromResult(GenereteJwtToken(login.Usuario, createDate, expirationDate));
-
-                return Sucesso(login.Usuario, token, createDate, expirationDate);
+                return Sucesso(token);
             }
             else
             {
@@ -44,16 +35,16 @@ namespace CopaFilmes.Api.Servicos.Login
             }
         }
 
-        private LoginResult Sucesso(string usuario, string token, DateTime createDate, DateTime expirationDate)
+        private LoginResult Sucesso(Token token)
         {
             return new LoginResult
             {
                 Autenticado = true,
-                Criacao = createDate,
-                Expiracao = expirationDate,
-                Token = token,
-                Usuario = usuario,
-                Mensagem = "Login efetuado com sucesso"
+                Criacao = token.Criacao,
+                Expiracao = token.Expiracao,
+                Token = token.CodigoToken,
+                Usuario = token.Usuario,
+                Mensagem = Messages.Login_S001
             };
         }
 
@@ -62,36 +53,8 @@ namespace CopaFilmes.Api.Servicos.Login
             return new LoginResult
             {
                 Autenticado = false,
-                Mensagem = "Falha ao autenticar"
+                Mensagem = Messages.Login_F001
             };
-        }
-
-        private string GenereteJwtToken(string usuario, DateTime createDate, DateTime expirationDate)
-        {
-            var genericIdentoty = new GenericIdentity(usuario);
-
-            var claims = new[] {
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.UniqueName, usuario),
-            };
-
-            var claimsIdentity = new ClaimsIdentity(genericIdentoty, claims);
-
-            var handler = new JwtSecurityTokenHandler();
-
-            var securityToken = handler.CreateToken(new SecurityTokenDescriptor()
-            {
-                Issuer = _tokenConfigurations.Issuer,
-                Audience = _tokenConfigurations.Audience,
-                SigningCredentials = _signingConfigurations.Credentials,
-                Subject = claimsIdentity,
-                NotBefore = createDate,
-                Expires = expirationDate
-            });
-
-            string token = handler.WriteToken(securityToken);
-
-            return token;
         }
     }
 }

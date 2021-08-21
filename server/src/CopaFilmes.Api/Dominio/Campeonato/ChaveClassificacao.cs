@@ -1,5 +1,6 @@
-﻿using CopaFilmes.Api.Externo;
-using CopaFilmes.Api.Model;
+﻿using CopaFilmes.Api.Model;
+using CopaFilmes.Api.Settings;
+using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -10,12 +11,12 @@ namespace CopaFilmes.Api.Dominio.Campeonato
 {
     internal class ChaveClassificacao : ChaveCampeonato
     {
-        public ChaveClassificacao(IEnumerable<FilmeModel> participantes)
-            : base(participantes)
+        public ChaveClassificacao(IOptions<SystemSettings> systemSettings, IEnumerable<FilmeModel> participantes)
+            : base(systemSettings, participantes)
         {
-            if (participantes is null || participantes.Count() != Parametros.MAX_PARTICIPANTES_CAMPEONATO)
+            if (participantes is null || participantes.Count() != systemSettings.Value.MaximoParticipantesCampeonato)
             {
-                throw new QtdeIncorretaRegraChaveamentoException(Parametros.MAX_PARTICIPANTES_CAMPEONATO);
+                throw new QtdeIncorretaRegraChaveamentoException(systemSettings.Value.MaximoParticipantesCampeonato);
             }
         }
 

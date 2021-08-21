@@ -1,11 +1,24 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30611.23
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31521.260
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopaFilmes.Api", "src\CopaFilmes.Api\CopaFilmes.Api.csproj", "{0A0726A8-F8A7-4CF6-AEA6-36C928AEA96A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3E52319F-36D0-45FA-A54B-E820BC32ECD5}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopaFilmes.Api.Test", "tests\CopaFilmes.Api.Test\CopaFilmes.Api.Test.csproj", "{82406360-D474-4630-B713-9CEBE5E7D7EE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DA6D78EA-8392-4E9D-B904-55EC6C83A381}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FB239846-B8B3-48A9-B0BE-5355B34F85F3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CopaFilmes.Api", "src\CopaFilmes.Api\CopaFilmes.Api.csproj", "{0A0726A8-F8A7-4CF6-AEA6-36C928AEA96A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CopaFilmes.Api.Test.Unit", "tests\CopaFilmes.Api.Test.Unit\CopaFilmes.Api.Test.Unit.csproj", "{82406360-D474-4630-B713-9CEBE5E7D7EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopaFilmes.Api.Test.Integration", "tests\CopaFilmes.Api.Test.Integration\CopaFilmes.Api.Test.Integration.csproj", "{6260B0B0-B1D6-4046-990A-23B76BF0CD41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopaFilmes.Api.Test.Common", "tests\CopaFilmes.Api.Test.Common\CopaFilmes.Api.Test.Common.csproj", "{4FA40679-6B37-446D-BB85-0DBE0B8EF6DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +34,23 @@ Global
 		{82406360-D474-4630-B713-9CEBE5E7D7EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82406360-D474-4630-B713-9CEBE5E7D7EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82406360-D474-4630-B713-9CEBE5E7D7EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6260B0B0-B1D6-4046-990A-23B76BF0CD41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6260B0B0-B1D6-4046-990A-23B76BF0CD41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6260B0B0-B1D6-4046-990A-23B76BF0CD41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6260B0B0-B1D6-4046-990A-23B76BF0CD41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FA40679-6B37-446D-BB85-0DBE0B8EF6DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FA40679-6B37-446D-BB85-0DBE0B8EF6DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FA40679-6B37-446D-BB85-0DBE0B8EF6DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FA40679-6B37-446D-BB85-0DBE0B8EF6DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0A0726A8-F8A7-4CF6-AEA6-36C928AEA96A} = {DA6D78EA-8392-4E9D-B904-55EC6C83A381}
+		{82406360-D474-4630-B713-9CEBE5E7D7EE} = {FB239846-B8B3-48A9-B0BE-5355B34F85F3}
+		{6260B0B0-B1D6-4046-990A-23B76BF0CD41} = {FB239846-B8B3-48A9-B0BE-5355B34F85F3}
+		{4FA40679-6B37-446D-BB85-0DBE0B8EF6DC} = {FB239846-B8B3-48A9-B0BE-5355B34F85F3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {63506D39-CB69-49EF-8172-8E429A9230FE}
