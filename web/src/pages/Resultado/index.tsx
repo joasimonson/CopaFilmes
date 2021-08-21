@@ -33,7 +33,7 @@ function Resultado() {
             filmes = obj;
         }
         setFilmes(filmes);
-    }, [disputandoCampeonato])
+    }, [disputandoCampeonato, filmesResultado])
 
     return (
         <div id="page-resultado" className="container-page">
