@@ -11,13 +11,13 @@ export function init(): void {
 
     const configuration = {
         development: {
-            URL_API: 'https://localhost:44313/api/',
+            URL_API: 'https://localhost:5001/api/v1',
         },
         test: {
-            URL_API: 'https://localhost:5001/api/',
+            URL_API: 'https://localhost:5001/api/v1',
         },
         production: {
-            URL_API: 'https://copafilmes.herokuapp.com/api/',
+            URL_API: 'https://copafilmes.herokuapp.com/api/v1',
         }
     };
 
