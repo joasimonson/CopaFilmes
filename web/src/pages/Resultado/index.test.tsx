@@ -1,4 +1,3 @@
-import React from 'react';
 import { when } from 'jest-when';
 
 import Resultado from './index';

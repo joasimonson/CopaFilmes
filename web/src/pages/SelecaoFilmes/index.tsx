@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import PageHeader from '../../components/PageHeader';
@@ -31,7 +31,7 @@ function SelecaoFilmes() {
         setTotalFilmesCampeonato(totalFilmesCampeonato);
     }, []);
 
-    function handleFilmeSelecionado (event: React.ChangeEvent<HTMLInputElement>) {
+    function handleFilmeSelecionado (event: ChangeEvent<HTMLInputElement>) {
         if (totalFilmesSelecionados >= totalFilmesCampeonato && event.target.checked) {
             alert('Atenção! O total máximo de filmes já foi selecionado.');
             event.target.checked = false;
