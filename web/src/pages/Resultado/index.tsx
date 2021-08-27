@@ -22,7 +22,6 @@ function Resultado() {
         
         let filmes = filmesResultado;
         if (!filmes || filmes.length === 0) {
-            debugger;
             const json = localStorage.getItem("filmesResultado") || "";
 
             if (!json) {

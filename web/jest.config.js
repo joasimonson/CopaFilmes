@@ -1,32 +1,33 @@
-// module.exports = {
-//   preset: 'ts-jest',
-//   testEnvironment: 'jsdom',
-// };
-
 module.exports = {
-  // The root of your source code, typically /src
-  // `<rootDir>` is a token Jest substitutes
+  verbose: true,
+  preset: 'ts-jest',
+  testEnvironment: 'jsdom',
   roots: ["<rootDir>/src"],
 
-  // Jest transformations -- this adds support for TypeScript
-  // using ts-jest
   transform: {
     "^.+\\.tsx?$": "ts-jest"
   },
 
-  // Runs special logic, such as cleaning up components
-  // when using React Testing Library and adds special
-  // extended assertions to Jest
+  setupFiles: ["<rootDir>/src/setupTests.ts"],
   setupFilesAfterEnv: [
-    "@testing-library/react/cleanup-after-each",
     "@testing-library/jest-dom/extend-expect"
   ],
 
-  // Test spec file resolution pattern
-  // Matches parent folder `__tests__` and filename
-  // should contain `test` or `spec`.
-  testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
+  testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.[jt]sx?$",
+  moduleDirectories: ["node_modules", "src"],
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
 
-  // Module file extensions for importing
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"]
+  collectCoverage: true,
+  coverageReporters: ["lcov"],
+  coverageDirectory: "coverage",
+
+  collectCoverageFrom: [
+    "src/**/*.{js,jsx,ts,tsx}",
+    "!src/**/*.d.ts",
+    "!**/node_modules/**",
+    "!**/App.tsx",
+    "!**/index.tsx",
+    "!**/routes.tsx",
+    "!**/types/**"
+  ]
 };
