@@ -10,7 +10,8 @@
 [![Sonar Bugs](https://sonarcloud.io/api/project_badges/measure?project=joasimonson_CopaFilmes&metric=bugs)](https://sonarcloud.io/project/issues?id=joasimonson_CopaFilmes&resolved=false&types=BUG)
 [![Sonar Code Smells](https://sonarcloud.io/api/project_badges/measure?project=joasimonson_CopaFilmes&metric=code_smells)](https://sonarcloud.io/project/issues?id=joasimonson_CopaFilmes&resolved=false&types=CODE_SMELL)
 [![Sonar Coverage](https://sonarcloud.io/api/project_badges/measure?project=joasimonson_CopaFilmes&metric=coverage)](https://sonarcloud.io/component_measures?id=joasimonson_CopaFilmes&metric=coverage)
-[![codecov](https://codecov.io/gh/joasimonson/CopaFilmes/branch/main/graph/badge.svg?token=F35YGD5JZ3)](https://codecov.io/gh/joasimonson/CopaFilmes)
+[![codecov front-end](https://codecov.io/gh/joasimonson/CopaFilmes/branch/main/graph/badge.svg?token=F35YGD5JZ3?flag=front-end)](https://codecov.io/gh/joasimonson/CopaFilmes)
+[![codecov back-end](https://codecov.io/gh/joasimonson/CopaFilmes/branch/main/graph/badge.svg?token=F35YGD5JZ3?flag=back-end)](https://codecov.io/gh/joasimonson/CopaFilmes)
 
 <h1 align="center">
     <p>Copa de filmes</p>
