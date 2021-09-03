@@ -58,4 +58,4 @@ jobs:
       #    reportgenerator "-reports:./TestResults/**/coverage.cobertura.xml" "-targetdir:sonarqubecoverage" "-reporttypes:SonarQube"
       #    ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="sonar_key"
       - name: Upload coverage to Codecov
-        run: bash <(curl https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
+        run: bash <(curl https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }} -F back-end
