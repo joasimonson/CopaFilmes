@@ -32,3 +32,5 @@ jobs:
       run: npm run build
     - name: test
       run: npm run test
+    - name: Upload coverage to Codecov
+      run: bash <(curl https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }} -F front-end
