@@ -20,8 +20,8 @@ function Resultado() {
             return;
         }
         
-        let filmes = filmesResultado;
-        if (!filmes || filmes.length === 0) {
+        let listaFilmes = filmesResultado;
+        if (!listaFilmes || listaFilmes.length === 0) {
             const json = localStorage.getItem("filmesResultado") || "";
 
             if (!json) {
@@ -29,9 +29,9 @@ function Resultado() {
             }
 
             const obj: FilmePosicao[] = JSON.parse(json);
-            filmes = obj;
+            listaFilmes = obj;
         }
-        setFilmes(filmes);
+        setFilmes(listaFilmes);
     }, [disputandoCampeonato, filmesResultado])
 
     return (

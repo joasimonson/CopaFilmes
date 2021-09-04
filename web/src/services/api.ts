@@ -7,21 +7,18 @@ const api = axios.create({
 
 export const getAuth = async (url: string) : Promise<AxiosResponse> => {
     async function get(config: any) {
-        return await api.get(url, config)
+        return await api.get(url, config);
     }
 
-    const response = await enviarComRetentativa(get);
-
-    return response
+    return await enviarComRetentativa(get);
 }
 
 export const postAuth = async (url: string, data: any) : Promise<AxiosResponse> => {
     async function post(config: any) {
         return await api.post(url, data, config)
     }
-    const response = await enviarComRetentativa(post);
 
-    return response;
+    return await enviarComRetentativa(post);
 }
 
 const enviarComRetentativa = async (execute: any) : Promise<AxiosResponse> => {
@@ -62,13 +59,11 @@ const getConfigRequest = async (autenticar: boolean = false) => {
         token = authData?.token;
     }
 
-    const config = {
+    return {
         headers: {
             "Authorization" : `Bearer ${token}`
         }
     };
-
-    return config;
 }
 
 export default api;
