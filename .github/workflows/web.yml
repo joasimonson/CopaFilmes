@@ -40,7 +40,6 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       with:
         args: >
-          -Dsonar.host.url="https://sonarcloud.io"
           -Dsonar.organization=joasimonson
           -Dsonar.projectKey=joasimonson_CopaFilmes_FrontEnd
           -Dsonar.verbose=true
