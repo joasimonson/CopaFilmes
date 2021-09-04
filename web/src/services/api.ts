@@ -7,18 +7,18 @@ const api = axios.create({
 
 export const getAuth = async (url: string) : Promise<AxiosResponse> => {
     async function get(config: any) {
-        return await api.get(url, config);
+        return api.get(url, config);
     }
 
-    return await enviarComRetentativa(get);
+    return enviarComRetentativa(get);
 }
 
 export const postAuth = async (url: string, data: any) : Promise<AxiosResponse> => {
     async function post(config: any) {
-        return await api.post(url, data, config)
+        return api.post(url, data, config)
     }
 
-    return await enviarComRetentativa(post);
+    return enviarComRetentativa(post);
 }
 
 const enviarComRetentativa = async (execute: any) : Promise<AxiosResponse> => {
