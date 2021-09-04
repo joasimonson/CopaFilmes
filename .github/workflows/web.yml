@@ -43,9 +43,11 @@ jobs:
         args: >
           -Dsonar.organization=joasimonson
           -Dsonar.projectKey=joasimonson_CopaFilmes_FrontEnd
+          -Dsonar.sources=src
+          -Dsonar.tests=src
           -Dsonar.test.inclusions=**/*.test.tsx,**/*.test.ts
-          -Dsonar.test.exclusions=tests/**
           -Dsonar.coverage.exclusions=**/node_modules/**,**/*.test.ts
+          -Dsonar.typescript.coveragePlugin=lcov
           -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info
     #-Dsonar.verbose=true
     #-Dsonar.ts.tslintconfigpath=tslint.json #Include after configure linter 
