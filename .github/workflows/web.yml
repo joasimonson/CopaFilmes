@@ -40,11 +40,9 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       with:
         args: >
+          -Dsonar.verbose=true
           -Dsonar.organization=joasimonson
           -Dsonar.projectKey=joasimonson_CopaFilmes_FrontEnd
-          -Dsonar.verbose=true
-          -Dsonar.sources=src
-          -Dsonar.tests=src
           -Dsonar.test.inclusions=**/*.test.tsx,**/*.test.ts
           -Dsonar.test.exclusions=tests/**
           -Dsonar.coverage.exclusions=**/node_modules/**,**/*.test.ts
