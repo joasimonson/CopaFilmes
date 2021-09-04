@@ -41,6 +41,7 @@ jobs:
       with:
         args: >
           -Dsonar.projectKey=joasimonson_CopaFilmes_FrontEnd
+          -Dsonar.host.url="https://sonarcloud.io"
           -Dsonar.verbose=true
           -Dsonar.sources=src
           -Dsonar.tests=src
