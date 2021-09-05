@@ -62,6 +62,7 @@
       "!src/**/*.d.ts",
       "!**/node_modules/**",
       "!**/App.tsx",
+      "!**/tests/**",
       "!**/index.tsx",
       "!**/routes.tsx",
       "!**/types/**"

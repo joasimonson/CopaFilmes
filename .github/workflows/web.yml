@@ -45,8 +45,8 @@ jobs:
           -Dsonar.projectKey=joasimonson_CopaFilmes_FrontEnd
           -Dsonar.sources=src
           -Dsonar.tests=src
-          -Dsonar.test.inclusions=**/*.test.tsx,**/*.test.ts
-          -Dsonar.coverage.exclusions=**/node_modules/**,**/*.test.ts
+          -Dsonar.test.inclusions=**/*.test.{ts,tsx}
+          -Dsonar.coverage.exclusions=**/node_modules/**,**/*.test.{ts,tsx},"**/App.tsx","**/index.tsx","**/routes.tsx","**/types/**",**/tests/**
           -Dsonar.typescript.coveragePlugin=lcov
           -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info
           -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
