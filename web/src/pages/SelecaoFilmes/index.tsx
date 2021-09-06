@@ -27,8 +27,8 @@ function SelecaoFilmes() {
             setLoading(false);
         })();
 
-        const totalFilmesCampeonato = getConfigDynamic<number>('TotalFilmesCampeonato');
-        setTotalFilmesCampeonato(totalFilmesCampeonato);
+        const totalFilmes = getConfigDynamic<number>('TotalFilmesCampeonato');
+        setTotalFilmesCampeonato(totalFilmes);
     }, []);
 
     function handleFilmeSelecionado (event: ChangeEvent<HTMLInputElement>) {

@@ -1,4 +1,4 @@
-import { when } from 'jest-when';
+import { when, resetAllWhenMocks } from 'jest-when';
 
 import Resultado from './index';
 
@@ -13,7 +13,14 @@ describe('Testando renderização do resultado do campeonato', () => {
 
     beforeEach(() => {
         jest.spyOn(FilmesStore, 'useState').mockImplementation((args: any) => {
-            const type = args.toString().split(".")[1];
+            const params = args.toString().split(".") as Array<string>;
+            let type = params[params.length - 1];
+
+            // Tratamento para coverage, onde são enviados mais parâmetros para análise de execução
+            const index = type.indexOf(";");
+            if (index !== -1) {
+                type = type.substring(0, index);
+            }
 
             return pullstateUseStateMock(type);
         });
@@ -21,6 +28,7 @@ describe('Testando renderização do resultado do campeonato', () => {
 
     afterEach(() => {
         jest.restoreAllMocks();
+        resetAllWhenMocks();
     });
     
     test('Validar se finalistas estão sendo renderizados na quantidade correta baseado no state', async () => {

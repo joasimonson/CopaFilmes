@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import PageHeader from '../../components/PageHeader';
@@ -20,9 +20,8 @@ function Resultado() {
             return;
         }
         
-        let filmes = filmesResultado;
-        if (!filmes || filmes.length === 0) {
-            debugger;
+        let listaFilmes = filmesResultado;
+        if (!listaFilmes || listaFilmes.length === 0) {
             const json = localStorage.getItem("filmesResultado") || "";
 
             if (!json) {
@@ -30,9 +29,9 @@ function Resultado() {
             }
 
             const obj: FilmePosicao[] = JSON.parse(json);
-            filmes = obj;
+            listaFilmes = obj;
         }
-        setFilmes(filmes);
+        setFilmes(listaFilmes);
     }, [disputandoCampeonato, filmesResultado])
 
     return (
