@@ -41,5 +41,5 @@ export function getConfigDynamic<T>(key: string): T {
         init();
     }
 
-    return config.get(key);
+    return config.get(key) as T;
 }

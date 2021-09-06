@@ -47,15 +47,15 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          ./.sonar/scanner/dotnet-sonarscanner begin /k:"joasimonson_CopaFilmes" /o:"joasimonson" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="./**/coverage.opencover.xml" /d:sonar.coverage.exclusions="tests/**"
+          ./.sonar/scanner/dotnet-sonarscanner begin /k:"joasimonson_CopaFilmes_BackEnd" /o:"joasimonson" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="./**/coverage.opencover.xml" /d:sonar.coverage.exclusions="tests/**"
           dotnet test --logger trx --results-directory ./TestResults/ /p:CollectCoverage=true /p:CoverletOutputFormat=\"json,opencover,cobertura\" /p:CoverletOutput=../../TestResults/ /p:Exclude=\"[CopaFilmes.Api.Test.*]*\" /p:ExcludeByFile=\"**/*.Designer.cs\" /p:MergeWith="../../TestResults/coverage.json" -m:1
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="$SONAR_TOKEN"
       #- name: Analyse and report to SonarCloud with ReportGenerator
       #  run: |
       #    dotnet tool install --global dotnet-reportgenerator-globaltool
-      #    ./.sonar/scanner/dotnet-sonarscanner begin /k:"joasimonson_CopaFilmes" /o:"joasimonson" /d:sonar.login="sonar_key" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.coverageReportPaths="./sonarqubecoverage/SonarQube.xml"
+      #    ./.sonar/scanner/dotnet-sonarscanner begin /k:"joasimonson_CopaFilmes_BackEnd" /o:"joasimonson" /d:sonar.login="sonar_key" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.coverageReportPaths="./sonarqubecoverage/SonarQube.xml"
       #    dotnet test --collect:"XPlat Code Coverage" --logger trx --results-directory ./TestResults/ /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
       #    reportgenerator "-reports:./TestResults/**/coverage.cobertura.xml" "-targetdir:sonarqubecoverage" "-reporttypes:SonarQube"
       #    ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="sonar_key"
       - name: Upload coverage to Codecov
-        run: bash <(curl https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
+        run: bash <(curl https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }} -F back-end

@@ -1,4 +1,3 @@
-import React from 'react'
 import { BrowserRouter, Route } from 'react-router-dom';
 import SelecaoFilmes from './pages/SelecaoFilmes';
 import Resultado from './pages/Resultado';
