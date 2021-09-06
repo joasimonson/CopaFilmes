@@ -18,7 +18,7 @@ describe('Testando renderização do resultado do campeonato', () => {
 
             // Tratamento para coverage, onde são enviados mais parâmetros para análise de execução
             const index = type.indexOf(";");
-            if (index != -1) {
+            if (index !== -1) {
                 type = type.substring(0, index);
             }
 
