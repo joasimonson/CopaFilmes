@@ -23,11 +23,12 @@ module.exports = {
 
   collectCoverageFrom: [
     "src/**/*.{js,jsx,ts,tsx}",
-    "!src/**/*.d.ts",
     "!**/node_modules/**",
-    "!**/App.tsx",
-    "!**/index.tsx",
-    "!**/routes.tsx",
-    "!**/types/**"
+    "!src/**/*.d.ts",
+    "!src/index.tsx",
+    "!src/App.tsx",
+    "!src/routes.tsx",
+    "!src/tests/**",
+    "!src/types/**"
   ]
 };
