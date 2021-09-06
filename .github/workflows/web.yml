@@ -46,7 +46,7 @@ jobs:
           -Dsonar.sources=src
           -Dsonar.tests=src
           -Dsonar.test.inclusions=**/*.test.tsx,**/*.test.ts
-          -Dsonar.coverage.exclusions=**/*.test.tsx,**/*.test.ts,**/node_modules/**,src/**/*.d.ts",src/index.tsx",src/App.tsx",src/routes.tsx",src/tests/**",src/types/**"
+          -Dsonar.coverage.exclusions=**/*.test.tsx,**/*.test.ts,**/node_modules/**,src/**/*.d.ts,src/index.tsx,src/App.tsx,src/routes.tsx,src/tests/**,src/types/**
           -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
     #-Dsonar.verbose=true
     #-Dsonar.ts.tslintconfigpath=tslint.json #Include after configure linter 
