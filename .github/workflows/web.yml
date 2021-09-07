@@ -1,19 +1,22 @@
 name: ReactJS
-
 on:
-  workflow_dispatch:
-  pull_request:
   push:
-    branches: [ main ]
+    branches: 
+      - main
     paths:
       - ./web/**
-
-env:
-  NODE_VERSION: '16.7.0'
+  pull_request:
+    branches: 
+      - main
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
 
 defaults:
   run:
     working-directory: ./web
+
+env:
+  NODE_VERSION: '16.7.0'
 
 jobs:
   build:
@@ -27,11 +30,22 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
         fetch-depth: 0
+    - name: Cache node modules
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-node-modules
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
     - name: Install dependencies
       run: npm ci
-    - name: build
+    - name: Build
       run: npm run build
-    - name: test
+    - name: Test
       run: npm run test  
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@master

@@ -1,12 +1,15 @@
 name: .NET
 on:
-  workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: 
+      - main
     paths:
       - ./server/**
   pull_request:
+    branches: 
+      - main
     types: [opened, synchronize, reopened]
+  workflow_dispatch:
 
 defaults:
   run:
@@ -23,6 +26,13 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.x
+      - name: Cache Nuget packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget
       - name: Cache SonarCloud packages
         uses: actions/cache@v1
         with:
