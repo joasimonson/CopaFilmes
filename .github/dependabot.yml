@@ -3,7 +3,7 @@ updates:
 - package-ecosystem: nuget
   directory: "/server"
   schedule:
-    interval: weekly
+    interval: monthly
     day: sunday
   open-pull-requests-limit: 10
   ignore:
@@ -12,7 +12,7 @@ updates:
 - package-ecosystem: npm
   directory: "/web"
   schedule:
-    interval: weekly
+    interval: monthly
     day: sunday
   open-pull-requests-limit: 10
   ignore:

@@ -1,12 +1,17 @@
 name: .NET
 on:
-  workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: 
+      - main
     paths:
       - ./server/**
+      - .github/workflows/server.yml
+      - codecov.yml
   pull_request:
+    branches: 
+      - main
     types: [opened, synchronize, reopened]
+  workflow_dispatch:
 
 defaults:
   run:
@@ -23,6 +28,13 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.x
+      - name: Cache Nuget packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget
       - name: Cache SonarCloud packages
         uses: actions/cache@v1
         with:
@@ -46,6 +58,7 @@ jobs:
       - name: Analyze and report to SonarCloud with OpenCover
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"joasimonson_CopaFilmes_BackEnd" /o:"joasimonson" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="./**/coverage.opencover.xml" /d:sonar.coverage.exclusions="tests/**"
           dotnet test --logger trx --results-directory ./TestResults/ /p:CollectCoverage=true /p:CoverletOutputFormat=\"json,opencover,cobertura\" /p:CoverletOutput=../../TestResults/ /p:Exclude=\"[CopaFilmes.Api.Test.*]*\" /p:ExcludeByFile=\"**/*.Designer.cs\" /p:MergeWith="../../TestResults/coverage.json" -m:1
