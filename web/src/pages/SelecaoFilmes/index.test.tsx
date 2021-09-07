@@ -23,7 +23,7 @@ describe('Testando renderização da seleção de filmes', () => {
     afterEach(() => {
         mocked(FilmeService.obterFilmes).mockRestore();
     });
-    
+
     test('Testando se a chamada da API está sendo feita corretamente', async () => {
         //Arrange
         const { getByTestId } = renderAll(<SelecaoFilmes />);
@@ -54,7 +54,7 @@ describe('Testando renderização da seleção de filmes', () => {
         await waitForElementToBeRemoved(() => getByTestId(componentLoading));
 
         const listCardFilme = getAllByTestId(componentCardFilme);
-        
+
         //Assert
         expect(listCardFilme).toHaveLength(filmesResponse.length);
     });
@@ -65,11 +65,11 @@ describe('Testando renderização da seleção de filmes', () => {
 
         //Act
         await waitForElementToBeRemoved(() => getByTestId(componentLoading));
-        
+
         const elListaCardFilme = getAllByTestId(componentCardFilme);
         const elTotalFilmesMax = getByTestId(componentTotalFilmesMax);
         const totalFilmesMax = parseInt(elTotalFilmesMax.textContent as string);
-        
+
         //Assert
         expect(elTotalFilmesMax).toBeInTheDocument();
         expect(totalFilmesMax).toBeLessThanOrEqual(elListaCardFilme.length);
@@ -90,16 +90,16 @@ describe('Testando renderização da seleção de filmes', () => {
 
         for (let i = 0; i < totalFilmesMaxMaiorQuePermitido; i++) {
             const filmeElement = elListaCardFilme[i];
-            
+
             const checkBox = within(filmeElement).getByTestId(componentCardCheckbox);
-            
+
             fireEvent.click(checkBox);
 
             await waitFor(() => getByTestId(componentTotalFilmesSelecionados));
         }
 
         //Assert
-        expect(global.alert).toBeCalledWith('Atenção! O total máximo de filmes já foi selecionado.');
+        expect(global.alert).toHaveBeenCalledWith('Atenção! O total máximo de filmes já foi selecionado.');
     });
 
     test('Validar seleção de filmes para disputa do campeonato', async () => {
@@ -108,7 +108,7 @@ describe('Testando renderização da seleção de filmes', () => {
 
         //Act
         await waitForElementToBeRemoved(() => getByTestId(componentLoading));
-        
+
         const elListaCardFilme = getAllByTestId(componentCardFilme);
         const elTotalFilmesSelecionados = getByTestId(componentTotalFilmesSelecionados);
         const elTotalFilmesMax = getByTestId(componentTotalFilmesMax);
@@ -116,14 +116,14 @@ describe('Testando renderização da seleção de filmes', () => {
 
         for (let i = 0; i < totalFilmesMax; i++) {
             const filmeElement = elListaCardFilme[i];
-            
+
             const checkBox = within(filmeElement).getByTestId(componentCardCheckbox);
-            
+
             fireEvent.click(checkBox);
 
             await waitFor(() => getByTestId(componentTotalFilmesSelecionados));
         }
-        
+
         //Assert
         expect(elTotalFilmesMax).toBeInTheDocument();
 

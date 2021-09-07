@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 
 import CardPosicao from './index';
@@ -14,8 +13,8 @@ describe('Testando renderização do card de posição da disputa do campeonato'
         //Arrange
         const filmePosicao: FilmePosicao = {
             posicao: 1,
-            id: "012345",
-            titulo: "Título do filme",
+            id: '012345',
+            titulo: 'Título do filme',
             nota: 8,
             ano: 2010
         };
