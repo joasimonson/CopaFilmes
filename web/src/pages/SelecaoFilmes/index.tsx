@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import PageHeader from '../../components/PageHeader';
@@ -50,7 +50,7 @@ function SelecaoFilmes(): JSX.Element {
         setTotalFilmesSelecionados(newFilmesSelecionados.length);
     }
 
-    async function handleGerarDisputaCampeonato(event: React.FormEvent<HTMLInputElement>) {
+    async function handleGerarDisputaCampeonato(event: MouseEvent<HTMLAnchorElement>) {
         if (totalFilmesSelecionados !== totalFilmesCampeonato) {
             alert('Atenção! Selecione a quantidade mínima de filmes.');
             event.preventDefault();
