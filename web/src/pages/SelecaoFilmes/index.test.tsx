@@ -4,11 +4,12 @@ import SelecaoFilmes from './index';
 
 import { renderAll, waitForElementToBeRemoved, fireEvent, within, waitFor } from '../../tests/custom-render';
 import * as FilmeService from '../../services/FilmeService';
-import { filmesResponse } from '../../tests/FilmesMock';
+import mocks from '../../tests/mocks';
 
 jest.mock('../../services/FilmeService');
 
 describe('Testando renderização da seleção de filmes', () => {
+    const { filmesResponse } = mocks;
     const componentLoading = 'component-loading';
     const componentListaFilmes = 'lista-filmes';
     const componentCardFilme = 'card-filme';

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 
 import Spinner from 'react-bootstrap/Spinner';
 
@@ -10,7 +10,7 @@ type LoadingDefaultProps = {
     children?: ReactNode;
 };
 
-const LoadingDefault: React.FC<LoadingDefaultProps> = props => {
+const LoadingDefault: FC<LoadingDefaultProps> = props => {
     const msg = props.mensagem || 'Carregando...';
 
     return (

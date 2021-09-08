@@ -4,9 +4,10 @@ import Resultado from './index';
 
 import { renderAll } from '../../tests/custom-render';
 import { FilmesStore } from '../../stores/store';
-import { filmesPosicaoResponse } from '../../tests/FilmesMock';
+import mocks from '../../tests/mocks';
 
 describe('Testando renderização do resultado do campeonato', () => {
+    const { filmesPosicaoResponse } = mocks;
     const componentCardPosicao = 'card-posicao';
 
     const pullstateUseStateMock = jest.fn();
