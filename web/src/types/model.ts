@@ -5,12 +5,8 @@ export interface Filme {
     nota: number;
 }
 
-export interface FilmePosicao {
+export interface FilmePosicao extends Filme {
     posicao: number;
-    id: string;
-    titulo: string;
-    ano: number;
-    nota: number;
 }
 
 export interface AuthData {

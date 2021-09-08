@@ -1,4 +1,4 @@
-import { Filme } from '../types/model';
+import { Filme, FilmePosicao } from '../types/model';
 
 import { getAuth, postAuth } from './api';
 
@@ -16,7 +16,7 @@ export async function obterFilmes(): Promise<Filme[]> {
     return filmes;
 }
 
-export async function gerarDisputaCampeonato(filmes: Array<Filme>): Promise<Filme[]> {
+export async function gerarDisputaCampeonato(filmes: Filme[]): Promise<FilmePosicao[]> {
     if (filmes.length === 0) {
         return [];
     }
