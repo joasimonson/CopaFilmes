@@ -1,6 +1,7 @@
 {
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
+        "source.fixAll.stylelint": true,
         "source.fixAll.eslint": true
     },
     "cSpell.words": ["Selecao", "criacao", "descricao", "expiracao", "posicao", "pullstate", "usuario"]

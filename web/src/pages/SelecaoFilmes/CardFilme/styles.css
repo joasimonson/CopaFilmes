@@ -24,7 +24,7 @@
     color: var(--color-primary);
 }
 
-input[type=checkbox].check {
+input[type='checkbox'].check {
     height: 20px;
     width: 20px;
 }

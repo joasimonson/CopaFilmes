@@ -1,0 +1,21 @@
+{
+  "plugins": [
+    "stylelint-prettier"
+  ],
+  "extends": [
+    "stylelint-prettier/recommended",
+    "stylelint-config-prettier"
+  ],
+  "rules": {
+    "prettier/prettier": true,
+    "max-empty-lines": 2,
+    "string-quotes": "single",
+    "indentation": [
+      4,
+      {
+        "baseIndentLevel": 1,
+        "indentClosingBrace": false
+      }
+    ]
+  }
+}
