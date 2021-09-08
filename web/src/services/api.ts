@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { getConfig } from '../config';
 
 const api = axios.create({
@@ -6,36 +6,37 @@ const api = axios.create({
 });
 
 export const getAuth = async (url: string): Promise<AxiosResponse> => {
-    async function get(config: any) {
+    async function get(config: AxiosRequestConfig) {
         return api.get(url, config);
     }
 
     return enviarComRetentativa(get);
 };
 
-export const postAuth = async (url: string, data: any): Promise<AxiosResponse> => {
-    async function post(config: any) {
+export const postAuth = async <T>(url: string, data: T): Promise<AxiosResponse> => {
+    async function post(config: AxiosRequestConfig) {
         return api.post(url, data, config);
     }
 
     return enviarComRetentativa(post);
 };
 
-const enviarComRetentativa = async (execute: any): Promise<AxiosResponse> => {
+const enviarComRetentativa = async (
+    execute: (config: AxiosRequestConfig) => Promise<AxiosResponse>
+): Promise<AxiosResponse> => {
     let config = await getConfigRequest();
-
-    let response;
-
     for (let i = 0; i < 2; i++) {
         try {
-            response = await execute(config);
+            return await execute(config);
         } catch (error) {
             console.error(error);
             config = await getConfigRequest(true);
         }
     }
 
-    return response;
+    return {
+        data: 'request failed'
+    } as AxiosResponse;
 };
 
 const getConfigRequest = async (autenticar = false) => {

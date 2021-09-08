@@ -10,7 +10,7 @@ import { FilmePosicao } from '../../types/model';
 
 import './styles.css';
 
-function Resultado() {
+function Resultado(): JSX.Element {
     const disputandoCampeonato = FilmesStore.useState(s => s.disputandoCampeonato);
     const [filmes, setFilmes] = useState<FilmePosicao[]>([]);
     const filmesResultado = FilmesStore.useState(s => s.filmesResultado);

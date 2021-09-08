@@ -2,7 +2,7 @@ import { Filme } from '../types/model';
 
 import { getAuth, postAuth } from './api';
 
-export async function obterFilmes() {
+export async function obterFilmes(): Promise<Filme[]> {
     let filmes = [];
 
     try {
@@ -16,7 +16,7 @@ export async function obterFilmes() {
     return filmes;
 }
 
-export async function gerarDisputaCampeonato(filmes: Array<Filme>) {
+export async function gerarDisputaCampeonato(filmes: Array<Filme>): Promise<Filme[]> {
     if (filmes.length === 0) {
         return [];
     }

@@ -50,7 +50,7 @@ function SelecaoFilmes(): JSX.Element {
         setTotalFilmesSelecionados(newFilmesSelecionados.length);
     }
 
-    async function handleGerarDisputaCampeonato(event: any) {
+    async function handleGerarDisputaCampeonato(event: React.FormEvent<HTMLInputElement>) {
         if (totalFilmesSelecionados !== totalFilmesCampeonato) {
             alert('Atenção! Selecione a quantidade mínima de filmes.');
             event.preventDefault();

@@ -12,11 +12,12 @@ describe('Testando renderização do resultado do campeonato', () => {
     const pullstateUseStateMock = jest.fn();
 
     beforeEach(() => {
-        jest.spyOn(FilmesStore, 'useState').mockImplementation((args: any) => {
-            const params = args.toString().split('.') as Array<string>;
+        jest.spyOn(FilmesStore, 'useState').mockImplementation((args: unknown) => {
+            const safeArgs = args as string;
+            const params = safeArgs.toString().split('.');
             let type = params[params.length - 1];
 
-            // Tratamento para coverage, onde são enviados mais parâmetros para análise de execução
+            // Tratamento para execução com report coverage, onde são enviados mais parâmetros para análise
             const index = type.indexOf(';');
             if (index !== -1) {
                 type = type.substring(0, index);
@@ -52,7 +53,7 @@ describe('Testando renderização do resultado do campeonato', () => {
         //Arrange
         const localStorageGetItemMock = jest.fn();
 
-        jest.spyOn(global.localStorage.__proto__, 'getItem').mockImplementation((args: any) => {
+        jest.spyOn(global.localStorage.__proto__, 'getItem').mockImplementation((args: unknown) => {
             return localStorageGetItemMock(args);
         });
 
