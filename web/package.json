@@ -2,17 +2,6 @@
   "name": "web",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "axios": "^0.21.4",
-    "bootstrap": "^4.6.0",
-    "pullstate": "^1.22.1",
-    "react": "^17.0.2",
-    "react-bootstrap": "^1.6.1",
-    "react-dom": "^17.0.2",
-    "react-global-configuration": "^1.4.1",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "^4.0.3"
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -23,22 +12,22 @@
     "jest": "jest --env=jsdom --coverage --watchAll=false",
     "jest:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand --watch",
     "jest:watch": "jest --watch",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "eslint": "eslint .",
+    "eslint:fix": "eslint . --fix",
+    "prettier": "prettier --check .",
+    "prettier:fix": "prettier --write ."
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "axios": "^0.21.4",
+    "bootstrap": "^4.6.0",
+    "pullstate": "^1.23.0",
+    "react": "^17.0.2",
+    "react-bootstrap": "^1.6.1",
+    "react-dom": "^17.0.2",
+    "react-global-configuration": "^1.4.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^4.0.3"
   },
   "devDependencies": {
     "@testing-library/dom": "^8.2.0",
@@ -58,6 +47,7 @@
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jest": "^24.4.0",
+    "eslint-plugin-json": "^3.1.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.25.1",
     "eslint-plugin-react-hooks": "^4.2.0",
@@ -70,6 +60,21 @@
     "stylelint-prettier": "^1.2.0",
     "ts-jest": "^26.5.6",
     "typescript": "^4.4.2"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "eslintConfig": {
+    "extends": "react-app"
   },
   "jest": {
     "collectCoverageFrom": [
