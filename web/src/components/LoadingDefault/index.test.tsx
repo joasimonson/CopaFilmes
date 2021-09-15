@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 
 import LoadingDefault from './index';
@@ -10,7 +9,7 @@ describe('Testando renderização de Loading', () => {
     test('Renderização padrão', () => {
         //Arrange
         const loading = true;
-        
+
         //Act
         const { getByTestId } = render(<LoadingDefault loading={loading} />);
         const elLoading = getByTestId(componentLoading);
@@ -24,14 +23,14 @@ describe('Testando renderização de Loading', () => {
     test('Renderização padrão com mensagem customizada', () => {
         //Arrange
         const loading = true;
-        const mensagem = "Loading custom";
-        
+        const mensagem = 'Loading custom';
+
         //Act
         const { getByTestId } = render(<LoadingDefault loading={loading} mensagem={mensagem} />);
 
         const elLoading = getByTestId(componentLoading);
         const elMensagem = getByTestId(componentMsg);
-        
+
         //Assert
         expect(elLoading).toBeInTheDocument();
 
@@ -42,8 +41,8 @@ describe('Testando renderização de Loading', () => {
     test('Renderização pós loading com elementos filhos', () => {
         //Arrange
         const loading = false;
-        const dataTestId = "loading-children";
-        
+        const dataTestId = 'loading-children';
+
         //Act
         const { getByTestId, queryByTestId } = render(
             <LoadingDefault loading={loading}>

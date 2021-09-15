@@ -1,9 +1,8 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 
-import CardFilme from './index';
-
 import { Filme } from '../../../types/model';
+
+import CardFilme from './index';
 
 describe('Testando renderização do card de filme', () => {
     const componentCheckbox = 'card-filme-checkbox';
@@ -13,14 +12,14 @@ describe('Testando renderização do card de filme', () => {
     test('Renderização padrão', () => {
         //Arrange
         const filme: Filme = {
-            id: "012345",
-            titulo: "Título do filme",
+            id: '012345',
+            titulo: 'Título do filme',
             nota: 8,
             ano: 2010
         };
 
         const mockHandleSelecao = jest.fn();
-        
+
         //Act
         const { getByTestId } = render(<CardFilme filme={filme} handleSelecao={mockHandleSelecao} />);
 
@@ -30,7 +29,7 @@ describe('Testando renderização do card de filme', () => {
 
         //Assert
         expect(elCheckbox).toBeInTheDocument();
-        expect(elCheckbox).toHaveAttribute("id", filme.id);
+        expect(elCheckbox).toHaveAttribute('id', filme.id);
 
         expect(elTitulo).toBeInTheDocument();
         expect(elTitulo).toHaveTextContent(filme.titulo);

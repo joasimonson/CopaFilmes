@@ -1,23 +1,22 @@
 .page-header {
-    background: var(--color-box);
-    color: var(--color-secondary);
-
-    text-align: center;
-    justify-content: center;
-    padding: 2.2rem 21rem;
+  background: var(--color-box);
+  color: var(--color-secondary);
+  justify-content: center;
+  padding: 2.2rem 21rem;
+  text-align: center;
 }
 
 .page-header hr {
-    border-color: var(--color-secondary);
-    width: 15px;
-    margin-bottom: 2rem;
-    display: inline-block;
+  border-color: var(--color-secondary);
+  display: inline-block;
+  margin-bottom: 2rem;
+  width: 15px;
 }
 
 .page-header-top h4 {
-    color: var(--color-title);
+  color: var(--color-title);
 }
 
 .page-header-top h1 {
-    padding: 1rem;
+  padding: 1rem;
 }

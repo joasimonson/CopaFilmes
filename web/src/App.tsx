@@ -2,10 +2,8 @@ import Routes from './routes';
 
 import './assets/styles/global.css';
 
-function App() {
-  return (
-    <Routes />
-  );
+function App(): JSX.Element {
+    return <Routes />;
 }
 
 export default App;

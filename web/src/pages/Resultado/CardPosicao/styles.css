@@ -1,27 +1,27 @@
 .card-posicao {
-    display: flex;
-    flex-direction: row;
-    background: var(--color-secondary);
+  background: var(--color-secondary);
+  display: flex;
+  flex-direction: row;
 }
 
 .card-posicao .posicao {
-    background: var(--color-primary);
-    display: flex;
-    place-items: center;
-    padding: 1.5rem 2rem;
+  background: var(--color-primary);
+  display: flex;
+  padding: 1.5rem 2rem;
+  place-items: center;
 }
 
 .card-posicao .info-card {
-    display: flex;
-    flex-direction: column;
-    padding: 1rem 0;
-    margin-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  margin-left: 2rem;
+  padding: 1rem 0;
 }
 
 .card-posicao .info-card .titulo {
-    color: var(--color-tertiary);
+  color: var(--color-tertiary);
 }
 
 .card-posicao .info-card .ano {
-    color: var(--color-primary);
+  color: var(--color-primary);
 }

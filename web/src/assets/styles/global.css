@@ -1,7 +1,7 @@
 :root {
   --color-background: #a8a8a8;
   --color-primary: #6e6e6e;
-  --color-secondary: #ffffff;
+  --color-secondary: #fff;
   --color-tertiary: #343434;
   --color-box: #6e6e6e;
   --color-title: #a8a8a8;
@@ -9,44 +9,44 @@
 }
 
 * {
-  margin: 0px;
-  padding: 0;
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100vh;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  background: var(--color-background);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--color-background);
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 #root {
-  display: flex;
   align-items: flex-start;
+  display: flex;
   justify-content: center;
 }
 
 .container-page {
-  width: 100vw;
-  margin: 2rem 3.5rem;
   color: var(--color-secondary);
+  margin: 2rem 3.5rem;
+  width: 100vw;
 }
 
 a.btn-default {
   background: var(--color-button);
   color: var(--color-secondary);
-  text-decoration: none;
   padding: 15px;
+  text-decoration: none;
 }
