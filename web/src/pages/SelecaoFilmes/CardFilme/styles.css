@@ -1,13 +1,13 @@
 .card-filme {
+  background: var(--color-secondary);
   display: flex;
   flex-direction: row;
-  background: var(--color-secondary);
 }
 
 .card-filme .selection {
   display: flex;
-  place-items: center;
   padding: 1.2rem;
+  place-items: center;
 }
 
 .card-filme .info-card {

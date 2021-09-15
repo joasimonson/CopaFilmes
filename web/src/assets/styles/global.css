@@ -9,9 +9,9 @@
 }
 
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 html,
@@ -21,11 +21,11 @@ body,
 }
 
 body {
+  background: var(--color-background);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
     'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--color-background);
 }
 
 code {
@@ -33,20 +33,20 @@ code {
 }
 
 #root {
-  display: flex;
   align-items: flex-start;
+  display: flex;
   justify-content: center;
 }
 
 .container-page {
-  width: 100vw;
-  margin: 2rem 3.5rem;
   color: var(--color-secondary);
+  margin: 2rem 3.5rem;
+  width: 100vw;
 }
 
 a.btn-default {
   background: var(--color-button);
   color: var(--color-secondary);
-  text-decoration: none;
   padding: 15px;
+  text-decoration: none;
 }

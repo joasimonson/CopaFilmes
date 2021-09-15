@@ -4,23 +4,23 @@
 }
 
 #page-resultado main .lista-resultado {
-  width: 100%;
   display: flex;
   flex-direction: column;
   margin-top: 1.5rem;
   row-gap: 1rem;
+  width: 100%;
 }
 
 #page-resultado main .info {
+  background: var(--color-primary);
+  border-radius: 5px;
+  color: var(--color-secondary);
   display: flex;
   flex-direction: column;
+  margin-top: 20px;
+  padding: 0.8rem;
   place-content: center;
   place-items: center;
-  margin-top: 20px;
-  color: var(--color-secondary);
-  background: var(--color-primary);
-  padding: 0.8rem;
-  border-radius: 5px;
 }
 
 #page-resultado main .info > * {
@@ -29,7 +29,7 @@
 
 #page-resultado footer {
   display: flex;
-  place-items: center;
-  place-content: center;
   margin-top: 1rem;
+  place-content: center;
+  place-items: center;
 }
