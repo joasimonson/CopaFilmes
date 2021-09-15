@@ -18,8 +18,7 @@
     "prettier": "prettier --check .",
     "prettier:fix": "prettier --write .",
     "stylelint": "stylelint .",
-    "stylelint:fix": "stylelint . --fix",
-    "prepare": "husky install"
+    "stylelint:fix": "stylelint . --fix"
   },
   "dependencies": {
     "axios": "^0.21.4",
