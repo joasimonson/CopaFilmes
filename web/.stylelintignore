@@ -3,3 +3,6 @@ coverage
 dist
 node_modules
 public
+**/*.json
+**/*.js
+**/*.ts

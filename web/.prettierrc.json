@@ -8,5 +8,19 @@
   "arrowParens": "avoid",
   "printWidth": 120,
   "tabWidth": 4,
+  "overrides": [
+    {
+      "files": "*.css",
+      "options": {
+        "tabWidth": 2
+      }
+    },
+    {
+      "files": "*.json",
+      "options": {
+        "tabWidth": 2
+      }
+    }
+  ],
   "endOfLine": "auto"
 }

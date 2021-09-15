@@ -1,8 +1,9 @@
 {
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-        "source.fixAll.stylelint": true,
-        "source.fixAll.eslint": true
-    },
-    "cSpell.words": ["Selecao", "criacao", "descricao", "expiracao", "posicao", "pullstate", "usuario"]
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.stylelint": true,
+    "source.fixAll.eslint": true
+  },
+  "cSpell.words": ["Selecao", "criacao", "descricao", "expiracao", "posicao", "pullstate", "usuario"]
 }

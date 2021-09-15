@@ -1,26 +1,26 @@
 {
-    "root": true,
-    "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint", "jest"],
-    "env": {
-        "browser": true,
-        "amd": true,
-        "node": true
-    },
-    "settings": {
-        "react": {
-            "version": "detect"
-        }
-    },
-    "extends": [
-        "eslint:recommended",
-        "plugin:json/recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:react/recommended",
-        "plugin:react/jsx-runtime",
-        "plugin:react-hooks/recommended",
-        "plugin:jest/recommended",
-        "plugin:jest/style",
-        "plugin:prettier/recommended"
-    ]
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "jest"],
+  "env": {
+    "browser": true,
+    "amd": true,
+    "node": true
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:json/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended",
+    "plugin:jest/recommended",
+    "plugin:jest/style",
+    "plugin:prettier/recommended"
+  ]
 }

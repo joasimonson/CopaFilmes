@@ -16,7 +16,9 @@
     "eslint": "eslint .",
     "eslint:fix": "eslint . --fix",
     "prettier": "prettier --check .",
-    "prettier:fix": "prettier --write ."
+    "prettier:fix": "prettier --write .",
+    "stylelint": "stylelint .",
+    "stylelint:fix": "stylelint . --fix"
   },
   "dependencies": {
     "axios": "^0.21.4",
