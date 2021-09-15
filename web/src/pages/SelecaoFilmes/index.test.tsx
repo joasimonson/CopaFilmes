@@ -1,10 +1,10 @@
 import { mocked } from 'ts-jest/utils';
 
-import SelecaoFilmes from './index';
-
-import { renderAll, waitForElementToBeRemoved, fireEvent, within, waitFor } from '../../tests/custom-render';
 import * as FilmeService from '../../services/FilmeService';
+import { renderAll, waitForElementToBeRemoved, fireEvent, within, waitFor } from '../../tests/custom-render';
 import mocks from '../../tests/mocks';
+
+import SelecaoFilmes from './index';
 
 jest.mock('../../services/FilmeService');
 

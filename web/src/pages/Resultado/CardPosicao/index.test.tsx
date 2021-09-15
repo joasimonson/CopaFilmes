@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react';
 
-import CardPosicao from './index';
-
 import { FilmePosicao } from '../../../types/model';
+
+import CardPosicao from './index';
 
 describe('Testando renderização do card de posição da disputa do campeonato', () => {
     const componentPosicao = 'card-posicao-numposicao';

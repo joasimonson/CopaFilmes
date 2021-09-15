@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
-import { render, RenderOptions, RenderResult } from '@testing-library/react';
+
+import { RenderOptions, RenderResult, render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
 const Wrapper: React.FC = ({ children }) => {

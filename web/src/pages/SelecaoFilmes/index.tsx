@@ -1,14 +1,15 @@
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+
 import { Link } from 'react-router-dom';
 
-import PageHeader from '../../components/PageHeader';
-import CardFilme from './CardFilme';
 import LoadingDefault from '../../components/LoadingDefault';
-
-import { obterFilmes, gerarDisputaCampeonato } from '../../services/FilmeService';
+import PageHeader from '../../components/PageHeader';
 import { getConfigDynamic } from '../../config';
+import { gerarDisputaCampeonato, obterFilmes } from '../../services/FilmeService';
 import { FilmesStore } from '../../stores/store';
 import { Filme } from '../../types/model';
+
+import CardFilme from './CardFilme';
 
 import './styles.css';
 

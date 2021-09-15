@@ -1,10 +1,10 @@
 import { when, resetAllWhenMocks } from 'jest-when';
 
-import Resultado from './index';
-
-import { renderAll } from '../../tests/custom-render';
 import { FilmesStore } from '../../stores/store';
+import { renderAll } from '../../tests/custom-render';
 import mocks from '../../tests/mocks';
+
+import Resultado from './index';
 
 describe('Testando renderização do resultado do campeonato', () => {
     const { filmesPosicaoResponse } = mocks;

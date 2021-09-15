@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+
 import { getConfig } from '../config';
 
 const api = axios.create({

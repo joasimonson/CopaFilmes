@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react';
 
-import CardFilme from './index';
-
 import { Filme } from '../../../types/model';
+
+import CardFilme from './index';
 
 describe('Testando renderização do card de filme', () => {
     const componentCheckbox = 'card-filme-checkbox';

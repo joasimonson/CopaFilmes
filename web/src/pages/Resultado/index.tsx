@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
+
 import { Link } from 'react-router-dom';
 
-import PageHeader from '../../components/PageHeader';
 import LoadingDefault from '../../components/LoadingDefault';
-import CardPosicao from './CardPosicao';
-
+import PageHeader from '../../components/PageHeader';
 import { FilmesStore } from '../../stores/store';
 import { FilmePosicao } from '../../types/model';
+
+import CardPosicao from './CardPosicao';
 
 import './styles.css';
 
