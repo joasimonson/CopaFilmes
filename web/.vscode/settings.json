@@ -5,5 +5,16 @@
     "source.fixAll.stylelint": true,
     "source.fixAll.eslint": true
   },
-  "cSpell.words": ["Selecao", "criacao", "descricao", "expiracao", "posicao", "pullstate", "usuario"]
+  "cSpell.words": [
+    "browserslist",
+    "criacao",
+    "descricao",
+    "expiracao",
+    "lcov",
+    "posicao",
+    "pullstate",
+    "Selecao",
+    "stylelint",
+    "usuario"
+  ]
 }
