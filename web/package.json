@@ -6,7 +6,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:coverage": "react-scripts test --coverage --watchAll=false",
+    "test:ci": "react-scripts test --coverage --watchAll=false",
     "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache",
     "test:watch": "react-scripts test",
     "jest": "jest --env=jsdom --coverage --watchAll=false",
@@ -18,7 +18,9 @@
     "prettier": "prettier --check .",
     "prettier:fix": "prettier --write .",
     "stylelint": "stylelint .",
-    "stylelint:fix": "stylelint . --fix"
+    "stylelint:fix": "stylelint . --fix",
+    "prepare": "cd .. && husky install web/.husky",
+    "lint-front": "lint-staged"
   },
   "dependencies": {
     "axios": "^0.21.4",
@@ -54,7 +56,9 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.25.1",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "husky": "^7.0.2",
     "jest-when": "^3.3.1",
+    "lint-staged": "^11.1.2",
     "prettier": "^2.3.2",
     "stylelint": "^13.13.1",
     "stylelint-config-prettier": "^8.0.2",
@@ -75,9 +79,6 @@
       "last 1 safari version"
     ]
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
@@ -89,9 +90,5 @@
       "!src/tests/**",
       "!src/types/**"
     ]
-  },
-  "lint-staged": {
-    "*.js": "eslint --cache --fix",
-    "*.css": "stylelint --fix"
   }
 }
