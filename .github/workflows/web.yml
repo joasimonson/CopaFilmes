@@ -1,14 +1,14 @@
 name: ReactJS
 on:
   push:
-    branches: 
+    branches:
       - main
     paths:
       - ./web/**
       - .github/workflows/web.yml
       - codecov.yml
   pull_request:
-    branches: 
+    branches:
       - main
     types: [opened, synchronize, reopened]
   workflow_dispatch:
@@ -26,45 +26,45 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        fetch-depth: 0
-    - name: Cache node modules
-      uses: actions/cache@v2
-      env:
-        cache-name: cache-node-modules
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
-    - name: Install dependencies
-      run: npm ci
-    - name: Build
-      run: npm run build
-    - name: Test
-      run: npm run test:coverage
-    - name: SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      with:
-        projectBaseDir: ./web
-        args: >
-          -Dsonar.organization=joasimonson
-          -Dsonar.projectKey=joasimonson_CopaFilmes_FrontEnd
-          -Dsonar.sources=src
-          -Dsonar.tests=src
-          -Dsonar.test.inclusions=**/*.test.tsx,**/*.test.ts
-          -Dsonar.coverage.exclusions=**/*.test.tsx,**/*.test.ts,**/node_modules/**,src/**/*.d.ts,src/index.tsx,src/App.tsx,src/routes.tsx,src/tests/**,src/types/**
-          -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-    #-Dsonar.verbose=true
-    #-Dsonar.ts.tslintconfigpath=tslint.json #Include after configure linter 
-    - name: Upload coverage to Codecov
-      run: bash <(curl https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }} -F front-end
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          fetch-depth: 0
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Test
+        run: npm run test:ci
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: ./web
+          args: >
+            -Dsonar.organization=joasimonson
+            -Dsonar.projectKey=joasimonson_CopaFilmes_FrontEnd
+            -Dsonar.sources=src
+            -Dsonar.tests=src
+            -Dsonar.test.inclusions=**/*.test.tsx,**/*.test.ts
+            -Dsonar.coverage.exclusions=**/*.test.tsx,**/*.test.ts,**/node_modules/**,src/**/*.d.ts,src/index.tsx,src/App.tsx,src/routes.tsx,src/tests/**,src/types/**
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+      #-Dsonar.verbose=true
+      #-Dsonar.ts.tslintconfigpath=tslint.json #Include after configure linter
+      - name: Upload coverage to Codecov
+        run: bash <(curl https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }} -F front-end

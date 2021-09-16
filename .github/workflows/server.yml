@@ -1,14 +1,14 @@
 name: .NET
 on:
   push:
-    branches: 
+    branches:
       - main
     paths:
       - ./server/**
       - .github/workflows/server.yml
       - codecov.yml
   pull_request:
-    branches: 
+    branches:
       - main
     types: [opened, synchronize, reopened]
   workflow_dispatch:
