@@ -1,13 +1,19 @@
+import { Suspense, lazy } from 'react';
+
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import Resultado from './pages/Resultado';
-import SelecaoFilmes from './pages/SelecaoFilmes';
+import LoadingDefault from './components/LoadingDefault';
+
+const Resultado = lazy(() => import('./pages/Resultado'));
+const SelecaoFilmes = lazy(() => import('./pages/SelecaoFilmes'));
 
 function Routes(): JSX.Element {
     return (
         <BrowserRouter>
-            <Route path='/' exact component={SelecaoFilmes} />
-            <Route path='/resultado' component={Resultado} />
+            <Suspense fallback={<LoadingDefault loading={true}></LoadingDefault>}>
+                <Route path='/' exact component={SelecaoFilmes} />
+                <Route path='/resultado' component={Resultado} />
+            </Suspense>
         </BrowserRouter>
     );
 }
