@@ -8,7 +8,7 @@ const webpackConfigProd = config('production');
 webpackConfigProd.plugins.push(new BundleAnalyzerPlugin());
 
 webpack(webpackConfigProd, (err, stats) => {
-    if (err || stats.hasErrors()) {
-        console.error(err);
-    }
+  if (err || stats.hasErrors()) {
+    console.error(err);
+  }
 });

@@ -1,6 +1,6 @@
-import { filmesResponse, filmesPosicaoResponse } from './filmes';
+import { filmesPosicaoResponse, filmesResponse } from './filmes';
 
 export default {
-    filmesResponse,
-    filmesPosicaoResponse
+  filmesResponse,
+  filmesPosicaoResponse
 };

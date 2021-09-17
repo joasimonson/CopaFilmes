@@ -1,4 +1,4 @@
-import { when, resetAllWhenMocks } from 'jest-when';
+import { resetAllWhenMocks, when } from 'jest-when';
 
 import { FilmesStore } from '../../stores/store';
 import { renderAll } from '../../tests/custom-render';
@@ -7,95 +7,93 @@ import mocks from '../../tests/mocks';
 import Resultado from './index';
 
 describe('Testando renderização do resultado do campeonato', () => {
-    const { filmesPosicaoResponse } = mocks;
-    const componentCardPosicao = 'card-posicao';
+  const { filmesPosicaoResponse } = mocks;
+  const componentCardPosicao = 'card-posicao';
 
-    const pullstateUseStateMock = jest.fn();
+  const pullstateUseStateMock = jest.fn();
 
-    beforeEach(() => {
-        jest.spyOn(FilmesStore, 'useState').mockImplementation((args: unknown) => {
-            const safeArgs = args as string;
-            const params = safeArgs.toString().split('.');
-            let type = params[params.length - 1];
+  beforeEach(() => {
+    jest.spyOn(FilmesStore, 'useState').mockImplementation((args: unknown) => {
+      const safeArgs = args as string;
+      const params = safeArgs.toString().split('.');
+      let type = params[params.length - 1];
 
-            // Tratamento para execução com report coverage, onde são enviados mais parâmetros para análise
-            const index = type.indexOf(';');
-            if (index !== -1) {
-                type = type.substring(0, index);
-            }
+      // Tratamento para execução com report coverage, onde são enviados mais parâmetros para análise
+      const index = type.indexOf(';');
+      if (index !== -1) {
+        type = type.substring(0, index);
+      }
 
-            return pullstateUseStateMock(type);
-        });
+      return pullstateUseStateMock(type);
+    });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+    resetAllWhenMocks();
+  });
+
+  test('Validar se finalistas estão sendo renderizados na quantidade correta baseado no state', async () => {
+    //Arrange
+    when(pullstateUseStateMock)
+      .calledWith('disputandoCampeonato')
+      .mockReturnValue(false)
+      .calledWith('filmesResultado')
+      .mockReturnValue(filmesPosicaoResponse);
+
+    //Act
+    const { getAllByTestId } = renderAll(<Resultado />);
+
+    const elListaResultado = getAllByTestId(componentCardPosicao);
+
+    //Assert
+    expect(elListaResultado).toHaveLength(filmesPosicaoResponse.length);
+  });
+
+  test('Validar se finalistas estão sendo renderizados na quantidade correta baseado no localStorage', async () => {
+    //Arrange
+    const localStorageGetItemMock = jest.fn();
+
+    jest.spyOn(global.localStorage.__proto__, 'getItem').mockImplementation((args: unknown) => {
+      return localStorageGetItemMock(args);
     });
 
-    afterEach(() => {
-        jest.restoreAllMocks();
-        resetAllWhenMocks();
-    });
+    when(pullstateUseStateMock)
+      .calledWith('disputandoCampeonato')
+      .mockReturnValue(false)
+      .calledWith('filmesResultado')
+      .mockReturnValue(undefined);
 
-    test('Validar se finalistas estão sendo renderizados na quantidade correta baseado no state', async () => {
-        //Arrange
-        when(pullstateUseStateMock)
-            .calledWith('disputandoCampeonato')
-            .mockReturnValue(false)
-            .calledWith('filmesResultado')
-            .mockReturnValue(filmesPosicaoResponse);
+    when(localStorageGetItemMock).calledWith('filmesResultado').mockReturnValue(JSON.stringify(filmesPosicaoResponse));
 
-        //Act
-        const { getAllByTestId } = renderAll(<Resultado />);
+    //Act
+    const { getAllByTestId } = renderAll(<Resultado />);
 
-        const elListaResultado = getAllByTestId(componentCardPosicao);
+    const elListaResultado = getAllByTestId(componentCardPosicao);
 
-        //Assert
-        expect(elListaResultado).toHaveLength(filmesPosicaoResponse.length);
-    });
+    //Assert
+    expect(localStorage.getItem).toHaveBeenCalled();
+    expect(elListaResultado).toHaveLength(filmesPosicaoResponse.length);
+  });
 
-    test('Validar se finalistas estão sendo renderizados na quantidade correta baseado no localStorage', async () => {
-        //Arrange
-        const localStorageGetItemMock = jest.fn();
+  test('Validar se conteúdo será renderizado corretamente após o loading', async () => {
+    //Arrange
+    when(pullstateUseStateMock)
+      .calledWith('filmesResultado')
+      .mockReturnValueOnce(undefined)
+      .mockReturnValue(filmesPosicaoResponse)
+      .calledWith('disputandoCampeonato')
+      .mockReturnValueOnce(true)
+      .mockReturnValue(false);
 
-        jest.spyOn(global.localStorage.__proto__, 'getItem').mockImplementation((args: unknown) => {
-            return localStorageGetItemMock(args);
-        });
+    const { rerender, getAllByTestId } = renderAll(<Resultado />);
 
-        when(pullstateUseStateMock)
-            .calledWith('disputandoCampeonato')
-            .mockReturnValue(false)
-            .calledWith('filmesResultado')
-            .mockReturnValue(undefined);
+    //Act
+    rerender(<Resultado />);
 
-        when(localStorageGetItemMock)
-            .calledWith('filmesResultado')
-            .mockReturnValue(JSON.stringify(filmesPosicaoResponse));
+    const elListaResultado = getAllByTestId(componentCardPosicao);
 
-        //Act
-        const { getAllByTestId } = renderAll(<Resultado />);
-
-        const elListaResultado = getAllByTestId(componentCardPosicao);
-
-        //Assert
-        expect(localStorage.getItem).toHaveBeenCalled();
-        expect(elListaResultado).toHaveLength(filmesPosicaoResponse.length);
-    });
-
-    test('Validar se conteúdo será renderizado corretamente após o loading', async () => {
-        //Arrange
-        when(pullstateUseStateMock)
-            .calledWith('filmesResultado')
-            .mockReturnValueOnce(undefined)
-            .mockReturnValue(filmesPosicaoResponse)
-            .calledWith('disputandoCampeonato')
-            .mockReturnValueOnce(true)
-            .mockReturnValue(false);
-
-        const { rerender, getAllByTestId } = renderAll(<Resultado />);
-
-        //Act
-        rerender(<Resultado />);
-
-        const elListaResultado = getAllByTestId(componentCardPosicao);
-
-        //Assert
-        expect(elListaResultado).toHaveLength(filmesPosicaoResponse.length);
-    });
+    //Assert
+    expect(elListaResultado).toHaveLength(filmesPosicaoResponse.length);
+  });
 });
