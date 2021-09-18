@@ -1,8 +1,8 @@
 ﻿using CopaFilmes.Api.Model;
 using CopaFilmes.Api.Settings;
-using CopaFilmes.Api.Test.Common.Builders;
-using CopaFilmes.Api.Test.Common.Util;
-using CopaFilmes.Api.Test.Integration.Fixtures;
+using CopaFilmes.Tests.Common.Builders;
+using CopaFilmes.Tests.Common.Util;
+using CopaFilmes.Tests.Integration.Fixtures;
 using FakeItEasy;
 using FluentAssertions;
 using FluentAssertions.Common;
@@ -18,7 +18,7 @@ using WireMock.ResponseBuilders;
 using WireMock.Server;
 using Xunit;
 
-namespace CopaFilmes.Api.Test.Integration.Specs
+namespace CopaFilmes.Tests.Integration.Specs
 {
     [Collection(nameof(ApiTestCollection))]
     public class FilmeControllerTests : IDisposable

@@ -1,5 +1,5 @@
 ﻿using CopaFilmes.Api.Settings;
-using CopaFilmes.Api.Test.Common.Builders;
+using CopaFilmes.Tests.Common.Builders;
 using CopaFilmes.Api.Util;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
@@ -7,7 +7,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CopaFilmes.Api.Test.Unit.Util
+namespace CopaFilmes.Tests.Unit.Util
 {
     public class TokenManagerTests : BaseTests
     {

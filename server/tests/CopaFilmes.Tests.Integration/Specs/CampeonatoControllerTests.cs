@@ -1,9 +1,9 @@
 ﻿using AutoBogus;
 using CopaFilmes.Api.Servicos.Campeonato;
 using CopaFilmes.Api.Settings;
-using CopaFilmes.Api.Test.Common.Builders;
-using CopaFilmes.Api.Test.Common.Util;
-using CopaFilmes.Api.Test.Integration.Fixtures;
+using CopaFilmes.Tests.Common.Builders;
+using CopaFilmes.Tests.Common.Util;
+using CopaFilmes.Tests.Integration.Fixtures;
 using FluentAssertions;
 using System;
 using System.Linq;
@@ -15,7 +15,7 @@ using WireMock.ResponseBuilders;
 using WireMock.Server;
 using Xunit;
 
-namespace CopaFilmes.Api.Test.Integration.Specs
+namespace CopaFilmes.Tests.Integration.Specs
 {
     [Collection(nameof(ApiTestCollection))]
     public class CampeonatoControllerTests : IDisposable

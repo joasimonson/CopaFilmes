@@ -2,8 +2,8 @@
 using CopaFilmes.Api.Resources;
 using CopaFilmes.Api.Servicos.Login;
 using CopaFilmes.Api.Settings;
-using CopaFilmes.Api.Test.Common.Util;
-using CopaFilmes.Api.Test.Integration.Fixtures;
+using CopaFilmes.Tests.Common.Util;
+using CopaFilmes.Tests.Integration.Fixtures;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -12,7 +12,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CopaFilmes.Api.Test.Integration.Specs
+namespace CopaFilmes.Tests.Integration.Specs
 {
     public class LoginControllerTests : BaseFixture
     {

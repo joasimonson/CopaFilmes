@@ -1,11 +1,12 @@
-﻿using CopaFilmes.Api.Model;
-using CopaFilmes.Api.Test.Common.Builders;
+﻿using CopaFilmes.Api;
+using CopaFilmes.Api.Model;
+using CopaFilmes.Tests.Common.Builders;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace CopaFilmes.Api.Test.Unit.Dominio.Campeonato
+namespace CopaFilmes.Tests.Unit.Dominio.Campeonato
 {
     public class ChaveCampeonatoTests
     {

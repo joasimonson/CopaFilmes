@@ -1,7 +1,7 @@
 ﻿using CopaFilmes.Api.Dominio;
 using CopaFilmes.Api.Dominio.Filme;
 using CopaFilmes.Api.Model;
-using CopaFilmes.Api.Test.Common.Builders;
+using CopaFilmes.Tests.Common.Builders;
 using FluentAssertions;
 using Flurl;
 using Flurl.Http;
@@ -12,7 +12,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CopaFilmes.Api.Test.Unit.Dominio
+namespace CopaFilmes.Tests.Unit.Dominio
 {
     public class FilmeDominioTests : BaseTests
     {

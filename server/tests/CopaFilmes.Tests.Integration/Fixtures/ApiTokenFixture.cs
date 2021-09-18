@@ -2,7 +2,7 @@
 using CopaFilmes.Api.Extensions;
 using CopaFilmes.Api.Servicos.Login;
 using CopaFilmes.Api.Settings;
-using CopaFilmes.Api.Test.Common.Util;
+using CopaFilmes.Tests.Common.Util;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -10,7 +10,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace CopaFilmes.Api.Test.Integration.Fixtures
+namespace CopaFilmes.Tests.Integration.Fixtures
 {
     public class ApiTokenFixture : BaseFixture
     {

@@ -1,4 +1,5 @@
-﻿using CopaFilmes.Api.Extensions;
+﻿using CopaFilmes.Api;
+using CopaFilmes.Api.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -8,7 +9,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Net.Http;
 
-namespace CopaFilmes.Api.Test.Integration.Fixtures
+namespace CopaFilmes.Tests.Integration.Fixtures
 {
     public class BaseFixture<TStartup> : IDisposable
         where TStartup : class

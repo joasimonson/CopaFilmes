@@ -1,4 +1,4 @@
-﻿namespace CopaFilmes.Api.Test.Integration
+﻿namespace CopaFilmes.Tests.Integration
 {
     internal class ConfigRunTests
     {

@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("CopaFilmes.Api.Test.Unit")]
-[assembly: InternalsVisibleTo("CopaFilmes.Api.Test.Common")]
-[assembly: InternalsVisibleTo("CopaFilmes.Api.Test.Integration")]
+[assembly: InternalsVisibleTo("CopaFilmes.Tests.Unit")]
+[assembly: InternalsVisibleTo("CopaFilmes.Tests.Common")]
+[assembly: InternalsVisibleTo("CopaFilmes.Tests.Integration")]
 
 namespace CopaFilmes.Api.Dominio.Campeonato
 {

@@ -1,8 +1,8 @@
 ﻿using CopaFilmes.Api.Settings;
-using CopaFilmes.Api.Test.Common.Util;
+using CopaFilmes.Tests.Common.Util;
 using Flurl.Http.Testing;
 
-namespace CopaFilmes.Api.Test.Unit
+namespace CopaFilmes.Tests.Unit
 {
     public class BaseTests
     {

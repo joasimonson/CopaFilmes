@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
 
-namespace CopaFilmes.Api.Test.Common.Util
+namespace CopaFilmes.Tests.Common.Util
 {
     public static class Extensions
     {

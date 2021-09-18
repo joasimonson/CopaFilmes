@@ -1,7 +1,8 @@
-﻿using CopaFilmes.Api.Dominio;
+﻿using CopaFilmes.Api;
+using CopaFilmes.Api.Dominio;
 using CopaFilmes.Api.Dominio.Campeonato;
 using CopaFilmes.Api.Model;
-using CopaFilmes.Api.Test.Common.Builders;
+using CopaFilmes.Tests.Common.Builders;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
@@ -11,7 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CopaFilmes.Api.Test.Unit.Dominio
+namespace CopaFilmes.Tests.Unit.Dominio
 {
     public class CampeonatoDominioTests : BaseTests
     {

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -30,7 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\CopaFilmes.Api\CopaFilmes.Api.csproj" />
-    <ProjectReference Include="..\CopaFilmes.Api.Test.Common\CopaFilmes.Tests.Common.csproj" />
+    <ProjectReference Include="..\CopaFilmes.Tests.Common\CopaFilmes.Tests.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

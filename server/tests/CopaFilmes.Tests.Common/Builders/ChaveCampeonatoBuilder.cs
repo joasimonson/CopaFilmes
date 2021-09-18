@@ -1,15 +1,15 @@
 ﻿using CopaFilmes.Api.Dominio.Campeonato;
 using CopaFilmes.Api.Model;
-using CopaFilmes.Api.Test.Common.Util;
+using CopaFilmes.Tests.Common.Util;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("CopaFilmes.Api.Test.Unit")]
-[assembly: InternalsVisibleTo("CopaFilmes.Api.Test.Integration")]
+[assembly: InternalsVisibleTo("CopaFilmes.Tests.Unit")]
+[assembly: InternalsVisibleTo("CopaFilmes.Tests.Integration")]
 
-namespace CopaFilmes.Api.Test.Common.Builders
+namespace CopaFilmes.Tests.Common.Builders
 {
     internal abstract class ChaveCampeonatoBuilder<TBuilder, TChave> where TChave : ChaveCampeonato
     {

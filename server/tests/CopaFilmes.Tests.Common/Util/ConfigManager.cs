@@ -2,7 +2,7 @@
 using CopaFilmes.Api.Settings;
 using Microsoft.Extensions.Configuration;
 
-namespace CopaFilmes.Api.Test.Common.Util
+namespace CopaFilmes.Tests.Common.Util
 {
     internal static class ConfigManager
     {
