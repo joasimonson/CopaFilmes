@@ -14,11 +14,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FB239846
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CopaFilmes.Api", "src\CopaFilmes.Api\CopaFilmes.Api.csproj", "{0A0726A8-F8A7-4CF6-AEA6-36C928AEA96A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CopaFilmes.Api.Test.Unit", "tests\CopaFilmes.Api.Test.Unit\CopaFilmes.Api.Test.Unit.csproj", "{82406360-D474-4630-B713-9CEBE5E7D7EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CopaFilmes.Tests.Unit", "tests\CopaFilmes.Tests.Unit\CopaFilmes.Tests.Unit.csproj", "{82406360-D474-4630-B713-9CEBE5E7D7EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopaFilmes.Api.Test.Integration", "tests\CopaFilmes.Api.Test.Integration\CopaFilmes.Api.Test.Integration.csproj", "{6260B0B0-B1D6-4046-990A-23B76BF0CD41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CopaFilmes.Tests.Integration", "tests\CopaFilmes.Tests.Integration\CopaFilmes.Tests.Integration.csproj", "{6260B0B0-B1D6-4046-990A-23B76BF0CD41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopaFilmes.Api.Test.Common", "tests\CopaFilmes.Api.Test.Common\CopaFilmes.Api.Test.Common.csproj", "{4FA40679-6B37-446D-BB85-0DBE0B8EF6DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CopaFilmes.Tests.Common", "tests\CopaFilmes.Tests.Common\CopaFilmes.Tests.Common.csproj", "{4FA40679-6B37-446D-BB85-0DBE0B8EF6DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
