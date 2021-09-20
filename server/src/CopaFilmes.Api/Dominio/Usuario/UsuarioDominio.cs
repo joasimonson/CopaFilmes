@@ -1,4 +1,5 @@
 ﻿using CopaFilmes.Api.Contexts;
+using CopaFilmes.Api.Util;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ namespace CopaFilmes.Api.Dominio.Usuario
             _context.Usuario.Add(new UsuarioEntity()
             {
                 Usuario = usuario,
-                Senha = senha
+                Senha = SegurancaCommon.Criptografar(senha)
             });
 
             await _context.SaveChangesAsync();
@@ -28,7 +29,7 @@ namespace CopaFilmes.Api.Dominio.Usuario
 
         public bool Existe(string usuario, string senha)
         {
-            return _context.Usuario.Any(u => u.Usuario == usuario && u.Senha == senha);
+            return _context.Usuario.Any(u => u.Usuario == usuario && u.Senha == SegurancaCommon.Criptografar(senha));
         }
     }
 }
