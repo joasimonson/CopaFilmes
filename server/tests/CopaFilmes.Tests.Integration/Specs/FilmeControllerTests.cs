@@ -5,9 +5,7 @@ using CopaFilmes.Tests.Common.Util;
 using CopaFilmes.Tests.Integration.Fixtures;
 using FakeItEasy;
 using FluentAssertions;
-using FluentAssertions.Common;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -23,55 +21,40 @@ namespace CopaFilmes.Tests.Integration.Specs
     [Collection(nameof(ApiTestCollection))]
     public class FilmeControllerTests : IDisposable
     {
-        private readonly ApiTokenFixture _apiTokenFixture;
+        private readonly ApiFilmesFixture _apiFixture;
         private readonly SystemSettings _systemSettings;
         private readonly HttpClient _httpClient;
         private readonly string _endpoint;
         private readonly WireMockServer _wireMockServer;
         private readonly IRequestBuilder _request;
 
-        public FilmeControllerTests(ApiTokenFixture apiTokenFixture)
+        public FilmeControllerTests(ApiFilmesFixture apiFixture)
         {
-            _apiTokenFixture = apiTokenFixture;
+            _apiFixture = apiFixture;
             _systemSettings = ConfigManager.SystemSettings;
-            _endpoint = _apiTokenFixture.ConfigRunTests.EndpointFilme;
-            _httpClient = _apiTokenFixture.GetAuthenticatedClient().GetAwaiter().GetResult();
+            _endpoint = _apiFixture.ConfigRunTests.EndpointFilme;
+            _httpClient = _apiFixture.GetAuthenticatedClient().GetAwaiter().GetResult();
 
-            _wireMockServer = WireMockServer.Start(_apiTokenFixture.ConfigRunTests.ServerPort);
+            _wireMockServer = WireMockServer.Start(_apiFixture.ConfigRunTests.ServerPort);
             _request = Request
                 .Create()
                 .WithPath(new WildcardMatcher(ConfigManager.ApiFilmesSettings.EndpointFilmes))
                 .UsingGet();
-        }
 
-        [Fact]
-        public async Task Get_DeveRetornarInternalServerError_QuandoFalhaAoRetornarListaDeFilmes()
-        {
-            _wireMockServer.Given(_request)
-                .RespondWith(Response.Create().WithNotFound());
+            IEnumerable<FilmeModel> cache;
+            A.CallTo(() => _apiFixture.MemoryCacheWrapperFake
+                .TryGetValue(_systemSettings.FilmesCacheKey, out cache))
+                .Returns(false);
 
-            var response = await _httpClient.GetAsync(_endpoint);
-
-            response.Should().Be500InternalServerError();
+            A.CallTo(() => _apiFixture.MemoryCacheWrapperFake
+                .GetOrCreateAsync(_systemSettings.FilmesCacheKey, A<Func<ICacheEntry, Task<IEnumerable<FilmeModel>>>>.Ignored))
+                .CallsBaseMethod();
         }
 
         [Fact]
         public async Task Get_DeveRetornarOk_QuandoRequestForValido()
         {
-            var chaveCampeonato = ChaveClassificacaoBuilder.Novo().ComParticipantesFixos().Build();
-            var participantes = chaveCampeonato.ObterParticipantes();
-
-            _wireMockServer.Given(_request)
-                .RespondWith(Response.Create().WithSuccess().WithBodyAsJson(participantes));
-
-            var response = await _httpClient.GetAsync(_endpoint);
-
-            response.Should().Be200Ok().And.BeAs(participantes);
-        }
-
-        [Fact]
-        public async Task Get_DeveRetornarCache_QuandoDisponivel()
-        {
+            //Arrange
             var chaveCampeonato = ChaveClassificacaoBuilder.Novo().ComParticipantesFixos().Build();
             var participantes = chaveCampeonato.ObterParticipantes();
 
@@ -79,56 +62,65 @@ namespace CopaFilmes.Tests.Integration.Specs
                 .Given(_request)
                 .RespondWith(Response.Create().WithSuccess().WithBodyAsJson(participantes));
 
+            //Act
+            var response = await _httpClient.GetAsync(_endpoint);
+
+            //Assert
+            response.Should().Be200Ok().And.BeAs(participantes);
+        }
+
+        [Fact]
+        public async Task Get_DeveUsarMemoryCache()
+        {
+            //Arrange
+            A.CallTo(() => _apiFixture.MemoryCacheWrapperFake
+                .GetOrCreateAsync(_systemSettings.FilmesCacheKey, A<Func<ICacheEntry, Task<IEnumerable<FilmeModel>>>>.Ignored))
+                .Returns(Task.FromResult(default(IEnumerable<FilmeModel>)));
+
+            //Act
+            await _httpClient.GetAsync(_endpoint);
+
+            //Assert
+            A.CallTo(() => _apiFixture.MemoryCacheWrapperFake
+                .GetOrCreateAsync(_systemSettings.FilmesCacheKey, A<Func<ICacheEntry, Task<IEnumerable<FilmeModel>>>>.Ignored))
+                .MustHaveHappened();
+        }
+
+        [Fact]
+        public async Task Get_DeveRetornarCache_QuandoDisponivel()
+        {
+            //Arrange
+            IEnumerable<FilmeModel> cache;
+            A.CallTo(() => _apiFixture.MemoryCacheWrapperFake
+                .TryGetValue(_systemSettings.FilmesCacheKey, out cache))
+                .CallsBaseMethod();
+
+            var chaveCampeonato = ChaveClassificacaoBuilder.Novo().ComParticipantesFixos().Build();
+            var participantes = chaveCampeonato.ObterParticipantes();
+
+            _wireMockServer
+                .Given(_request)
+                .RespondWith(Response.Create().WithSuccess().WithBodyAsJson(participantes));
+
+            //Act
             await _httpClient.GetAsync(_endpoint);
 
             _wireMockServer.Reset();
-            _wireMockServer.Given(_request)
+            _wireMockServer
+                .Given(_request)
                 .RespondWith(Response.Create().WithNotFound());
 
             var responseApiCache = await _httpClient.GetAsync(_endpoint);
 
+            //Assert
             responseApiCache.Should().Be200Ok().And.BeAs(participantes);
         }
 
         public void Dispose()
         {
-            var cacheMemory = _apiTokenFixture.GetService<IMemoryCache>();
-            cacheMemory.Remove(_systemSettings.FilmesCacheKey);
+            var memoryCache = _apiFixture.GetService<IMemoryCache>();
+            memoryCache.Remove(_systemSettings.FilmesCacheKey);
             _wireMockServer.Dispose();
-        }
-    }
-
-    public class FilmeControllerTestsWithMock : ApiTokenFixture
-    {
-        private readonly SystemSettings _systemSettings;
-        private readonly HttpClient _httpClient;
-        private readonly string _endpoint;
-
-        private IMemoryCache MemoryCacheFake;
-
-        public FilmeControllerTestsWithMock()
-        {
-            _systemSettings = ConfigManager.SystemSettings;
-            _endpoint = ConfigRunTests.EndpointFilme;
-            _httpClient = GetAuthenticatedClient().GetAwaiter().GetResult();
-        }
-
-        protected override void ConfigureTestServices(IServiceCollection services)
-        {
-            base.ConfigureTestServices(services);
-            MemoryCacheFake = A.Fake<IMemoryCache>();
-            services.AddScoped(_ => MemoryCacheFake);
-        }
-
-        [Fact]
-        public async Task Post_DeveUsarMemoryCache()
-        {
-            await _httpClient.GetAsync(_endpoint);
-
-            object cache;
-            A.CallTo(() => MemoryCacheFake
-                .TryGetValue(_systemSettings.FilmesCacheKey, out cache))
-                .MustHaveHappened();
         }
     }
 }

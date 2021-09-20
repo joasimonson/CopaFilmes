@@ -1,6 +1,6 @@
 ﻿using CopaFilmes.Api.Settings;
-using CopaFilmes.Tests.Common.Builders;
 using CopaFilmes.Api.Util;
+using CopaFilmes.Tests.Common.Builders;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
 using System;

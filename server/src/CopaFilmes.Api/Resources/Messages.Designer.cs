@@ -61,7 +61,7 @@ namespace CopaFilmes.Api.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Falha ao autenticar.
+        ///   Looks up a localized string similar to Falha ao autenticar..
         /// </summary>
         internal static string Login_F001 {
             get {
@@ -70,11 +70,38 @@ namespace CopaFilmes.Api.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Login efetuado com sucesso.
+        ///   Looks up a localized string similar to Login efetuado com sucesso..
         /// </summary>
         internal static string Login_S001 {
             get {
                 return ResourceManager.GetString("Login_S001", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Usuário ou senha não preenchidos..
+        /// </summary>
+        internal static string Usuario_F001 {
+            get {
+                return ResourceManager.GetString("Usuario_F001", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Usuário já cadastrado..
+        /// </summary>
+        internal static string Usuario_F002 {
+            get {
+                return ResourceManager.GetString("Usuario_F002", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Usuário cadastrado com sucesso..
+        /// </summary>
+        internal static string Usuario_S001 {
+            get {
+                return ResourceManager.GetString("Usuario_S001", resourceCulture);
             }
         }
     }

@@ -16,18 +16,18 @@ namespace CopaFilmes.Tests.Unit.Dominio
 {
     public class CampeonatoDominioTests : BaseTests
     {
-        private readonly IFilmeDominio _filmeDominio;
+        private readonly IFilmeDominio _filmeDominioFake;
         private readonly ICampeonatoDominio _campeonatoDominio;
         private readonly IEnumerable<FilmeModel> _participantes;
 
         public CampeonatoDominioTests()
         {
-            _filmeDominio = A.Fake<IFilmeDominio>();
-            _campeonatoDominio = new CampeonatoDominio(Options.Create(_systemSettings), _filmeDominio);
+            _filmeDominioFake = A.Fake<IFilmeDominio>();
+            _campeonatoDominio = new CampeonatoDominio(Options.Create(_systemSettings), _filmeDominioFake);
 
             _participantes = ChaveClassificacaoBuilder.Novo().ComParticipantesFixos().ObterParticipantes();
 
-            A.CallTo(() => _filmeDominio.ObterFilmesAsync()).Returns(_participantes);
+            A.CallTo(() => _filmeDominioFake.ObterFilmesAsync()).Returns(_participantes);
         }
 
         [Fact]

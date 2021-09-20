@@ -1,5 +1,5 @@
 ﻿using CopaFilmes.Api.Servicos;
-using CopaFilmes.Api.Servicos.Login;
+using CopaFilmes.Api.Servicos.Usuario;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,36 +10,36 @@ namespace CopaFilmes.Api.Controllers
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
-    public class LoginController : ControllerBase
+    public class UsuarioController : ControllerBase
     {
-        private readonly ILoginServico _loginService;
+        private readonly IUsuarioServico _usuarioService;
 
-        public LoginController(ILoginServico loginService)
+        public UsuarioController(IUsuarioServico usuarioService)
         {
-            _loginService = loginService;
+            _usuarioService = usuarioService;
         }
 
         [AllowAnonymous]
         [HttpPost]
-        [ProducesResponseType(typeof(LoginResult), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(LoginResult), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(UsuarioResult), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post([FromBody] LoginRequest login)
+        [ProducesResponseType(typeof(UsuarioResult), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> Post([FromBody] UsuarioRequest login)
         {
             if (string.IsNullOrWhiteSpace(login.Usuario) || string.IsNullOrWhiteSpace(login.Senha))
             {
                 return BadRequest();
             }
 
-            var result = await _loginService.AutenticarAsync(login);
+            var result = await _usuarioService.CriarAsync(login);
 
-            if (result is null || !result.Autenticado)
+            if (result.Sucesso)
             {
-                return NotFound(result);
+                return Ok(result);
             }
             else
             {
-                return Ok(result);
+                return UnprocessableEntity(result);
             }
         }
     }

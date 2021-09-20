@@ -1,19 +1,18 @@
 ﻿using CopaFilmes.Api.Resources;
 using CopaFilmes.Api.Util;
-using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
 namespace CopaFilmes.Api.Servicos.Login
 {
     internal class LoginServico : ILoginServico
     {
-        private readonly string ACCESS_KEY;
         private readonly TokenManager _tokenManager;
+        private readonly IUsuarioServico _usuarioServico;
 
-        public LoginServico(IConfiguration configuration, TokenManager tokenManager)
+        public LoginServico(TokenManager tokenManager, IUsuarioServico usuarioServico)
         {
-            ACCESS_KEY = configuration.GetValue<string>("AccessKey");
             _tokenManager = tokenManager;
+            _usuarioServico = usuarioServico;
         }
 
         public async Task<LoginResult> AutenticarAsync(LoginRequest login)
@@ -23,7 +22,7 @@ namespace CopaFilmes.Api.Servicos.Login
                 return Falha();
             }
 
-            if (ACCESS_KEY == login.Senha)
+            if (_usuarioServico.Existe(login.Usuario, login.Senha))
             {
                 var token = await _tokenManager.GenerateJwtToken(login.Usuario);
 

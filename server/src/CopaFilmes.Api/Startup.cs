@@ -1,3 +1,4 @@
+using CopaFilmes.Api.Middlewares.Exceptions;
 using CopaFilmes.Api.StartupConfigure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,9 +34,7 @@ namespace CopaFilmes.Api
             SwaggerStartup.Configurar(services);
             DependencyInjectionStartup.Configurar(services);
             SettingsStartup.Configurar(services, Configuration);
-
-            services.AddMemoryCache();
-            services.AddControllers();
+            DatabaseStartup.Configurar(services, Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
@@ -46,11 +45,10 @@ namespace CopaFilmes.Api
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
 
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseSwagger();
             app.UseSwaggerUI(opt => {
                 opt.RoutePrefix = "swagger";
@@ -62,7 +60,6 @@ namespace CopaFilmes.Api
             app.UseRewriter(options);
 
             app.UseCors();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

@@ -7,5 +7,6 @@
         public string EndpointCampeonato { get; set; }
         public string EndpointFilme { get; set; }
         public string EndpointLogin { get; set; }
+        public string EndpointUsuario { get; set; }
     }
 }

@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,19 +16,16 @@ namespace CopaFilmes.Api.Controllers
     [Authorize(JwtBearerDefaults.AuthenticationScheme)]
     public class CampeonatoController : ControllerBase
     {
-        private readonly ILogger<CampeonatoController> _logger;
         private readonly ICampeonatoServico _campeonatoServico;
 
-        public CampeonatoController(ILogger<CampeonatoController> logger, ICampeonatoServico campeonatoServico)
+        public CampeonatoController(ICampeonatoServico campeonatoServico)
         {
-            _logger = logger;
             _campeonatoServico = campeonatoServico;
         }
 
         [HttpPost]
         [ProducesResponseType(typeof(FilmePosicaoModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<FilmePosicaoModel>>> Post([FromBody] IEnumerable<CampeonatoRequest> campeonato)
         {
             try
@@ -40,13 +35,7 @@ namespace CopaFilmes.Api.Controllers
             }
             catch (RegraException ex)
             {
-                _logger.LogError(ex, ex.Message);
                 return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
     }

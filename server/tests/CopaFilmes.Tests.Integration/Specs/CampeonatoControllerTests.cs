@@ -25,49 +25,33 @@ namespace CopaFilmes.Tests.Integration.Specs
         private readonly string _endpoint;
         private readonly WireMockServer _wireMockServer;
 
-        public CampeonatoControllerTests(ApiTokenFixture apiTokenFixture)
+        public CampeonatoControllerTests(ApiFixture apiFixture)
         {
             _systemSettings = ConfigManager.SystemSettings;
-            _endpoint = apiTokenFixture.ConfigRunTests.EndpointCampeonato;
-            _httpClient = apiTokenFixture.GetAuthenticatedClient().GetAwaiter().GetResult();
+            _endpoint = apiFixture.ConfigRunTests.EndpointCampeonato;
+            _httpClient = apiFixture.GetAuthenticatedClient().GetAwaiter().GetResult();
 
-            _wireMockServer = WireMockServer.Start(apiTokenFixture.ConfigRunTests.ServerPort);
+            _wireMockServer = WireMockServer.Start(apiFixture.ConfigRunTests.ServerPort);
         }
 
         [Fact]
         public async Task Post_DeveRetornarBadRequest_QuandoRequestForInvalido()
         {
+            //Arrange
             var qtdeParticipantesInvalida = _systemSettings.MaximoParticipantesCampeonato + 1;
             var request = new AutoFaker<CampeonatoRequest>().Generate(qtdeParticipantesInvalida);
 
+            //Act
             var response = await _httpClient.PostAsync(_endpoint, request.AsHttpContent());
 
+            //Assert
             response.Should().Be400BadRequest();
-        }
-
-        [Fact]
-        public async Task Post_DeveRetornarInternalServerError_QuandoFalhaAoRetornarListaDeFilmes()
-        {
-            var participantes = _systemSettings.MaximoParticipantesCampeonato;
-            var request = new AutoFaker<CampeonatoRequest>().Generate(participantes);
-
-            _wireMockServer
-                .Given(Request
-                    .Create()
-                    .WithPath(new WildcardMatcher(ConfigManager.ApiFilmesSettings.EndpointFilmes))
-                    .UsingGet())
-                .RespondWith(Response
-                    .Create()
-                    .WithNotFound());
-
-            var response = await _httpClient.PostAsync(_endpoint, request.AsHttpContent());
-
-            response.Should().Be500InternalServerError();
         }
 
         [Fact]
         public async Task Post_DeveRetornarOk_QuandoRequestForValido()
         {
+            //Arrange
             var chaveCampeonato = ChaveClassificacaoBuilder.Novo().ComParticipantesFixos().Build();
             var participantes = chaveCampeonato.ObterParticipantes();
             var chaveFinalistas = ChaveEtapaBuilder.Novo().ComChaveFinalistas().Build();
@@ -84,8 +68,10 @@ namespace CopaFilmes.Tests.Integration.Specs
                     .WithSuccess()
                     .WithBodyAsJson(participantes));
 
+            //Act
             var response = await _httpClient.PostAsync(_endpoint, request.AsHttpContent());
 
+            //Assert
             response.Should().Be200Ok().And.BeAs(finalistas);
         }
 
