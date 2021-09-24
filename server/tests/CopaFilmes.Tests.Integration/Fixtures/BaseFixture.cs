@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Linq;
 using System.Net.Http;
 
 namespace CopaFilmes.Tests.Integration.Fixtures
@@ -16,30 +17,40 @@ namespace CopaFilmes.Tests.Integration.Fixtures
     {
         protected WebApplicationFactory<TStartup> Factory { get; }
 
-        private readonly HttpClient HttpClient;
-        internal readonly ConfigRunTests ConfigRunTests;
-
-        public IConfiguration GetConfiguration() => Factory.Services.GetService<IConfiguration>();
-        public IConfiguration GetTestConfiguration() => new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-        public HttpClient GetDefaultHttpClient() => HttpClient;
-        public HttpClient CreateClient() => Factory.CreateClient();
+        private static readonly IConfiguration _testConfiguration = new ConfigurationBuilder().AddJsonFile($"appsettings.{EnvironmentsExtensions.Test}.json").Build();
+        public readonly ConfigRunTests ConfigRunTests = _testConfiguration.GetSettings<ConfigRunTests>();
 
         public TService GetService<TService>() => Factory.Services.GetService<TService>();
+        public HttpClient GetHttpClient() => Factory.CreateClient();
 
         public BaseFixture()
         {
-            Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", Environments.Development);
+            Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", EnvironmentsExtensions.Test);
 
-            Factory = new WebApplicationFactory<TStartup>()
-                .WithWebHostBuilder(builder => builder
-                    .UseEnvironment(Environments.Development)
-                    .ConfigureTestServices(ConfigureTestServices));
-
-            var config = GetTestConfiguration();
-
-            ConfigRunTests = config.GetSettings<ConfigRunTests>();
-            HttpClient = CreateClient();
+            Factory = new WebApplicationFactory<TStartup>().WithWebHostBuilder(builder => ConfigureHostBuilder(builder));
         }
+
+        protected internal void ConfigureHostBuilder(IWebHostBuilder builder)
+        {
+            builder
+                .ConfigureAppConfiguration((context, builder) => ConfigureAppConfiguration(context, builder))
+                .UseEnvironment(EnvironmentsExtensions.Test)
+                .ConfigureTestServices(ConfigureTestServices);
+        }
+
+        protected internal void ConfigureAppConfiguration(WebHostBuilderContext _, IConfigurationBuilder builder)
+        {
+            var config = _testConfiguration.AsEnumerable().ToList();
+
+            var testConnection = config.FirstOrDefault(c => c.Key == "ConnectionStrings:TestConnection");
+            config.Add(new("ConnectionStrings:DefaultConnection", testConnection.Value));
+
+            builder.AddInMemoryCollection(config);
+
+            ConfigureAppConfiguration(builder);
+        }
+
+        protected virtual void ConfigureAppConfiguration(IConfigurationBuilder builder) { }
 
         protected virtual void ConfigureTestServices(IServiceCollection services)
         {
@@ -55,7 +66,6 @@ namespace CopaFilmes.Tests.Integration.Fixtures
         protected virtual void Dispose(bool disposing)
         {
             Factory?.Dispose();
-            HttpClient.Dispose();
         }
     }
 

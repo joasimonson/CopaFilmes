@@ -10,7 +10,7 @@ namespace CopaFilmes.Api.Migrations
 {
     [DbContext(typeof(ApiContext))]
     [Migration("20210919043133_initial")]
-    partial class initial
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

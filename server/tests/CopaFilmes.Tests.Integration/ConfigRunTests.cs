@@ -1,6 +1,6 @@
 ﻿namespace CopaFilmes.Tests.Integration
 {
-    internal class ConfigRunTests
+    public class ConfigRunTests
     {
         public int ServerPort { get; set; }
         public string UrlServer { get; set; }

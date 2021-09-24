@@ -27,9 +27,11 @@ namespace CopaFilmes.Tests.Integration.Specs
 
         public CampeonatoControllerTests(ApiFixture apiFixture)
         {
+            apiFixture.Initializar().GetAwaiter().GetResult();
+
             _systemSettings = ConfigManager.SystemSettings;
             _endpoint = apiFixture.ConfigRunTests.EndpointCampeonato;
-            _httpClient = apiFixture.GetAuthenticatedClient().GetAwaiter().GetResult();
+            _httpClient = apiFixture.GetAuthHttpClient();
 
             _wireMockServer = WireMockServer.Start(apiFixture.ConfigRunTests.ServerPort);
         }

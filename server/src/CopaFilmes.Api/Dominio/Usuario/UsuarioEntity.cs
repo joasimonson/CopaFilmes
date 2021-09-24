@@ -1,6 +1,6 @@
 ﻿namespace CopaFilmes.Api.Dominio.Usuario
 {
-    internal class UsuarioEntity
+    public class UsuarioEntity
     {
         public int Id { get; set; }
         public string Usuario { get; set; }

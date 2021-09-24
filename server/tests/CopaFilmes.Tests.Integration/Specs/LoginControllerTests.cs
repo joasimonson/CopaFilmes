@@ -11,34 +11,43 @@ using Xunit;
 
 namespace CopaFilmes.Tests.Integration.Specs
 {
-    public class LoginControllerTests : BaseFixture
+    [Collection(nameof(ApiTestCollection))]
+    public class LoginControllerTests
     {
-        private readonly LoginRequest _login;
+        private readonly ApiFixture _apiFixture;
         private readonly HttpClient _client;
+        private readonly string _endpoint;
 
-        public LoginControllerTests()
+        public LoginControllerTests(ApiFixture apiFixture)
         {
-            var accessKey = GetConfiguration().GetSection("AccessKey").Value;
-            _login = new AutoFaker<LoginRequest>().RuleFor(l => l.Senha, accessKey).Generate();
-            _client = GetDefaultHttpClient();
+            apiFixture.Initializar().GetAwaiter().GetResult();
+
+            _apiFixture = apiFixture;
+            _client = _apiFixture.GetHttpClient();
+            _endpoint = _apiFixture.ConfigRunTests.EndpointLogin;
         }
 
         [Fact]
         public async Task Post_DeveRetornarOk_QuandoTokenForGeradoCorretamente()
         {
+            //Arrange
             var expected = new
             {
                 Autenticado = true,
                 Mensagem = Messages.Login_S001
             };
-            var response = await _client.PostAsync(ConfigRunTests.EndpointLogin, _login.AsHttpContent());
 
+            //Act
+            var response = await _client.PostAsync(_endpoint, _apiFixture.Login.AsHttpContent());
+
+            //Assert
             response.Should().Be200Ok().And.BeAs(expected);
         }
 
         [Fact]
         public async Task Post_DeveRetornarNotFound_QuandoSenhaForIncorreta()
         {
+            //Arrange
             var expected = new
             {
                 Autenticado = false,
@@ -46,8 +55,10 @@ namespace CopaFilmes.Tests.Integration.Specs
             };
             var loginIncorreto = new AutoFaker<LoginRequest>().Generate();
 
-            var response = await _client.PostAsync(ConfigRunTests.EndpointLogin, loginIncorreto.AsHttpContent());
+            //Act
+            var response = await _client.PostAsync(_endpoint, loginIncorreto.AsHttpContent());
 
+            //Assert
             response.Should().Be404NotFound().And.BeAs(expected);
         }
 
@@ -55,8 +66,12 @@ namespace CopaFilmes.Tests.Integration.Specs
         [MemberData(nameof(GerarLoginIncorreto))]
         public async Task Post_DeveRetornarBadRequest_QuandoUsuarioOuSenhaNaoForemPreenchidos(LoginRequest loginIncorreto)
         {
-            var response = await _client.PostAsync(ConfigRunTests.EndpointLogin, loginIncorreto.AsHttpContent());
+            //Arrange
 
+            //Act
+            var response = await _client.PostAsync(_endpoint, loginIncorreto.AsHttpContent());
+
+            //Act
             response.Should().Be400BadRequest();
         }
 

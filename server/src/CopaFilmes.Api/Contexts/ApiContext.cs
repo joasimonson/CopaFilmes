@@ -4,11 +4,10 @@ using Microsoft.Extensions.Logging;
 
 namespace CopaFilmes.Api.Contexts
 {
-    internal class ApiContext : DbContext
+    public class ApiContext : DbContext
     {
         public ApiContext(DbContextOptions<ApiContext> options) : base(options)
         {
-            Database.Migrate();
         }
 
         public DbSet<UsuarioEntity> Usuario { get; set; }

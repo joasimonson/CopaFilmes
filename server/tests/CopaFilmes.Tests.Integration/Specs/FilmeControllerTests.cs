@@ -21,19 +21,21 @@ namespace CopaFilmes.Tests.Integration.Specs
     [Collection(nameof(ApiTestCollection))]
     public class FilmeControllerTests : IDisposable
     {
-        private readonly ApiFilmesFixture _apiFixture;
+        private readonly ApiFixture _apiFixture;
         private readonly SystemSettings _systemSettings;
         private readonly HttpClient _httpClient;
         private readonly string _endpoint;
         private readonly WireMockServer _wireMockServer;
         private readonly IRequestBuilder _request;
 
-        public FilmeControllerTests(ApiFilmesFixture apiFixture)
+        public FilmeControllerTests(ApiFixture apiFixture)
         {
+            apiFixture.Initializar().GetAwaiter().GetResult();
+
             _apiFixture = apiFixture;
             _systemSettings = ConfigManager.SystemSettings;
             _endpoint = _apiFixture.ConfigRunTests.EndpointFilme;
-            _httpClient = _apiFixture.GetAuthenticatedClient().GetAwaiter().GetResult();
+            _httpClient = _apiFixture.GetAuthHttpClient();
 
             _wireMockServer = WireMockServer.Start(_apiFixture.ConfigRunTests.ServerPort);
             _request = Request

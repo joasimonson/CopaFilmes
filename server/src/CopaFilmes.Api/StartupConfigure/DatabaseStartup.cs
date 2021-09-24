@@ -10,7 +10,7 @@ namespace CopaFilmes.Api.StartupConfigure
     {
         public static void Configurar(IServiceCollection services, IConfiguration configuration)
         {
-            var param = configuration.GetConnectionString("DefaultConnection");
+            var param = configuration.GetConnectionString("DefaultConnection"); 
             
             var connectionString = DatabaseCommon.ParseConnectionString(param);
 
