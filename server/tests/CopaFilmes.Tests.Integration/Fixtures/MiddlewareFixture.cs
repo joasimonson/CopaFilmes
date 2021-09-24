@@ -14,12 +14,12 @@ namespace CopaFilmes.Tests.Integration.Fixtures
     {
         private readonly IUsuarioServico _usuarioServicoFake = A.Fake<IUsuarioServico>();
         private readonly UsuarioRequest _usuario;
-        private readonly HttpClient _client;
+        private readonly HttpClient _httpClient;
 
         public MiddlewareFixture()
         {
             _usuario = new AutoFaker<UsuarioRequest>().Generate();
-            _client = GetHttpClient();
+            _httpClient = GetHttpClient();
             A.CallTo(() => _usuarioServicoFake
                 .CriarAsync(A<UsuarioRequest>
                     .That
@@ -35,9 +35,15 @@ namespace CopaFilmes.Tests.Integration.Fixtures
 
         public async Task<HttpResponseMessage> ExecuteMiddlewareAsync()
         {
-            var response = await _client.PostAsync(ConfigRunTests.EndpointUsuario, _usuario.AsHttpContent());
+            var response = await _httpClient.PostAsync(ConfigRunTests.EndpointUsuario, _usuario.AsHttpContent());
 
             return response;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            _httpClient.Dispose();
         }
     }
 }

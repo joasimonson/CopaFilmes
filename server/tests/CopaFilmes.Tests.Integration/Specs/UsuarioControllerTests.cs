@@ -5,6 +5,7 @@ using CopaFilmes.Tests.Common.Util;
 using CopaFilmes.Tests.Integration.Extensions;
 using CopaFilmes.Tests.Integration.Fixtures;
 using FluentAssertions;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -13,10 +14,10 @@ using Xunit;
 namespace CopaFilmes.Tests.Integration.Specs
 {
     [Collection(nameof(ApiTestCollection))]
-    public class UsuarioControllerTests
+    public class UsuarioControllerTests : IDisposable
     {
         private readonly ApiFixture _apiFixture;
-        private readonly HttpClient _client;
+        private readonly HttpClient _httpClient;
         private readonly string _endpoint;
 
         public UsuarioControllerTests(ApiFixture apiFixture)
@@ -24,7 +25,7 @@ namespace CopaFilmes.Tests.Integration.Specs
             apiFixture.Initializar().GetAwaiter().GetResult();
 
             _apiFixture = apiFixture;
-            _client = _apiFixture.GetHttpClient();
+            _httpClient = _apiFixture.GetHttpClient();
             _endpoint = _apiFixture.ConfigRunTests.EndpointUsuario;
         }
 
@@ -40,7 +41,7 @@ namespace CopaFilmes.Tests.Integration.Specs
             };
 
             //Act
-            var response = await _client.PostAsync(_endpoint, novoUsuario.AsHttpContent());
+            var response = await _httpClient.PostAsync(_endpoint, novoUsuario.AsHttpContent());
 
             //Assert
             response.Should().Be200Ok().And.BeAs(expected);
@@ -57,7 +58,7 @@ namespace CopaFilmes.Tests.Integration.Specs
             };
 
             //Act
-            var response = await _client.PostAsync(_endpoint, _apiFixture.Usuario.AsHttpContent());
+            var response = await _httpClient.PostAsync(_endpoint, _apiFixture.Usuario.AsHttpContent());
 
             //Assert
             response.Should().Be422UnprocessableEntity().And.BeAs(expected);
@@ -70,7 +71,7 @@ namespace CopaFilmes.Tests.Integration.Specs
             //Arrange
 
             //Act
-            var response = await _client.PostAsync(_endpoint, usuarioIncorreto.AsHttpContent());
+            var response = await _httpClient.PostAsync(_endpoint, usuarioIncorreto.AsHttpContent());
 
             //Act
             response.Should().Be400BadRequest();
@@ -80,6 +81,17 @@ namespace CopaFilmes.Tests.Integration.Specs
         {
             yield return new object[] { new AutoFaker<UsuarioRequest>().RuleFor(l => l.Usuario, string.Empty).Generate() };
             yield return new object[] { new AutoFaker<UsuarioRequest>().RuleFor(l => l.Senha, string.Empty).Generate() };
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            _httpClient.Dispose();
         }
     }
 }

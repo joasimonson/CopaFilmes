@@ -4,6 +4,7 @@ using CopaFilmes.Api.Servicos.Login;
 using CopaFilmes.Tests.Common.Util;
 using CopaFilmes.Tests.Integration.Fixtures;
 using FluentAssertions;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -12,10 +13,10 @@ using Xunit;
 namespace CopaFilmes.Tests.Integration.Specs
 {
     [Collection(nameof(ApiTestCollection))]
-    public class LoginControllerTests
+    public class LoginControllerTests : IDisposable
     {
         private readonly ApiFixture _apiFixture;
-        private readonly HttpClient _client;
+        private readonly HttpClient _httpClient;
         private readonly string _endpoint;
 
         public LoginControllerTests(ApiFixture apiFixture)
@@ -23,7 +24,7 @@ namespace CopaFilmes.Tests.Integration.Specs
             apiFixture.Initializar().GetAwaiter().GetResult();
 
             _apiFixture = apiFixture;
-            _client = _apiFixture.GetHttpClient();
+            _httpClient = _apiFixture.GetHttpClient();
             _endpoint = _apiFixture.ConfigRunTests.EndpointLogin;
         }
 
@@ -38,7 +39,7 @@ namespace CopaFilmes.Tests.Integration.Specs
             };
 
             //Act
-            var response = await _client.PostAsync(_endpoint, _apiFixture.Login.AsHttpContent());
+            var response = await _httpClient.PostAsync(_endpoint, _apiFixture.Login.AsHttpContent());
 
             //Assert
             response.Should().Be200Ok().And.BeAs(expected);
@@ -56,7 +57,7 @@ namespace CopaFilmes.Tests.Integration.Specs
             var loginIncorreto = new AutoFaker<LoginRequest>().Generate();
 
             //Act
-            var response = await _client.PostAsync(_endpoint, loginIncorreto.AsHttpContent());
+            var response = await _httpClient.PostAsync(_endpoint, loginIncorreto.AsHttpContent());
 
             //Assert
             response.Should().Be404NotFound().And.BeAs(expected);
@@ -69,7 +70,7 @@ namespace CopaFilmes.Tests.Integration.Specs
             //Arrange
 
             //Act
-            var response = await _client.PostAsync(_endpoint, loginIncorreto.AsHttpContent());
+            var response = await _httpClient.PostAsync(_endpoint, loginIncorreto.AsHttpContent());
 
             //Act
             response.Should().Be400BadRequest();
@@ -79,6 +80,17 @@ namespace CopaFilmes.Tests.Integration.Specs
         {
             yield return new object[] { new AutoFaker<LoginRequest>().RuleFor(l => l.Usuario, string.Empty).Generate() };
             yield return new object[] { new AutoFaker<LoginRequest>().RuleFor(l => l.Senha, string.Empty).Generate() };
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            _httpClient.Dispose();
         }
     }
 }

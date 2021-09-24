@@ -63,10 +63,7 @@ namespace CopaFilmes.Tests.Integration.Fixtures
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            Factory?.Dispose();
-        }
+        protected virtual void Dispose(bool disposing) => Factory?.Dispose();
     }
 
     public class BaseFixture : BaseFixture<Startup>

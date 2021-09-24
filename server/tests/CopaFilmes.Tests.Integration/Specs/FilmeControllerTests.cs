@@ -120,9 +120,17 @@ namespace CopaFilmes.Tests.Integration.Specs
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
             var memoryCache = _apiFixture.GetService<IMemoryCache>();
             memoryCache.Remove(_systemSettings.FilmesCacheKey);
+
             _wireMockServer.Dispose();
+            _httpClient.Dispose();
         }
     }
 }

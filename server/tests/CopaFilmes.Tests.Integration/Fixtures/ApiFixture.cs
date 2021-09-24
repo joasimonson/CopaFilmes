@@ -73,5 +73,12 @@ namespace CopaFilmes.Tests.Integration.Fixtures
             var result = JsonConvert.DeserializeObject<UsuarioResult>(jsonResponse);
             return result;
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            _httpClient.Dispose();
+            _databaseFixture.Dispose();
+        }
     }
 }

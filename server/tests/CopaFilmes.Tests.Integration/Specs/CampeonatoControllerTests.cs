@@ -79,7 +79,14 @@ namespace CopaFilmes.Tests.Integration.Specs
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
             _wireMockServer.Dispose();
+            _httpClient.Dispose();
         }
     }
 }
