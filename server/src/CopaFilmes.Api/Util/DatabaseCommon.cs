@@ -32,7 +32,7 @@ namespace CopaFilmes.Api.Util
             }
             catch (Exception)
             {
-                throw new FormatException("String connection invalid!");
+                throw new FormatException("Invalid connection string!");
             }
 
             return builder.ConnectionString;

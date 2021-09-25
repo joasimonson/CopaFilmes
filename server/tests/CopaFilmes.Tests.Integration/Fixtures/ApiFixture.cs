@@ -23,6 +23,8 @@ namespace CopaFilmes.Tests.Integration.Fixtures
 
         private readonly DatabaseFixture _databaseFixture = new();
         private readonly HttpClient _httpClient;
+        private readonly string _endpointUsuario = ConfigManagerIntegration.ConfigRunTests.EndpointUsuario;
+        private readonly string _endpointLogin = ConfigManagerIntegration.ConfigRunTests.EndpointLogin;
 
         public ApiFixture()
         {
@@ -52,9 +54,9 @@ namespace CopaFilmes.Tests.Integration.Fixtures
                 Senha = Usuario.Senha
             };
 
-            await _httpClient.PostAsync(ConfigRunTests.EndpointUsuario, Usuario.AsHttpContent());
+            await _httpClient.PostAsync(_endpointUsuario, Usuario.AsHttpContent());
 
-            var responseLogin = await _httpClient.PostAsync(ConfigRunTests.EndpointLogin, Login.AsHttpContent());
+            var responseLogin = await _httpClient.PostAsync(_endpointLogin, Login.AsHttpContent());
             var jsonResponseLogin = await responseLogin.Content.ReadAsStringAsync();
             LoginToken = JsonConvert.DeserializeObject<LoginResult>(jsonResponseLogin);
         }
@@ -64,14 +66,6 @@ namespace CopaFilmes.Tests.Integration.Fixtures
             var client = GetHttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", LoginToken.Token);
             return client;
-        }
-
-        public async Task<UsuarioResult> CriarUsuarioNoBanco()
-        {
-            var response = await _httpClient.PostAsync(ConfigRunTests.EndpointUsuario, Usuario.AsHttpContent());
-            var jsonResponse = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<UsuarioResult>(jsonResponse);
-            return result;
         }
 
         protected override void Dispose(bool disposing)

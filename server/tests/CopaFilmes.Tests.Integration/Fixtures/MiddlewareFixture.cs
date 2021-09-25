@@ -35,7 +35,7 @@ namespace CopaFilmes.Tests.Integration.Fixtures
 
         public async Task<HttpResponseMessage> ExecuteMiddlewareAsync()
         {
-            var response = await _httpClient.PostAsync(ConfigRunTests.EndpointUsuario, _usuario.AsHttpContent());
+            var response = await _httpClient.PostAsync(ConfigManagerIntegration.ConfigRunTests.EndpointUsuario, _usuario.AsHttpContent());
 
             return response;
         }

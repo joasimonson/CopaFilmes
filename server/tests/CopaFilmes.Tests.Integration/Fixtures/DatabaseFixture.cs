@@ -1,6 +1,5 @@
 ﻿using CopaFilmes.Api.Contexts;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Npgsql;
 using Respawn;
 using System;
@@ -20,11 +19,7 @@ namespace CopaFilmes.Tests.Integration.Fixtures
 
         public DatabaseFixture()
         {
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile($"appsettings.{EnvironmentsExtensions.Test}.json")
-                .Build();
-
-            _connectionString = configuration.GetConnectionString("TestConnection");
+            _connectionString = ConfigManagerIntegration.TestConnectionString;
             _context = new ApiContext(new DbContextOptionsBuilder<ApiContext>().UseNpgsql(_connectionString).Options);
 
             SetupDatabase().GetAwaiter().GetResult();
@@ -46,7 +41,7 @@ namespace CopaFilmes.Tests.Integration.Fixtures
 
         public ApiContext GetContext() => _context;
 
-        public async Task Reset(string[] tablesToInclude = null)
+        public async Task Reset(string[] tables = null)
         {
             using var conn = new NpgsqlConnection(_connectionString);
             await conn.OpenAsync();
@@ -57,13 +52,13 @@ namespace CopaFilmes.Tests.Integration.Fixtures
                 DbAdapter = DbAdapter.Postgres
             };
 
-            if (tablesToInclude is null)
+            if (tables is null)
             {
                 checkpoint.TablesToIgnore = TablesToIgnore;
             }
             else
             {
-                checkpoint.TablesToInclude = tablesToInclude;
+                checkpoint.TablesToInclude = tables;
             }
 
             await checkpoint.Reset(conn);

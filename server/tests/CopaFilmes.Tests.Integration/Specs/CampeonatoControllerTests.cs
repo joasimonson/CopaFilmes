@@ -29,11 +29,11 @@ namespace CopaFilmes.Tests.Integration.Specs
         {
             apiFixture.Initializar().GetAwaiter().GetResult();
 
+            _endpoint = ConfigManagerIntegration.ConfigRunTests.EndpointCampeonato;
             _systemSettings = ConfigManager.SystemSettings;
-            _endpoint = apiFixture.ConfigRunTests.EndpointCampeonato;
             _httpClient = apiFixture.GetAuthHttpClient();
 
-            _wireMockServer = WireMockServer.Start(apiFixture.ConfigRunTests.ServerPort);
+            _wireMockServer = WireMockServer.Start(ConfigManagerIntegration.ConfigRunTests.ServerPort);
         }
 
         [Fact]

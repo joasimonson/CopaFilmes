@@ -1,5 +1,4 @@
 ﻿using CopaFilmes.Api;
-using CopaFilmes.Api.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -12,13 +11,11 @@ using System.Net.Http;
 
 namespace CopaFilmes.Tests.Integration.Fixtures
 {
+    public class BaseFixture : BaseFixture<Startup> { }
     public class BaseFixture<TStartup> : IDisposable
         where TStartup : class
     {
         protected WebApplicationFactory<TStartup> Factory { get; }
-
-        private static readonly IConfiguration _testConfiguration = new ConfigurationBuilder().AddJsonFile($"appsettings.{EnvironmentsExtensions.Test}.json").Build();
-        public readonly ConfigRunTests ConfigRunTests = _testConfiguration.GetSettings<ConfigRunTests>();
 
         public TService GetService<TService>() => Factory.Services.GetService<TService>();
         public HttpClient GetHttpClient() => Factory.CreateClient();
@@ -30,7 +27,7 @@ namespace CopaFilmes.Tests.Integration.Fixtures
             Factory = new WebApplicationFactory<TStartup>().WithWebHostBuilder(builder => ConfigureHostBuilder(builder));
         }
 
-        protected internal void ConfigureHostBuilder(IWebHostBuilder builder)
+        private void ConfigureHostBuilder(IWebHostBuilder builder)
         {
             builder
                 .ConfigureAppConfiguration((context, builder) => ConfigureAppConfiguration(context, builder))
@@ -38,12 +35,11 @@ namespace CopaFilmes.Tests.Integration.Fixtures
                 .ConfigureTestServices(ConfigureTestServices);
         }
 
-        protected internal void ConfigureAppConfiguration(WebHostBuilderContext _, IConfigurationBuilder builder)
+        private void ConfigureAppConfiguration(WebHostBuilderContext _, IConfigurationBuilder builder)
         {
-            var config = _testConfiguration.AsEnumerable().ToList();
+            var config = ConfigManagerIntegration.TestConfiguration.AsEnumerable().ToList();
 
-            var testConnection = config.FirstOrDefault(c => c.Key == "ConnectionStrings:TestConnection");
-            config.Add(new("ConnectionStrings:DefaultConnection", testConnection.Value));
+            config.Add(new("ConnectionStrings:DefaultConnection", ConfigManagerIntegration.TestConnectionString));
 
             builder.AddInMemoryCollection(config);
 
@@ -64,9 +60,5 @@ namespace CopaFilmes.Tests.Integration.Fixtures
         }
 
         protected virtual void Dispose(bool disposing) => Factory?.Dispose();
-    }
-
-    public class BaseFixture : BaseFixture<Startup>
-    {
     }
 }

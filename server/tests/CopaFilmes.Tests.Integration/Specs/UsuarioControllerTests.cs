@@ -18,7 +18,7 @@ namespace CopaFilmes.Tests.Integration.Specs
     {
         private readonly ApiFixture _apiFixture;
         private readonly HttpClient _httpClient;
-        private readonly string _endpoint;
+        private readonly string _endpoint = ConfigManagerIntegration.ConfigRunTests.EndpointUsuario;
 
         public UsuarioControllerTests(ApiFixture apiFixture)
         {
@@ -26,7 +26,6 @@ namespace CopaFilmes.Tests.Integration.Specs
 
             _apiFixture = apiFixture;
             _httpClient = _apiFixture.GetHttpClient();
-            _endpoint = _apiFixture.ConfigRunTests.EndpointUsuario;
         }
 
         [Fact]

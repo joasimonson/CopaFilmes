@@ -25,7 +25,7 @@ namespace CopaFilmes.Tests.Integration.Specs
 
             _apiFixture = apiFixture;
             _httpClient = _apiFixture.GetHttpClient();
-            _endpoint = _apiFixture.ConfigRunTests.EndpointLogin;
+            _endpoint = ConfigManagerIntegration.ConfigRunTests.EndpointLogin;
         }
 
         [Fact]

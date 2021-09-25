@@ -33,11 +33,11 @@ namespace CopaFilmes.Tests.Integration.Specs
             apiFixture.Initializar().GetAwaiter().GetResult();
 
             _apiFixture = apiFixture;
-            _systemSettings = ConfigManager.SystemSettings;
-            _endpoint = _apiFixture.ConfigRunTests.EndpointFilme;
             _httpClient = _apiFixture.GetAuthHttpClient();
+            _endpoint = ConfigManagerIntegration.ConfigRunTests.EndpointFilme;
+            _systemSettings = ConfigManager.SystemSettings;
 
-            _wireMockServer = WireMockServer.Start(_apiFixture.ConfigRunTests.ServerPort);
+            _wireMockServer = WireMockServer.Start(ConfigManagerIntegration.ConfigRunTests.ServerPort);
             _request = Request
                 .Create()
                 .WithPath(new WildcardMatcher(ConfigManager.ApiFilmesSettings.EndpointFilmes))

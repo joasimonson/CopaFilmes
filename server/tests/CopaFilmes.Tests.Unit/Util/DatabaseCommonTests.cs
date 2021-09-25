@@ -45,7 +45,7 @@ namespace CopaFilmes.Tests.Unit.Util
             Action act = () => { DatabaseCommon.ParseConnectionString(connectionString); };
 
             //Assert
-            act.Should().Throw<FormatException>().WithMessage("String connection invalid!");
+            act.Should().Throw<FormatException>().WithMessage("Invalid connection string!");
         }
     }
 }
