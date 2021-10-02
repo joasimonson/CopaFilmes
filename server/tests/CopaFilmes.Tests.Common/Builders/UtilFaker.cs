@@ -6,16 +6,9 @@ namespace CopaFilmes.Tests.Common.Builders
 {
     internal static class UtilFaker
     {
-        public static readonly IAutoFaker Faker;
-        public static readonly Faker FakerHub;
-        public static readonly AutoFaker<string> FakerString;
-
-        static UtilFaker()
-        {
-            Faker = AutoFaker.Create();
-            FakerHub = new Faker();
-            FakerString = new AutoFaker<string>();
-        }
+        public static readonly IAutoFaker Faker = AutoFaker.Create();
+        public static readonly Faker FakerHub = new Faker();
+        public static readonly AutoFaker<string> FakerString = new AutoFaker<string>();
 
         public static decimal Nota() => decimal.Round(FakerHub.Random.Decimal(0, 10), 2);
 
