@@ -16,7 +16,7 @@ namespace CopaFilmes.Api.Dominio.Campeonato
 
         protected ChaveCampeonato(IOptions<SystemSettings> systemSettings, IEnumerable<FilmeModel> participantes)
         {
-            if (participantes is null || participantes.Count() == 0 || !participantes.Count().EhPar())
+            if (participantes is null || !participantes.Any() || !participantes.Count().EhPar())
             {
                 throw new QtdeIncorretaRegraChaveamentoException(systemSettings.Value.MaximoParticipantesCampeonato);
             }
@@ -49,18 +49,17 @@ namespace CopaFilmes.Api.Dominio.Campeonato
 
         public virtual IEnumerable<FilmePosicaoModel> ObterParticipantesPosicao()
         {
-            if (_partidas.Count() == 0)
+            if (!_partidas.Any())
             {
                 throw new ChaveNaoMontadaException();
             }
 
             var filmesPosicao = new List<FilmePosicaoModel>();
 
-            for (int i = 0; i < _partidas.Count(); i++)
+            for (int i = 0; i < _partidas.Count; i++)
             {
                 var partida = _partidas.ElementAt(i);
-
-                IEnumerable<FilmePosicaoModel> participantesPartida = partida.ObterParticipantes().Select((f, index) => new FilmePosicaoModel
+                var participantesPartida = partida.ObterParticipantes().Select((f, index) => new FilmePosicaoModel
                 {
                     Posicao = index + 1,
                     Id = f.Id,
