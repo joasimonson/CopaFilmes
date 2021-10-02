@@ -21,13 +21,14 @@ namespace CopaFilmes.Tests.Integration.Fixtures
         public LoginResult LoginToken { get; private set; }
         public MemoryCacheWrapper MemoryCacheWrapperFake { get; private set; }
 
-        private readonly DatabaseFixture _databaseFixture = new();
+        private readonly DatabaseFixture _databaseFixture;
         private readonly HttpClient _httpClient;
         private readonly string _endpointUsuario = ConfigManagerIntegration.ConfigRunTests.EndpointUsuario;
         private readonly string _endpointLogin = ConfigManagerIntegration.ConfigRunTests.EndpointLogin;
 
-        public ApiFixture()
+        public ApiFixture(DatabaseFixture databaseFixture)
         {
+            _databaseFixture = databaseFixture;
             _httpClient = GetHttpClient();
         }
 
@@ -40,7 +41,7 @@ namespace CopaFilmes.Tests.Integration.Fixtures
             services.AddSingleton(_ => MemoryCacheWrapperFake);
         }
 
-        public async Task Initializar()
+        public async Task Initialize()
         {
             await _databaseFixture.Reset(new[] { "TS_USUARIO" });
             Usuario = new()
@@ -72,7 +73,6 @@ namespace CopaFilmes.Tests.Integration.Fixtures
         {
             base.Dispose(disposing);
             _httpClient.Dispose();
-            _databaseFixture.Dispose();
         }
     }
 }

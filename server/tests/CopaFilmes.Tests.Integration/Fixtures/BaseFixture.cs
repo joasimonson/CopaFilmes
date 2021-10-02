@@ -8,6 +8,9 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
 using System.Net.Http;
+using Xunit;
+
+[assembly: TestFramework("CopaFilmes.Tests.Integration.XunitExtensions.XunitTestFrameworkDependencyFixture", "CopaFilmes.Tests.Integration")]
 
 namespace CopaFilmes.Tests.Integration.Fixtures
 {
@@ -20,17 +23,17 @@ namespace CopaFilmes.Tests.Integration.Fixtures
         public TService GetService<TService>() => Factory.Services.GetService<TService>();
         public HttpClient GetHttpClient() => Factory.CreateClient();
 
-        public BaseFixture()
+        protected BaseFixture()
         {
             Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", EnvironmentsExtensions.Test);
 
-            Factory = new WebApplicationFactory<TStartup>().WithWebHostBuilder(builder => ConfigureHostBuilder(builder));
+            Factory = new WebApplicationFactory<TStartup>().WithWebHostBuilder(ConfigureHostBuilder);
         }
 
         private void ConfigureHostBuilder(IWebHostBuilder builder)
         {
             builder
-                .ConfigureAppConfiguration((context, builder) => ConfigureAppConfiguration(context, builder))
+                .ConfigureAppConfiguration(ConfigureAppConfiguration)
                 .UseEnvironment(EnvironmentsExtensions.Test)
                 .ConfigureTestServices(ConfigureTestServices);
         }

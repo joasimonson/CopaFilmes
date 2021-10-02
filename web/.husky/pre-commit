@@ -1,5 +1,9 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-cd web
-npm run lint-front -s
+if [ ! -z "$(git diff --name-only --cached web)" ]; then
+    cd web
+    npm run lint-front -s
+fi
+
+exit

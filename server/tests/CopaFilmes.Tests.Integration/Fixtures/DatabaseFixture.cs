@@ -9,8 +9,8 @@ namespace CopaFilmes.Tests.Integration.Fixtures
 {
     public class DatabaseFixture : IDisposable
     {
-        private readonly string[] SchemasToInclude = new[] { "public" };
-        private readonly string[] TablesToIgnore = new[] { "__EFMigrationsHistory" };
+        private readonly string[] _schemasToInclude = { "public" };
+        private readonly string[] _tablesToIgnore = { "__EFMigrationsHistory" };
 
         private readonly ApiContext _context;
         private readonly string _connectionString;
@@ -43,18 +43,18 @@ namespace CopaFilmes.Tests.Integration.Fixtures
 
         public async Task Reset(string[] tables = null)
         {
-            using var conn = new NpgsqlConnection(_connectionString);
+            await using var conn = new NpgsqlConnection(_connectionString);
             await conn.OpenAsync();
 
             var checkpoint = new Checkpoint()
             {
-                SchemasToInclude = SchemasToInclude,
+                SchemasToInclude = _schemasToInclude,
                 DbAdapter = DbAdapter.Postgres
             };
 
             if (tables is null)
             {
-                checkpoint.TablesToIgnore = TablesToIgnore;
+                checkpoint.TablesToIgnore = _tablesToIgnore;
             }
             else
             {

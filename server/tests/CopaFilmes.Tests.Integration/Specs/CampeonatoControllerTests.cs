@@ -27,7 +27,7 @@ namespace CopaFilmes.Tests.Integration.Specs
 
         public CampeonatoControllerTests(ApiFixture apiFixture)
         {
-            apiFixture.Initializar().GetAwaiter().GetResult();
+            apiFixture.Initialize().GetAwaiter().GetResult();
 
             _endpoint = ConfigManagerIntegration.ConfigRunTests.EndpointCampeonato;
             _systemSettings = ConfigManager.SystemSettings;

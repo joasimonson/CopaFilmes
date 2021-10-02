@@ -30,7 +30,7 @@ namespace CopaFilmes.Tests.Integration.Specs
 
         public FilmeControllerTests(ApiFixture apiFixture)
         {
-            apiFixture.Initializar().GetAwaiter().GetResult();
+            apiFixture.Initialize().GetAwaiter().GetResult();
 
             _apiFixture = apiFixture;
             _httpClient = _apiFixture.GetAuthHttpClient();
