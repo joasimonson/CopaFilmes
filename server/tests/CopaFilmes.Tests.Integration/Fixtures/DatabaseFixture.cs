@@ -15,7 +15,7 @@ namespace CopaFilmes.Tests.Integration.Fixtures
         private readonly ApiContext _context;
         private readonly string _connectionString;
 
-        private static bool _initialized;
+        private bool _initialized;
 
         public DatabaseFixture()
         {
@@ -29,7 +29,7 @@ namespace CopaFilmes.Tests.Integration.Fixtures
         {
             if (_initialized)
             {
-                await Reset();
+                await Reset().ConfigureAwait(false);
             }
             else
             {
@@ -46,7 +46,7 @@ namespace CopaFilmes.Tests.Integration.Fixtures
             await using var conn = new NpgsqlConnection(_connectionString);
             await conn.OpenAsync();
 
-            var checkpoint = new Checkpoint()
+            var checkpoint = new Checkpoint
             {
                 SchemasToInclude = _schemasToInclude,
                 DbAdapter = DbAdapter.Postgres

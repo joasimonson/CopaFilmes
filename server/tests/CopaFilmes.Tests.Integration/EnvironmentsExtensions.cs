@@ -2,6 +2,6 @@
 {
     public static class EnvironmentsExtensions
     {
-        public const string Test = nameof(Test);
+        public static string Test = nameof(Test);
     }
 }

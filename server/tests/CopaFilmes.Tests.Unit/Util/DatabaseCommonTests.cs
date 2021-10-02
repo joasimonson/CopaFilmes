@@ -8,7 +8,7 @@ namespace CopaFilmes.Tests.Unit.Util
 {
     public class DatabaseCommonTests
     {
-        public const string CONN = "host=localhost;port=5432;database=copafilmes;username=postgres;password=1234;pooling=true";
+        private const string CONNECTION = "host=localhost;port=5432;database=db;username=user;password=pwd;pooling=true";
 
         [Fact]
         public void ParseConnectionString_DeveRetornarConexão_QuandoStringComum()
@@ -16,23 +16,23 @@ namespace CopaFilmes.Tests.Unit.Util
             //Arrange
 
             //Act
-            var actual = DatabaseCommon.ParseConnectionString(CONN);
+            var actual = DatabaseCommon.ParseConnectionString(CONNECTION);
 
             //Assert
-            actual.Should().BeEquivalentTo(CONN);
+            actual.Should().BeEquivalentTo(CONNECTION);
         }
 
         [Fact]
         public void ParseConnectionString_DeveRetornarConexão_QuandoStringUrl()
         {
             //Arrange
-            var connectionString = "postgres://postgres:1234@localhost:5432/CopaFilmes";
+            var connectionString = "postgres://user:pwd@localhost:5432/db";
 
             //Act
             var actual = DatabaseCommon.ParseConnectionString(connectionString);
 
             //Assert
-            actual.Should().BeEquivalentTo(CONN);
+            actual.Should().BeEquivalentTo(CONNECTION);
         }
 
         [Fact]

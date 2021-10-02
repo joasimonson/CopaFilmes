@@ -16,7 +16,7 @@ namespace CopaFilmes.Api.Dominio.Usuario
 
         public async Task<bool> CriarAsync(string usuario, string senha)
         {
-            _context.Usuario.Add(new UsuarioEntity()
+            _context.Usuario.Add(new()
             {
                 Usuario = usuario,
                 Senha = SegurancaCommon.Criptografar(senha)

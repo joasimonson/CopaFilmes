@@ -11,38 +11,39 @@ namespace CopaFilmes.Tests.Integration.Fixtures
 {
     public class PostgresContainerFixture : IDisposable
     {
-        private const string _container = "copafilmes_postgres";
-        private const string _image = "postgres";
+        private const string CONTAINER = "copafilmes_postgres";
+        private const string IMAGE = "postgres";
+        
         private readonly DockerClient _client;
 
         public PostgresContainerFixture()
         {
             _client = new DockerClientConfiguration().CreateClient();
 
-            Inicializar().GetAwaiter().GetResult();
+            Initialize().GetAwaiter().GetResult();
         }
 
-        public async Task Inicializar()
+        private async Task Initialize()
         {
             var filteredContainers = await _client.Containers.ListContainersAsync(new()
             {
                 All = true,
                 Filters = new Dictionary<string, IDictionary<string, bool>>
                 {
-                    { "name", new Dictionary<string, bool> { { $"^/{_container}$", true} } }
+                    { "name", new Dictionary<string, bool> { { $"^/{CONTAINER}$", true} } }
                 }
             });
 
             if (filteredContainers is null || filteredContainers.Count == 0)
             {
-                using var conn = new NpgsqlConnection(ConfigManagerIntegration.TestConnectionString);
+                await using var conn = new NpgsqlConnection(ConfigManagerIntegration.TestConnectionString);
                 var port = conn.Port.ToString();
                 var user = conn.UserName;
                 var password = conn.GetPropertyValue<string>("Password");
                 await _client.Containers.CreateContainerAsync(new()
                 {
-                    Image = _image,
-                    Name = _container,
+                    Image = IMAGE,
+                    Name = CONTAINER,
                     HostConfig = new()
                     {
                         PortBindings = new Dictionary<string, IList<PortBinding>>
@@ -50,19 +51,19 @@ namespace CopaFilmes.Tests.Integration.Fixtures
                             { port, new List<PortBinding> { new() { HostPort = port } } }
                         }
                     },
-                    ExposedPorts = new Dictionary<string, EmptyStruct>()
+                    ExposedPorts = new Dictionary<string, EmptyStruct>
                     {
                         { port, new() }
                     },
-                    Env = new string[]
+                    Env = new[]
                     {
                         $"POSTGRES_USER={user}",
                         $"POSTGRES_PASSWORD={password}"
                     }
                 });
-                await _client.Containers.StartContainerAsync(_container, new());
+                await _client.Containers.StartContainerAsync(CONTAINER, new());
 
-                await WaitForContainerStartsAsync(_container);
+                await WaitForContainerStartsAsync(CONTAINER).ConfigureAwait(false);
             }
             else
             {
@@ -70,7 +71,7 @@ namespace CopaFilmes.Tests.Integration.Fixtures
                 switch (container.State)
                 {
                     case "exited":
-                        await _client.Containers.StartContainerAsync(_container, new());
+                        await _client.Containers.StartContainerAsync(CONTAINER, new());
                         break;
                     case "running":
                         break;
@@ -82,8 +83,8 @@ namespace CopaFilmes.Tests.Integration.Fixtures
 
         private async Task WaitForContainerStartsAsync(string container)
         {
+            const int maxWait = 10;
             var wait = 0;
-            var maxWait = 10;
             IList<ContainerListResponse> containers;
             do
             {
@@ -92,7 +93,7 @@ namespace CopaFilmes.Tests.Integration.Fixtures
                     throw new TimeoutException("Time for wait container starts exceeded!");
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(1));
+                await Task.Delay(TimeSpan.FromSeconds(1)).ConfigureAwait(false);
                 containers = await _client.Containers.ListContainersAsync(new()
                 {
                     All = true,

@@ -27,15 +27,11 @@ namespace CopaFilmes.Tests.Integration.Fixtures
         {
             Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", EnvironmentsExtensions.Test);
 
-            Factory = new WebApplicationFactory<TStartup>().WithWebHostBuilder(ConfigureHostBuilder);
-        }
-
-        private void ConfigureHostBuilder(IWebHostBuilder builder)
-        {
-            builder
-                .ConfigureAppConfiguration(ConfigureAppConfiguration)
-                .UseEnvironment(EnvironmentsExtensions.Test)
-                .ConfigureTestServices(ConfigureTestServices);
+            Factory = new WebApplicationFactory<TStartup>()
+                .WithWebHostBuilder((builder) => builder
+                    .ConfigureAppConfiguration(ConfigureAppConfiguration)
+                    .UseEnvironment(EnvironmentsExtensions.Test)
+                    .ConfigureTestServices(ConfigureTestServices));
         }
 
         private void ConfigureAppConfiguration(WebHostBuilderContext _, IConfigurationBuilder builder)

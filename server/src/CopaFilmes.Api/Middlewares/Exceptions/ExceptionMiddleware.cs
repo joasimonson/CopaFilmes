@@ -26,7 +26,7 @@ namespace CopaFilmes.Api.Middlewares.Exceptions
             }
             catch (Exception ex)
             {
-                await HandleExceptionAsync(httpContext, ex);
+                await HandleExceptionAsync(httpContext, ex).ConfigureAwait(false);
             }
         }
 

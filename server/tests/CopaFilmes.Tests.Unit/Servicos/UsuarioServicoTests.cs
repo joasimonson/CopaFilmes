@@ -59,7 +59,7 @@ namespace CopaFilmes.Tests.Unit.Dominio
             //Arrange
             A.CallTo(() => _usuarioDominioFake.CriarAsync(_usuario.Usuario, _usuario.Senha));
 
-            var expect = new UsuarioResult()
+            var expect = new UsuarioResult
             {
                 Sucesso = true,
                 Usuario = _usuario.Usuario,
@@ -79,7 +79,7 @@ namespace CopaFilmes.Tests.Unit.Dominio
             //Arrange
             A.CallTo(() => _usuarioDominioFake.CriarAsync(_usuario.Usuario, _usuario.Senha)).Throws<Exception>();
 
-            var expect = new UsuarioResult()
+            var expect = new UsuarioResult
             {
                 Sucesso = false,
                 Usuario = _usuario.Usuario,

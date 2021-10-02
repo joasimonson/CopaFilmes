@@ -8,15 +8,13 @@ namespace CopaFilmes.Api.Middlewares.Exceptions
     {
         public int Order => 3;
 
-        public void OnProvidersExecuted(ApplicationModelProviderContext context)
-        {
-        }
+        public void OnProvidersExecuted(ApplicationModelProviderContext context) { }
 
         public void OnProvidersExecuting(ApplicationModelProviderContext context)
         {
-            foreach (ControllerModel controller in context.Result.Controllers)
+            foreach (var controller in context.Result.Controllers)
             {
-                foreach (ActionModel action in controller.Actions)
+                foreach (var action in controller.Actions)
                 {
                     action.Filters.Add(new ProducesResponseTypeAttribute(typeof(ExceptionResponse), StatusCodes.Status500InternalServerError));
                 }

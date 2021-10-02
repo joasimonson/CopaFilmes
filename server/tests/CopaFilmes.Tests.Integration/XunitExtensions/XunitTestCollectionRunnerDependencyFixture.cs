@@ -42,7 +42,9 @@ namespace CopaFilmes.Tests.Integration.XunitExtensions
                 var ctorArgs = ctor.GetParameters().Select(p =>
                 {
                     if (!CollectionFixtureMappings.TryGetValue(p.ParameterType, out var arg))
+                    {
                         missingParameters.Add(p);
+                    }
                     return arg;
                 }).ToArray();
 

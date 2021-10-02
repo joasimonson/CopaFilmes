@@ -1,4 +1,7 @@
-﻿using CopaFilmes.Api.Servicos.Login;
+﻿using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using CopaFilmes.Api.Servicos.Login;
 using CopaFilmes.Api.Servicos.Usuario;
 using CopaFilmes.Api.Wrappers.MemoryCache;
 using CopaFilmes.Tests.Common.Builders;
@@ -8,9 +11,6 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 
 namespace CopaFilmes.Tests.Integration.Fixtures
 {
@@ -35,7 +35,7 @@ namespace CopaFilmes.Tests.Integration.Fixtures
         protected override void ConfigureTestServices(IServiceCollection services)
         {
             base.ConfigureTestServices(services);
-            IMemoryCache memoryCache = new MemoryCache(Options.Create(new MemoryCacheOptions() { }));
+            IMemoryCache memoryCache = new MemoryCache(Options.Create(new MemoryCacheOptions()));
             MemoryCacheWrapperFake = A.Fake<MemoryCacheWrapper>(opt => opt.WithArgumentsForConstructor(new object[] { memoryCache }).CallsBaseMethods());
             services.AddSingleton(_ => memoryCache);
             services.AddSingleton(_ => MemoryCacheWrapperFake);
