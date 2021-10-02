@@ -12,15 +12,15 @@ namespace CopaFilmes.Api.Util
             {
                 throw new ArgumentException(null, nameof(text));
             }
-
-            MD5 md5Hash = MD5.Create();
-            byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(text));
+            
+            var provider = new SHA256Managed();
+            var data = provider.ComputeHash(Encoding.UTF8.GetBytes(text));
 
             StringBuilder sBuilder = new();
 
-            for (int i = 0; i < data.Length; i++)
+            foreach (var item in data)
             {
-                sBuilder.Append(data[i].ToString("x2"));
+                sBuilder.Append(item.ToString("x2"));
             }
 
             return sBuilder.ToString();

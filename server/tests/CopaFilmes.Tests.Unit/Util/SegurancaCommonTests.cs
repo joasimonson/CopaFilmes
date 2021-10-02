@@ -25,7 +25,7 @@ namespace CopaFilmes.Tests.Unit.Util
         {
             //Arrange
             var textoValido = "awp9@sd&(&A";
-            var cripografado = "9f73b08e9354fced7f3717253d5b1855";
+            var cripografado = "672784197d165e7a2dca81d56bcc53532f2824c1d4cfa27e7fac9942f20f6b94";
 
             //Act
             var actual = SegurancaCommon.Criptografar(textoValido);

@@ -2,6 +2,6 @@
 {
     public static class EnvironmentsExtensions
     {
-        public static string Test = nameof(Test);
+        public static readonly string Test = nameof(Test);
     }
 }
