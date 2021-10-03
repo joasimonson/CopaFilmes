@@ -67,7 +67,7 @@ namespace CopaFilmes.Api
                 endpoints.MapControllers();
             });
             
-            app.UseHealthChecks("/healthchecks-data-ui", new HealthCheckOptions()
+            app.UseHealthChecks("/healthchecks-data-ui", new HealthCheckOptions
             {
                 Predicate = _ => true,
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
