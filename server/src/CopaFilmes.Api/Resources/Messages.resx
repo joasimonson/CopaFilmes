@@ -118,9 +118,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Login_F001" xml:space="preserve">
-    <value>Falha ao autenticar</value>
+    <value>Falha ao autenticar.</value>
   </data>
   <data name="Login_S001" xml:space="preserve">
-    <value>Login efetuado com sucesso</value>
+    <value>Login efetuado com sucesso.</value>
+  </data>
+  <data name="Usuario_F001" xml:space="preserve">
+    <value>Usuário ou senha não preenchidos.</value>
+  </data>
+  <data name="Usuario_F002" xml:space="preserve">
+    <value>Usuário já cadastrado.</value>
+  </data>
+  <data name="Usuario_S001" xml:space="preserve">
+    <value>Usuário cadastrado com sucesso.</value>
   </data>
 </root>

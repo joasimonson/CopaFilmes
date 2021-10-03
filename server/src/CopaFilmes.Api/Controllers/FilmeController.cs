@@ -1,12 +1,12 @@
 ﻿using CopaFilmes.Api.Model;
 using CopaFilmes.Api.Servicos;
 using CopaFilmes.Api.Settings;
+using CopaFilmes.Api.Wrappers.MemoryCache;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -20,14 +20,12 @@ namespace CopaFilmes.Api.Controllers
     [Authorize(JwtBearerDefaults.AuthenticationScheme)]
     public class FilmeController : ControllerBase
     {
-        private readonly ILogger<FilmeController> _logger;
-        private readonly IMemoryCache _memoryCache;
+        private readonly MemoryCacheWrapper _memoryCache;
         private readonly IFilmeServico _filmeServico;
         private readonly SystemSettings _systemSettings;
 
-        public FilmeController(ILogger<FilmeController> logger, IMemoryCache memoryCache, IOptions<SystemSettings> systemSettings, IFilmeServico filmeDominio)
+        public FilmeController(MemoryCacheWrapper memoryCache, IOptions<SystemSettings> systemSettings, IFilmeServico filmeDominio)
         {
-            _logger = logger;
             _memoryCache = memoryCache;
             _systemSettings = systemSettings.Value;
             _filmeServico = filmeDominio;
@@ -35,26 +33,17 @@ namespace CopaFilmes.Api.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<FilmeModel>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<FilmeModel>>> Get()
         {
-            try
+            var filmesResponse = await _memoryCache.GetOrCreateAsync(_systemSettings.FilmesCacheKey, async entry =>
             {
-                var filmesResponse = await _memoryCache.GetOrCreateAsync(_systemSettings.FilmesCacheKey, async entry =>
-                {
-                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(_systemSettings.MemoryCacheMinutesExpire);
-                    entry.SetPriority(CacheItemPriority.High);
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(_systemSettings.MemoryCacheMinutesExpire);
+                entry.SetPriority(CacheItemPriority.High);
 
-                    return await _filmeServico.ObterFilmesAsync();
-                });
+                return await _filmeServico.ObterFilmesAsync();
+            });
 
-                return Ok(filmesResponse);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+            return Ok(filmesResponse);
         }
     }
 }

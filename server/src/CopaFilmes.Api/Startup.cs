@@ -1,4 +1,6 @@
+using CopaFilmes.Api.Middlewares.Exceptions;
 using CopaFilmes.Api.StartupConfigure;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace CopaFilmes.Api
 {
@@ -19,7 +22,7 @@ namespace CopaFilmes.Api
 
         public IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
+        public virtual void ConfigureServices(IServiceCollection services)
         {
             services.AddApiVersioning(config =>
             {
@@ -33,9 +36,7 @@ namespace CopaFilmes.Api
             SwaggerStartup.Configurar(services);
             DependencyInjectionStartup.Configurar(services);
             SettingsStartup.Configurar(services, Configuration);
-
-            services.AddMemoryCache();
-            services.AddControllers();
+            DatabaseStartup.Configurar(services, Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
@@ -46,11 +47,10 @@ namespace CopaFilmes.Api
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
 
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseSwagger();
             app.UseSwaggerUI(opt => {
                 opt.RoutePrefix = "swagger";
@@ -62,10 +62,20 @@ namespace CopaFilmes.Api
             app.UseRewriter(options);
 
             app.UseCors();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+            
+            app.UseHealthChecks("/healthchecks-data-ui", new HealthCheckOptions
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+            
+            app.UseHealthChecksUI(options =>
+            {
+                options.UIPath = "/health";
             });
         }
     }

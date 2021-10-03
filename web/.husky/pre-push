@@ -1,5 +1,20 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-cd web
-npm run test:ci
+dir=$(pwd)
+
+if [ ! -z "$(git diff origin/$(git name-rev --name-only HEAD)..HEAD --name-only web)" ]; then
+    printf "\n-- Front-end tests --\n"
+    cd web
+    npm run test:ci
+fi
+
+cd $dir
+
+if [ ! -z "$(git diff origin/$(git name-rev --name-only HEAD)..HEAD --name-only server)" ]; then
+    printf "\n-- Back-end tests --\n"
+    cd server
+    dotnet test
+fi
+
+exit
