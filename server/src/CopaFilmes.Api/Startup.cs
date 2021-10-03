@@ -1,5 +1,6 @@
 using CopaFilmes.Api.Middlewares.Exceptions;
 using CopaFilmes.Api.StartupConfigure;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace CopaFilmes.Api
 {
@@ -63,6 +65,17 @@ namespace CopaFilmes.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+            
+            app.UseHealthChecks("/healthchecks-data-ui", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+            
+            app.UseHealthChecksUI(options =>
+            {
+                options.UIPath = "/health";
             });
         }
     }

@@ -8,6 +8,7 @@ namespace CopaFilmes.Api.Contexts
     {
         public ApiContext(DbContextOptions<ApiContext> options) : base(options)
         {
+            Database.Migrate();
         }
 
         public DbSet<UsuarioEntity> Usuario { get; set; }

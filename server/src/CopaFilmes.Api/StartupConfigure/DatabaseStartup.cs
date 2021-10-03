@@ -10,10 +10,18 @@ namespace CopaFilmes.Api.StartupConfigure
     {
         public static void Configurar(IServiceCollection services, IConfiguration configuration)
         {
-            var param = configuration.GetConnectionString("DefaultConnection"); 
+            const string connectionName = "DefaultConnection";
             
+            var param = configuration.GetConnectionString(connectionName);
             var connectionString = DatabaseCommon.ParseConnectionString(param);
-
+            
+            services.AddHealthChecksUI()
+                .AddPostgreSqlStorage(connectionString);
+            
+            services.AddHealthChecks()
+                .AddNpgSql(connectionString)
+                .AddDbContextCheck<ApiContext>();
+            
             services.AddDbContext<ApiContext>(options => options.UseNpgsql(connectionString));
         }
     }
