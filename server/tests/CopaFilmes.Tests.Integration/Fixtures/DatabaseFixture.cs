@@ -2,7 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using Respawn;
+using Respawn.Graph;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CopaFilmes.Tests.Integration.Fixtures
@@ -10,7 +12,7 @@ namespace CopaFilmes.Tests.Integration.Fixtures
     public class DatabaseFixture : IDisposable
     {
         private readonly string[] _schemasToInclude = { "public" };
-        private readonly string[] _tablesToIgnore = { "__EFMigrationsHistory" };
+        private readonly Table[] _tablesToIgnore = new Table[] { "__EFMigrationsHistory" };
 
         private readonly ApiContext _context;
         private readonly string _connectionString;
@@ -46,22 +48,17 @@ namespace CopaFilmes.Tests.Integration.Fixtures
             await using var conn = new NpgsqlConnection(_connectionString);
             await conn.OpenAsync();
 
-            var checkpoint = new Checkpoint
+            Table[] tablesToInclude = tables?.Select(t => new Table(t)).ToArray() ?? Array.Empty<Table>();
+            
+            var respawner = await Respawner.CreateAsync(conn, new RespawnerOptions
             {
+                DbAdapter = DbAdapter.Postgres,
                 SchemasToInclude = _schemasToInclude,
-                DbAdapter = DbAdapter.Postgres
-            };
+                TablesToIgnore = _tablesToIgnore,
+                TablesToInclude = tablesToInclude
+            });
+            await respawner.ResetAsync(conn);
 
-            if (tables is null)
-            {
-                checkpoint.TablesToIgnore = _tablesToIgnore;
-            }
-            else
-            {
-                checkpoint.TablesToInclude = tables;
-            }
-
-            await checkpoint.Reset(conn);
             await conn.CloseAsync();
         }
 

@@ -5,6 +5,7 @@ VisualStudioVersion = 17.0.31521.260
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3E52319F-36D0-45FA-A54B-E820BC32ECD5}"
 	ProjectSection(SolutionItems) = preProject
+		.config\dotnet-tools.json = .config\dotnet-tools.json
 		global.json = global.json
 	EndProjectSection
 EndProject

@@ -76,10 +76,10 @@ namespace CopaFilmes.Tests.Integration.Fixtures
 
         private async Task CreatePostgresContainerAsync()
         {
-            await using var conn = new NpgsqlConnection(ConfigManagerIntegration.TestConnectionString);
-            var port = conn.Port.ToString();
-            var user = conn.UserName;
-            var password = conn.GetPropertyValue<string>("Password");
+            var config = new NpgsqlConnectionStringBuilder(ConfigManagerIntegration.TestConnectionString);
+            var port = config.Port.ToString();
+            var user = config.Username;
+            var password = config.Password;
             await _client.Containers.CreateContainerAsync(new()
             {
                 Image = FULLIMAGE,
