@@ -13,9 +13,9 @@ namespace CopaFilmes.Api.Contexts
 
         public DbSet<UsuarioEntity> Usuario { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            builder.ApplyConfiguration(new UsuarioMap());
+            modelBuilder.ApplyConfiguration(new UsuarioMap());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

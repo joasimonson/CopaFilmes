@@ -61,7 +61,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"joasimonson_CopaFilmes_BackEnd" /o:"joasimonson" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="./**/coverage.opencover.xml" /d:sonar.coverage.exclusions="tests/**"
-          dotnet test --logger trx --results-directory ./TestResults/ /p:CollectCoverage=true /p:CoverletOutputFormat=\"json,opencover,cobertura\" /p:CoverletOutput=../../TestResults/ /p:Exclude=\"[CopaFilmes.Api.Test.*]*\" /p:ExcludeByFile=\"**/*.Designer.cs\" /p:MergeWith="../../TestResults/coverage.json" -m:1
+          dotnet test --logger trx --results-directory ./TestResults/ /p:CollectCoverage=true /p:CoverletOutputFormat=\"json,opencover,cobertura\" /p:CoverletOutput=../../TestResults/ /p:Exclude=\"[CopaFilmes.Tests.*]*,[CopaFilmes.Api.Migrations.*]*\" /p:ExcludeByFile=\"**/*.Designer.cs\" /p:MergeWith="../../TestResults/coverage.json" -m:1
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="$SONAR_TOKEN"
       #- name: Analyse and report to SonarCloud with ReportGenerator
       #  run: |

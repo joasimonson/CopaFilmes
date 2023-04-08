@@ -39,7 +39,7 @@ namespace CopaFilmes.Api.StartupConfigure
                                 Id = JwtBearerDefaults.AuthenticationScheme
                             },
                         },
-                        new string[] {}
+                        Array.Empty<string>()
                     }
                 });
             });

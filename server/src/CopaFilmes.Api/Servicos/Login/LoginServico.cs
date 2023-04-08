@@ -34,26 +34,20 @@ namespace CopaFilmes.Api.Servicos.Login
             }
         }
 
-        private LoginResult Sucesso(Token token)
+        private static LoginResult Sucesso(Token token) => new()
         {
-            return new LoginResult
-            {
-                Autenticado = true,
-                Criacao = token.Criacao,
-                Expiracao = token.Expiracao,
-                Token = token.CodigoToken,
-                Usuario = token.Usuario,
-                Mensagem = Messages.Login_S001
-            };
-        }
+            Autenticado = true,
+            Criacao = token.Criacao,
+            Expiracao = token.Expiracao,
+            Token = token.CodigoToken,
+            Usuario = token.Usuario,
+            Mensagem = Messages.Login_S001
+        };
 
-        private LoginResult Falha()
+        private static LoginResult Falha() => new()
         {
-            return new LoginResult
-            {
-                Autenticado = false,
-                Mensagem = Messages.Login_F001
-            };
-        }
+            Autenticado = false,
+            Mensagem = Messages.Login_F001
+        };
     }
 }

@@ -1,6 +1,5 @@
 ﻿using CopaFilmes.Api.Settings;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -23,9 +22,7 @@ namespace CopaFilmes.Api.Util
         public async Task<Token> GenerateJwtToken(string user)
         {
             if (string.IsNullOrEmpty(user))
-            {
                 throw new ArgumentNullException(nameof(user));
-            }
 
             DateTime createDate = DateTime.Now;
             DateTime expirationDate = createDate + TimeSpan.FromMinutes(_tokenSettings.Minutes);
@@ -46,7 +43,7 @@ namespace CopaFilmes.Api.Util
 
             var handler = new JwtSecurityTokenHandler();
 
-            var securityToken = handler.CreateToken(new SecurityTokenDescriptor
+            var securityToken = handler.CreateToken(new()
             {
                 Issuer = _tokenSettings.Issuer,
                 Audience = _tokenSettings.Audience,

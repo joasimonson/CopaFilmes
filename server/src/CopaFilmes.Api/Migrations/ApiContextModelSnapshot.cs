@@ -2,14 +2,14 @@
 using CopaFilmes.Api.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using System.Diagnostics.CodeAnalysis;
 
 #nullable disable
 
 namespace CopaFilmes.Api.Migrations
 {
-    [DbContext(typeof(ApiContext))]
+	[ExcludeFromCodeCoverage]
+	[DbContext(typeof(ApiContext))]
     partial class ApiContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

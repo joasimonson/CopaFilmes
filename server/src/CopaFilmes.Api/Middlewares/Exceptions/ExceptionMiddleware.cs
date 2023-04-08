@@ -32,17 +32,14 @@ namespace CopaFilmes.Api.Middlewares.Exceptions
 
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            var errorResponse = new ExceptionResponse
-            {
-                Message = exception.Message
-            };
-
-            _logger.LogError($"Error: {exception.Message}");
-            _logger.LogError($"Stack: {exception.StackTrace}");
+		_logger.LogError(exception, message: "");
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            await context.Response.WriteAsync(JsonConvert.SerializeObject(errorResponse));
-        }
+		await context.Response.WriteAsync(JsonConvert.SerializeObject(new ExceptionResponse
+		{
+			Message = exception.Message
+		}));
     }
+}
 }
