@@ -5,29 +5,19 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("CopaFilmes.Tests")]
 
-namespace CopaFilmes.Api.Dominio.Campeonato
+namespace CopaFilmes.Api.Dominio.Campeonato;
+
+internal class Partida
 {
-    internal class Partida
-    {
-        private readonly IEnumerable<FilmeModel> _participantes;
+	private readonly IEnumerable<FilmeModel> _participantes;
 
-        public Partida(FilmeModel desafiante, FilmeModel desafiado)
-        {
-            _participantes = new List<FilmeModel>
-            {
-                { desafiante },
-                { desafiado }
-            };
-        }
+	public Partida(FilmeModel desafiante, FilmeModel desafiado) => _participantes = new List<FilmeModel>
+			{
+				{ desafiante },
+				{ desafiado }
+			};
 
-        public FilmeModel Disputar()
-        {
-            return ObterParticipantes().First();
-        }
+	public FilmeModel Disputar() => ObterParticipantes().First();
 
-        public IEnumerable<FilmeModel> ObterParticipantes()
-        {
-            return _participantes.OrderByDescending(p => p.Nota).ThenBy(p => p.Titulo);
-        }
-    }
+	public IEnumerable<FilmeModel> ObterParticipantes() => _participantes.OrderByDescending(p => p.Nota).ThenBy(p => p.Titulo);
 }

@@ -8,42 +8,41 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace CopaFilmes.Tests.Integration.Fixtures
+namespace CopaFilmes.Tests.Integration.Fixtures;
+
+public class MiddlewareFixture : BaseFixture
 {
-    public class MiddlewareFixture : BaseFixture
-    {
-        private readonly IUsuarioServico _usuarioServicoFake = A.Fake<IUsuarioServico>();
-        private readonly UsuarioRequest _usuario;
-        private readonly HttpClient _httpClient;
+	private readonly IUsuarioServico _usuarioServicoFake = A.Fake<IUsuarioServico>();
+	private readonly UsuarioRequest _usuario;
+	private readonly HttpClient _httpClient;
 
-        public MiddlewareFixture()
-        {
-            _usuario = new AutoFaker<UsuarioRequest>().Generate();
-            _httpClient = GetHttpClient();
-            A.CallTo(() => _usuarioServicoFake
-                .CriarAsync(A<UsuarioRequest>
-                    .That
-                    .Matches(u => u.Usuario == _usuario.Usuario && u.Senha == _usuario.Senha)))
-                .ThrowsAsync(new Exception());
-        }
+	public MiddlewareFixture()
+	{
+		_usuario = new AutoFaker<UsuarioRequest>().Generate();
+		_httpClient = GetHttpClient();
+		A.CallTo(() => _usuarioServicoFake
+			.CriarAsync(A<UsuarioRequest>
+				.That
+				.Matches(u => u.Usuario == _usuario.Usuario && u.Senha == _usuario.Senha)))
+			.ThrowsAsync(new Exception());
+	}
 
-        protected override void ConfigureTestServices(IServiceCollection services)
-        {
-            base.ConfigureTestServices(services);
-            services.AddScoped(_ => _usuarioServicoFake);
-        }
+	protected override void ConfigureTestServices(IServiceCollection services)
+	{
+		base.ConfigureTestServices(services);
+		services.AddScoped(_ => _usuarioServicoFake);
+	}
 
-        public async Task<HttpResponseMessage> ExecuteMiddlewareAsync()
-        {
-            var response = await _httpClient.PostAsync(ConfigManagerIntegration.ConfigRunTests.EndpointUsuario, _usuario.AsHttpContent());
+	public async Task<HttpResponseMessage> ExecuteMiddlewareAsync()
+	{
+		var response = await _httpClient.PostAsync(ConfigManagerIntegration.ConfigRunTests.EndpointUsuario, _usuario.AsHttpContent());
 
-            return response;
-        }
+		return response;
+	}
 
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            _httpClient.Dispose();
-        }
-    }
+	protected override void Dispose(bool disposing)
+	{
+		base.Dispose(disposing);
+		_httpClient.Dispose();
+	}
 }

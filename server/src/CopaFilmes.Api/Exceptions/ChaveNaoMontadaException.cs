@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace CopaFilmes.Api
+namespace CopaFilmes.Api;
+
+[Serializable]
+public class ChaveNaoMontadaException : Exception
 {
-    [Serializable]
-    public class ChaveNaoMontadaException : Exception
-    {
-        public ChaveNaoMontadaException()
-        {
-        }
-    }
+	public ChaveNaoMontadaException()
+	{
+	}
 }

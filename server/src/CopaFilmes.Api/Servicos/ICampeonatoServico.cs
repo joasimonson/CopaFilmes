@@ -3,10 +3,9 @@ using CopaFilmes.Api.Servicos.Campeonato;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CopaFilmes.Api.Servicos
+namespace CopaFilmes.Api.Servicos;
+
+public interface ICampeonatoServico
 {
-    public interface ICampeonatoServico
-    {
-        Task<IEnumerable<FilmePosicaoModel>> Disputar(IEnumerable<CampeonatoRequest> campeonato);
-    }
+	Task<IEnumerable<FilmePosicaoModel>> Disputar(IEnumerable<CampeonatoRequest> campeonato);
 }

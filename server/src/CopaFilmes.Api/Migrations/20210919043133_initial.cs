@@ -2,43 +2,35 @@
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using System.Diagnostics.CodeAnalysis;
 
-#nullable disable
 
-namespace CopaFilmes.Api.Migrations
-{
-    /// <inheritdoc />
+namespace CopaFilmes.Api.Migrations;
+
+/// <inheritdoc />
 [ExcludeFromCodeCoverage]
-    public partial class Initial : Migration
-    {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.CreateTable(
-                name: "TS_USUARIO",
-                columns: table => new
-                {
-                    PK_ID = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    DS_USUARIO = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    HX_SENHA = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TS_USUARIO", x => x.PK_ID);
-                });
+public partial class Initial : Migration
+{
+	/// <inheritdoc />
+	protected override void Up(MigrationBuilder migrationBuilder)
+	{
+		migrationBuilder.CreateTable(
+			name: "TS_USUARIO",
+			columns: table => new
+			{
+				PK_ID = table.Column<int>(type: "integer", nullable: false)
+					.Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+				DS_USUARIO = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+				HX_SENHA = table.Column<string>(type: "text", nullable: false)
+			},
+			constraints: table => table.PrimaryKey("PK_TS_USUARIO", x => x.PK_ID));
 
-            migrationBuilder.CreateIndex(
-                name: "IX_TS_USUARIO_DS_USUARIO",
-                table: "TS_USUARIO",
-                column: "DS_USUARIO",
-                unique: true);
-        }
+		migrationBuilder.CreateIndex(
+			name: "IX_TS_USUARIO_DS_USUARIO",
+			table: "TS_USUARIO",
+			column: "DS_USUARIO",
+			unique: true);
+	}
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "TS_USUARIO");
-        }
-    }
+	/// <inheritdoc />
+	protected override void Down(MigrationBuilder migrationBuilder) => migrationBuilder.DropTable(
+			name: "TS_USUARIO");
 }

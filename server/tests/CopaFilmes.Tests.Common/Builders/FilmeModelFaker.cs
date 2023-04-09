@@ -8,81 +8,63 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("CopaFilmes.Tests.Unit")]
 [assembly: InternalsVisibleTo("CopaFilmes.Tests.Integration")]
 
-namespace CopaFilmes.Tests.Common.Builders
+namespace CopaFilmes.Tests.Common.Builders;
+
+internal class FilmeModelFaker : AutoFaker<FilmeModel>
 {
-    internal class FilmeModelFaker : AutoFaker<FilmeModel>
-    {
-        public FilmeModelFaker()
-        {
-            RuleFor(c => c.Id, r => r.Random.Guid().ToString())
-            .RuleFor(c => c.Nota, r => UtilFaker.Nota())
-            .RuleFor(c => c.Ano, r => r.Random.Int(DateTime.MinValue.Year, DateTime.Today.Year));
-        }
+	public FilmeModelFaker() => RuleFor(c => c.Id, r => r.Random.Guid().ToString())
+		.RuleFor(c => c.Nota, r => UtilFaker.Nota())
+		.RuleFor(c => c.Ano, r => r.Random.Int(DateTime.MinValue.Year, DateTime.Today.Year));
 
-        public static FilmeModelFaker Novo()
-        {
-            return new FilmeModelFaker();
-        }
+	public static FilmeModelFaker Novo() => new();
 
-        public FilmeModelFaker ComNota(decimal nota)
-        {
-            RuleFor(c => c.Nota, r => nota);
-            return this;
-        }
+	public FilmeModelFaker ComNota(decimal nota)
+	{
+		RuleFor(c => c.Nota, r => nota);
+		return this;
+	}
 
-        public FilmeModelFaker ComTitulo(string titulo)
-        {
-            RuleFor(c => c.Titulo, r => titulo);
-            return this;
-        }
+	public FilmeModelFaker ComTitulo(string titulo)
+	{
+		RuleFor(c => c.Titulo, r => titulo);
+		return this;
+	}
 
-        public FilmeModelFaker Exclude(FilmeModel filmeModel)
-        {
-            if (filmeModel is null)
-            {
-                return this;
-            }
+	public FilmeModelFaker Exclude(FilmeModel filmeModel) => filmeModel is null ? this : ExcludeNota(filmeModel.Nota).ExcludeTitulo(filmeModel.Titulo);
 
-            return ExcludeNota(filmeModel.Nota).ExcludeTitulo(filmeModel.Titulo);
-        }
+	public FilmeModelFaker GenerateExclude(List<FilmeModel> filmes)
+	{
+		decimal[] notas = filmes.Select(f => f.Nota).ToArray();
+		string[] titulos = filmes.Select(f => f.Titulo).ToArray();
 
-        public FilmeModelFaker GenerateExclude(List<FilmeModel> filmes)
-        {
-            decimal[] notas = filmes.Select(f => f.Nota).ToArray();
-            string[] titulos = filmes.Select(f => f.Titulo).ToArray();
+		return ExcludeNota(notas).ExcludeTitulo(titulos);
+	}
 
-            return ExcludeNota(notas).ExcludeTitulo(titulos);
-        }
+	public FilmeModelFaker ExcludeNota(params decimal[] nota)
+	{
+		RuleFor(c => c.Nota, r => UtilFaker.Nota(nota));
+		return this;
+	}
 
-        public FilmeModelFaker ExcludeNota(params decimal[] nota)
-        {
-            RuleFor(c => c.Nota, r => UtilFaker.Nota(nota));
-            return this;
-        }
+	public FilmeModelFaker ExcludeTitulo(params string[] titulo)
+	{
+		RuleFor(c => c.Titulo, r => UtilFaker.Nome(titulo));
+		return this;
+	}
 
-        public FilmeModelFaker ExcludeTitulo(params string[] titulo)
-        {
-            RuleFor(c => c.Titulo, r => UtilFaker.Nome(titulo));
-            return this;
-        }
+	public List<FilmeModel> GenerateRandomList(int count = 8) => Generate(count);
 
-        public List<FilmeModel> GenerateRandomList(int count = 8)
-        {
-            return Generate(count);
-        }
+	public List<FilmeModel> GenerateDifferentList(int count = 8)
+	{
+		var list = new List<FilmeModel>();
 
-        public List<FilmeModel> GenerateDifferentList(int count = 8)
-        {
-            var list = new List<FilmeModel>();
+		for (int i = 0; i < count; i++)
+		{
+			var item = GenerateExclude(list).Generate();
 
-            for (int i = 0; i < count; i++)
-            {
-                var item = GenerateExclude(list).Generate();
+			list.Add(item);
+		}
 
-                list.Add(item);
-            }
-
-            return list.OrderByDescending(f => f.Nota).ThenBy(f => f.Titulo).ToList();
-        }
-    }
+		return list.OrderByDescending(f => f.Nota).ThenBy(f => f.Titulo).ToList();
+	}
 }

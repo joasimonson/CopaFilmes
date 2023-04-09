@@ -12,81 +12,80 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CopaFilmes.Tests.Unit.Dominio
+namespace CopaFilmes.Tests.Unit.Dominio;
+
+public class FilmeDominioTests : BaseTests
 {
-    public class FilmeDominioTests : BaseTests
-    {
-        private readonly IFilmeDominio _filmeDominio;
-        private readonly IEnumerable<FilmeModel> _filmes;
+	private readonly IFilmeDominio _filmeDominio;
+	private readonly IEnumerable<FilmeModel> _filmes;
 
-        public FilmeDominioTests()
-        {
-            _filmeDominio = new FilmeDominio(Options.Create(_apiFilmesSettings));
-            _filmes = FilmeModelFaker.Novo().Generate(8);
-        }
+	public FilmeDominioTests()
+	{
+		_filmeDominio = new FilmeDominio(Options.Create(_apiFilmesSettings));
+		_filmes = FilmeModelFaker.Novo().Generate(8);
+	}
 
-        [Fact]
-        public async Task ObterFilmesAsync_DeveChamarEndpointFilmes()
-        {
-            //Arrange
-            var url = Url.Combine(_apiFilmesSettings.Url, _apiFilmesSettings.EndpointFilmes);
-            _httpTest.RespondWithJson(_filmes);
+	[Fact]
+	public async Task ObterFilmesAsync_DeveChamarEndpointFilmes()
+	{
+		//Arrange
+		string url = Url.Combine(_apiFilmesSettings.Url, _apiFilmesSettings.EndpointFilmes);
+		_httpTest.RespondWithJson(_filmes);
 
-            //Act
-            await _filmeDominio.ObterFilmesAsync();
+		//Act
+		await _filmeDominio.ObterFilmesAsync();
 
-            //Assert
-            _httpTest
-                .ShouldHaveCalled(url)
-                .WithVerb(HttpMethod.Get)
-                .Times(1);
-        }
+		//Assert
+		_httpTest
+			.ShouldHaveCalled(url)
+			.WithVerb(HttpMethod.Get)
+			.Times(1);
+	}
 
-        [Fact]
-        public async Task ObterFilmesAsync_DeveRetornarFalhaTimeout()
-        {
-            //Arrange
-            _httpTest.SimulateTimeout();
+	[Fact]
+	public async Task ObterFilmesAsync_DeveRetornarFalhaTimeout()
+	{
+		//Arrange
+		_httpTest.SimulateTimeout();
 
-            //Act
-            Func<Task> act = async () => await _filmeDominio.ObterFilmesAsync();
+		//Act
+		Func<Task> act = _filmeDominio.ObterFilmesAsync;
 
-            //Assert
-            await act
-                .Should()
-                .ThrowAsync<FlurlHttpTimeoutException>();
-        }
+		//Assert
+		await act
+			.Should()
+			.ThrowAsync<FlurlHttpTimeoutException>();
+	}
 
-        [Fact]
-        public async Task ObterFilmesAsync_DeveRetornarFalhaAoConverterRetornoApi()
-        {
-            //Arrange
-            var retornoIncorreto = new { x = 1, y = 2 };
-            _httpTest.RespondWithJson(retornoIncorreto);
+	[Fact]
+	public async Task ObterFilmesAsync_DeveRetornarFalhaAoConverterRetornoApi()
+	{
+		//Arrange
+		var retornoIncorreto = new { x = 1, y = 2 };
+		_httpTest.RespondWithJson(retornoIncorreto);
 
-            //Act
-            Func<Task> act = async () => await _filmeDominio.ObterFilmesAsync();
+		//Act
+		Func<Task> act = _filmeDominio.ObterFilmesAsync;
 
-            //Assert
-            await act
-                .Should()
-                .ThrowAsync<FlurlHttpException>()
-                .WithMessage("*Response could not be deserialized to JSON*");
-        }
+		//Assert
+		await act
+			.Should()
+			.ThrowAsync<FlurlHttpException>()
+			.WithMessage("*Response could not be deserialized to JSON*");
+	}
 
-        [Fact]
-        public async Task ObterFilmesAsync_DeveRetornarFilmes()
-        {
-            //Arrange
-            _httpTest.RespondWithJson(_filmes);
+	[Fact]
+	public async Task ObterFilmesAsync_DeveRetornarFilmes()
+	{
+		//Arrange
+		_httpTest.RespondWithJson(_filmes);
 
-            //Act
-            var filmes = await _filmeDominio.ObterFilmesAsync();
+		//Act
+		var filmes = await _filmeDominio.ObterFilmesAsync();
 
-            //Assert
-            filmes
-                .Should()
-                .BeEquivalentTo(_filmes);
-        }
-    }
+		//Assert
+		filmes
+			.Should()
+			.BeEquivalentTo(_filmes);
+	}
 }

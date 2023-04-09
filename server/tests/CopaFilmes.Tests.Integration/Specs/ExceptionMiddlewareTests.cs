@@ -6,42 +6,38 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CopaFilmes.Tests.Integration.Specs
+namespace CopaFilmes.Tests.Integration.Specs;
+
+[Collection(nameof(ApiTestCollection))]
+public class ExceptionMiddlewareTests
 {
-    [Collection(nameof(ApiTestCollection))]
-    public class ExceptionMiddlewareTests
-    {
-        private readonly MiddlewareFixture _apiFixture;
+	private readonly MiddlewareFixture _apiFixture;
 
-        public ExceptionMiddlewareTests(MiddlewareFixture apiFixture)
-        {
-            _apiFixture = apiFixture;
-        }
+	public ExceptionMiddlewareTests(MiddlewareFixture apiFixture) => _apiFixture = apiFixture;
 
-        [Fact]
-        public async Task DeveRetornarInternalServerError_QuandoHouverExceptionNoRequest()
-        {
-            //Arrange
+	[Fact]
+	public async Task DeveRetornarInternalServerError_QuandoHouverExceptionNoRequest()
+	{
+		//Arrange
 
-            //Act
-            var response = await _apiFixture.ExecuteMiddlewareAsync();
+		//Act
+		var response = await _apiFixture.ExecuteMiddlewareAsync();
 
-            //Assert
-            response.Should().Be500InternalServerError();
-        }
+		//Assert
+		response.Should().Be500InternalServerError();
+	}
 
-        [Fact]
-        public async Task DeveRetornarResponsePadrao_QuandoHouverExceptionNoRequest()
-        {
-            //Arrange
+	[Fact]
+	public async Task DeveRetornarResponsePadrao_QuandoHouverExceptionNoRequest()
+	{
+		//Arrange
 
-            //Act
-            var response = await _apiFixture.ExecuteMiddlewareAsync();
-            var jsonResponse = await response.Content.ReadAsStringAsync();
-            Action act = () => { JsonConvert.DeserializeObject<ExceptionResponse>(jsonResponse); };
+		//Act
+		var response = await _apiFixture.ExecuteMiddlewareAsync();
+		string jsonResponse = await response.Content.ReadAsStringAsync();
+		Action act = () => JsonConvert.DeserializeObject<ExceptionResponse>(jsonResponse);
 
-            //Assert
-            act.Should().NotThrow();
-        }
-    }
+		//Assert
+		act.Should().NotThrow();
+	}
 }

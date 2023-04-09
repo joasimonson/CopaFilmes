@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace CopaFilmes.Api
+namespace CopaFilmes.Api;
+
+[Serializable]
+public class QtdeFilmesDisputaIncorretaException : RegraException
 {
-    [Serializable]
-    public class QtdeFilmesDisputaIncorretaException : RegraException
-    {
-        public QtdeFilmesDisputaIncorretaException() : base("A quantidade de filmes selecionados para o campeonato está incorreta.")
-        {
-        }
-    }
+	public QtdeFilmesDisputaIncorretaException() : base("A quantidade de filmes selecionados para o campeonato está incorreta.")
+	{
+	}
 }

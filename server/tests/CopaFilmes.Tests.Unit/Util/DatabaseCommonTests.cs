@@ -4,48 +4,47 @@ using FluentAssertions;
 using System;
 using Xunit;
 
-namespace CopaFilmes.Tests.Unit.Util
+namespace CopaFilmes.Tests.Unit.Util;
+
+public class DatabaseCommonTests
 {
-    public class DatabaseCommonTests
-    {
-        private const string CONNECTION = "host=localhost;port=5432;database=db;username=user;password=pwd;pooling=true";
+	private const string CONNECTION = "host=localhost;port=5432;database=db;username=user;password=pwd;pooling=true";
 
-        [Fact]
-        public void ParseConnectionString_DeveRetornarConexão_QuandoStringComum()
-        {
-            //Arrange
+	[Fact]
+	public void ParseConnectionString_DeveRetornarConexão_QuandoStringComum()
+	{
+		//Arrange
 
-            //Act
-            var actual = DatabaseCommon.ParseConnectionString(CONNECTION);
+		//Act
+		string actual = DatabaseCommon.ParseConnectionString(CONNECTION);
 
-            //Assert
-            actual.Should().BeEquivalentTo(CONNECTION);
-        }
+		//Assert
+		actual.Should().BeEquivalentTo(CONNECTION);
+	}
 
-        [Fact]
-        public void ParseConnectionString_DeveRetornarConexão_QuandoStringUrl()
-        {
-            //Arrange
-            var connectionString = "postgres://user:pwd@localhost:5432/db";
+	[Fact]
+	public void ParseConnectionString_DeveRetornarConexão_QuandoStringUrl()
+	{
+		//Arrange
+		string connectionString = "postgres://user:pwd@localhost:5432/db";
 
-            //Act
-            var actual = DatabaseCommon.ParseConnectionString(connectionString);
+		//Act
+		string actual = DatabaseCommon.ParseConnectionString(connectionString);
 
-            //Assert
-            actual.Should().BeEquivalentTo(CONNECTION);
-        }
+		//Assert
+		actual.Should().BeEquivalentTo(CONNECTION);
+	}
 
-        [Fact]
-        public void ParseConnectionString_DeveRetornarErro_QuandoStringInvalida()
-        {
-            //Arrange
-            var connectionString = UtilFaker.FakerHub.Random.AlphaNumeric(10);
+	[Fact]
+	public void ParseConnectionString_DeveRetornarErro_QuandoStringInvalida()
+	{
+		//Arrange
+		string connectionString = UtilFaker.FakerHub.Random.AlphaNumeric(10);
 
-            //Act
-            Action act = () => { DatabaseCommon.ParseConnectionString(connectionString); };
+		//Act
+		Action act = () => DatabaseCommon.ParseConnectionString(connectionString);
 
-            //Assert
-            act.Should().Throw<FormatException>().WithMessage("Invalid connection string!");
-        }
-    }
+		//Assert
+		act.Should().Throw<FormatException>().WithMessage("Invalid connection string!");
+	}
 }

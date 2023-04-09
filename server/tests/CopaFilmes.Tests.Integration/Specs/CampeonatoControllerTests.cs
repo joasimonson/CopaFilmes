@@ -15,78 +15,77 @@ using WireMock.ResponseBuilders;
 using WireMock.Server;
 using Xunit;
 
-namespace CopaFilmes.Tests.Integration.Specs
+namespace CopaFilmes.Tests.Integration.Specs;
+
+[Collection(nameof(ApiTestCollection))]
+public class CampeonatoControllerTests : IDisposable
 {
-    [Collection(nameof(ApiTestCollection))]
-    public class CampeonatoControllerTests : IDisposable
-    {
-        private readonly SystemSettings _systemSettings;
-        private readonly HttpClient _httpClient;
-        private readonly string _endpoint;
-        private readonly WireMockServer _wireMockServer;
+	private readonly SystemSettings _systemSettings;
+	private readonly HttpClient _httpClient;
+	private readonly string _endpoint;
+	private readonly WireMockServer _wireMockServer;
 
-        public CampeonatoControllerTests(ApiFixture apiFixture)
-        {
-            apiFixture.Initialize().GetAwaiter().GetResult();
+	public CampeonatoControllerTests(ApiFixture apiFixture)
+	{
+		apiFixture.Initialize().GetAwaiter().GetResult();
 
-            _endpoint = ConfigManagerIntegration.ConfigRunTests.EndpointCampeonato;
-            _systemSettings = ConfigManager.SystemSettings;
-            _httpClient = apiFixture.GetAuthHttpClient();
+		_endpoint = ConfigManagerIntegration.ConfigRunTests.EndpointCampeonato;
+		_systemSettings = ConfigManager.SystemSettings;
+		_httpClient = apiFixture.GetAuthHttpClient();
 
-            _wireMockServer = WireMockServer.Start(ConfigManagerIntegration.ConfigRunTests.ServerPort);
-        }
+		_wireMockServer = WireMockServer.Start(ConfigManagerIntegration.ConfigRunTests.ServerPort);
+	}
 
-        [Fact]
-        public async Task Post_DeveRetornarBadRequest_QuandoRequestForInvalido()
-        {
-            //Arrange
-            var qtdeParticipantesInvalida = _systemSettings.MaximoParticipantesCampeonato + 1;
-            var request = new AutoFaker<CampeonatoRequest>().Generate(qtdeParticipantesInvalida);
+	[Fact]
+	public async Task Post_DeveRetornarBadRequest_QuandoRequestForInvalido()
+	{
+		//Arrange
+		int qtdeParticipantesInvalida = _systemSettings.MaximoParticipantesCampeonato + 1;
+		var request = new AutoFaker<CampeonatoRequest>().Generate(qtdeParticipantesInvalida);
 
-            //Act
-            var response = await _httpClient.PostAsync(_endpoint, request.AsHttpContent());
+		//Act
+		var response = await _httpClient.PostAsync(_endpoint, request.AsHttpContent());
 
-            //Assert
-            response.Should().Be400BadRequest();
-        }
+		//Assert
+		response.Should().Be400BadRequest();
+	}
 
-        [Fact]
-        public async Task Post_DeveRetornarOk_QuandoRequestForValido()
-        {
-            //Arrange
-            var chaveCampeonato = ChaveClassificacaoBuilder.Novo().ComParticipantesFixos().Build();
-            var participantes = chaveCampeonato.ObterParticipantes();
-            var chaveFinalistas = ChaveEtapaBuilder.Novo().ComChaveFinalistas().Build();
-            var finalistas = chaveFinalistas.ObterParticipantes().Select(f => new { f.Titulo, f.Nota }).ToArray();
-            var request = participantes.Select(p => new CampeonatoRequest { IdFilme = p.Id }).ToArray();
+	[Fact]
+	public async Task Post_DeveRetornarOk_QuandoRequestForValido()
+	{
+		//Arrange
+		var chaveCampeonato = ChaveClassificacaoBuilder.Novo().ComParticipantesFixos().Build();
+		var participantes = chaveCampeonato.ObterParticipantes();
+		var chaveFinalistas = ChaveEtapaBuilder.Novo().ComChaveFinalistas().Build();
+		var finalistas = chaveFinalistas.ObterParticipantes().Select(f => new { f.Titulo, f.Nota }).ToArray();
+		var request = participantes.Select(p => new CampeonatoRequest { IdFilme = p.Id }).ToArray();
 
-            _wireMockServer
-                .Given(Request
-                    .Create()
-                    .WithPath(new WildcardMatcher(ConfigManager.ApiFilmesSettings.EndpointFilmes))
-                    .UsingGet())
-                .RespondWith(Response
-                    .Create()
-                    .WithSuccess()
-                    .WithBodyAsJson(participantes));
+		_wireMockServer
+			.Given(Request
+				.Create()
+				.WithPath(new WildcardMatcher(ConfigManager.ApiFilmesSettings.EndpointFilmes))
+				.UsingGet())
+			.RespondWith(Response
+				.Create()
+				.WithSuccess()
+				.WithBodyAsJson(participantes));
 
-            //Act
-            var response = await _httpClient.PostAsync(_endpoint, request.AsHttpContent());
+		//Act
+		var response = await _httpClient.PostAsync(_endpoint, request.AsHttpContent());
 
-            //Assert
-            response.Should().Be200Ok().And.BeAs(finalistas);
-        }
+		//Assert
+		response.Should().Be200Ok().And.BeAs(finalistas);
+	}
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+	public void Dispose()
+	{
+		Dispose(true);
+		GC.SuppressFinalize(this);
+	}
 
-        protected virtual void Dispose(bool disposing)
-        {
-            _wireMockServer.Dispose();
-            _httpClient.Dispose();
-        }
-    }
+	protected virtual void Dispose(bool disposing)
+	{
+		_wireMockServer.Dispose();
+		_httpClient.Dispose();
+	}
 }

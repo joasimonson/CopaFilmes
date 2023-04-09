@@ -2,36 +2,26 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace CopaFilmes.Api.Contexts
+namespace CopaFilmes.Api.Contexts;
+
+public class ApiContext : DbContext
 {
-    public class ApiContext : DbContext
-    {
-        public ApiContext(DbContextOptions<ApiContext> options) : base(options)
-        {
-            Database.Migrate();
-        }
+	public ApiContext(DbContextOptions<ApiContext> options) : base(options) => Database.Migrate();
 
-        public DbSet<UsuarioEntity> Usuario { get; set; }
+	public DbSet<UsuarioEntity> Usuario { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.ApplyConfiguration(new UsuarioMap());
-        }
+	protected override void OnModelCreating(ModelBuilder modelBuilder) => modelBuilder.ApplyConfiguration(new UsuarioMap());
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder
-                .EnableSensitiveDataLogging(true)
-                .UseLoggerFactory(LoggerFactory.Create(builder =>
-                {
-                    builder
-                        .AddFilter((category, level) =>
-                            category == DbLoggerCategory.Database.Command.Name
-                            && level == LogLevel.Information)
-                        .AddConsole();
-                 }));
+	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+	{
+		optionsBuilder
+			.EnableSensitiveDataLogging(true)
+			.UseLoggerFactory(LoggerFactory.Create(builder => builder
+					.AddFilter((category, level) =>
+						category == DbLoggerCategory.Database.Command.Name
+						&& level == LogLevel.Information)
+					.AddConsole()));
 
-            base.OnConfiguring(optionsBuilder);
-        }
-    }
+		base.OnConfiguring(optionsBuilder);
+	}
 }

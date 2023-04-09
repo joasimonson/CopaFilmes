@@ -1,67 +1,61 @@
-﻿using CopaFilmes.Api.Settings;
-using CopaFilmes.Api.Model;
+﻿using CopaFilmes.Api.Model;
+using CopaFilmes.Api.Settings;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
 
-namespace CopaFilmes.Api.Dominio.Campeonato
+namespace CopaFilmes.Api.Dominio.Campeonato;
+
+internal class CampeonatoDominio : ICampeonatoDominio
 {
-    internal class CampeonatoDominio : ICampeonatoDominio
-    {
-        private readonly IOptions<SystemSettings> _systemSettings;
-        private readonly IFilmeDominio _filmeDominio;
+	private readonly IOptions<SystemSettings> _systemSettings;
+	private readonly IFilmeDominio _filmeDominio;
 
-        public CampeonatoDominio(IOptions<SystemSettings> systemSettings, IFilmeDominio filmeDominio)
-        {
-            _systemSettings = systemSettings;
-            _filmeDominio = filmeDominio;
-        }
+	public CampeonatoDominio(IOptions<SystemSettings> systemSettings, IFilmeDominio filmeDominio)
+	{
+		_systemSettings = systemSettings;
+		_filmeDominio = filmeDominio;
+	}
 
-        public async Task<IEnumerable<FilmePosicaoModel>> Disputar(string[] idsParticipantes)
-        {
-            if (idsParticipantes is null || idsParticipantes.Length != _systemSettings.Value.MaximoParticipantesCampeonato)
-            {
-                throw new QtdeIncorretaRegraChaveamentoException(_systemSettings.Value.MaximoParticipantesCampeonato);
-            }
+	public async Task<IEnumerable<FilmePosicaoModel>> Disputar(string[] idsParticipantes)
+	{
+		if (idsParticipantes is null || idsParticipantes.Length != _systemSettings.Value.MaximoParticipantesCampeonato)
+		{
+			throw new QtdeIncorretaRegraChaveamentoException(_systemSettings.Value.MaximoParticipantesCampeonato);
+		}
 
-            var filmes = await _filmeDominio.ObterFilmesAsync();
+		var filmes = await _filmeDominio.ObterFilmesAsync();
 
-            var filmesCampeonato = filmes.Where(f => idsParticipantes.Contains(f.Id)).OrderBy(f => f.Titulo);
+		var filmesCampeonato = filmes.Where(f => idsParticipantes.Contains(f.Id)).OrderBy(f => f.Titulo);
 
-            var filmesPosicao = DisputarCampeonato(filmesCampeonato);
+		var filmesPosicao = DisputarCampeonato(filmesCampeonato);
 
-            return filmesPosicao;
-        }
+		return filmesPosicao;
+	}
 
-        private IEnumerable<FilmePosicaoModel> DisputarCampeonato(IEnumerable<FilmeModel> filmesCampeonato)
-        {
-            var chaveClassificacao = new ChaveClassificacao(_systemSettings, filmesCampeonato);
+	private IEnumerable<FilmePosicaoModel> DisputarCampeonato(IEnumerable<FilmeModel> filmesCampeonato)
+	{
+		var chaveClassificacao = new ChaveClassificacao(_systemSettings, filmesCampeonato);
 
-            chaveClassificacao.MontarChaveamento();
+		chaveClassificacao.MontarChaveamento();
 
-            var chaveFinal = DisputarRodadas(chaveClassificacao);
+		var chaveFinal = DisputarRodadas(chaveClassificacao);
 
-            var finalistas = chaveFinal.ObterParticipantesPosicao();
+		var finalistas = chaveFinal.ObterParticipantesPosicao();
 
-            return finalistas;
-        }
+		return finalistas;
+	}
 
-        private ChaveCampeonato DisputarRodadas(ChaveCampeonato chaveDisputa)
-        {
-            var filmesGanhadores = chaveDisputa.Disputar();
+	private ChaveCampeonato DisputarRodadas(ChaveCampeonato chaveDisputa)
+	{
+		var filmesGanhadores = chaveDisputa.Disputar();
 
-            var chaveEtapa = new ChaveEtapa(_systemSettings, filmesGanhadores);
+		var chaveEtapa = new ChaveEtapa(_systemSettings, filmesGanhadores);
 
-            chaveEtapa.MontarChaveamento();
+		chaveEtapa.MontarChaveamento();
 
-            if (chaveEtapa.ChaveFinalistas)
-            {
-                return chaveEtapa;
-            }
-
-            return DisputarRodadas(chaveEtapa);
-        }
-    }
+		return chaveEtapa.ChaveFinalistas ? chaveEtapa : DisputarRodadas(chaveEtapa);
+	}
 }

@@ -1,7 +1,6 @@
-﻿namespace CopaFilmes.Tests.Integration
+﻿namespace CopaFilmes.Tests.Integration;
+
+public static class EnvironmentsExtensions
 {
-    public static class EnvironmentsExtensions
-    {
-        public static readonly string Test = nameof(Test);
-    }
+	public static readonly string Test = nameof(Test);
 }

@@ -2,6 +2,7 @@ using CopaFilmes.Api.Middlewares.Exceptions;
 using CopaFilmes.Api.StartupConfigure;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
@@ -9,74 +10,64 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
-namespace CopaFilmes.Api
+namespace CopaFilmes.Api;
+
+public class Startup
 {
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+	public Startup(IConfiguration configuration) => Configuration = configuration;
 
-        public IConfiguration Configuration { get; }
+	public IConfiguration Configuration { get; }
 
-        public virtual void ConfigureServices(IServiceCollection services)
-        {
-            services.AddApiVersioning(config =>
-            {
-                config.DefaultApiVersion = new ApiVersion(1, 0);
-                config.AssumeDefaultVersionWhenUnspecified = true;
-                config.ReportApiVersions = true;
-            });
+	public virtual void ConfigureServices(IServiceCollection services)
+	{
+		services.AddApiVersioning(config =>
+		{
+			config.DefaultApiVersion = new ApiVersion(1, 0);
+			config.AssumeDefaultVersionWhenUnspecified = true;
+			config.ReportApiVersions = true;
+		});
 
-            SegurancaStartup.ConfigurarJwtToken(services, Configuration);
-            CorsStartup.Configurar(services, Configuration);
-            SwaggerStartup.Configurar(services);
-            DependencyInjectionStartup.Configurar(services);
-            SettingsStartup.Configurar(services, Configuration);
-            DatabaseStartup.Configurar(services, Configuration);
-        }
+		SegurancaStartup.ConfigurarJwtToken(services, Configuration);
+		CorsStartup.Configurar(services, Configuration);
+		SwaggerStartup.Configurar(services);
+		DependencyInjectionStartup.Configurar(services);
+		SettingsStartup.Configurar(services, Configuration);
+		DatabaseStartup.Configurar(services, Configuration);
+	}
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+	public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+	{
+		if (env.IsDevelopment())
+		{
+			app.UseDeveloperExceptionPage();
+		}
 
-            app.UseHttpsRedirection();
-            app.UseRouting();
-            app.UseAuthorization();
+		app.UseHttpsRedirection();
+		app.UseRouting();
+		app.UseAuthorization();
 
-            app.UseMiddleware<ExceptionMiddleware>();
-            app.UseSwagger();
-            app.UseSwaggerUI(opt => {
-                opt.RoutePrefix = "swagger";
-                opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Copa Filmes");
-            });
+		app.UseMiddleware<ExceptionMiddleware>();
+		app.UseSwagger();
+		app.UseSwaggerUI(opt =>
+		{
+			opt.RoutePrefix = "swagger";
+			opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Copa Filmes");
+		});
 
-            var options = new RewriteOptions();
-            options.AddRedirect("^$", "swagger");
-            app.UseRewriter(options);
+		var options = new RewriteOptions();
+		options.AddRedirect("^$", "swagger");
+		app.UseRewriter(options);
 
-            app.UseCors();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-            
-            app.UseHealthChecks("/healthchecks-data-ui", new HealthCheckOptions
-            {
-                Predicate = _ => true,
-                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-            });
-            
-            app.UseHealthChecksUI(options =>
-            {
-                options.UIPath = "/health";
-            });
-        }
-    }
+		app.UseCors();
+		app.UseEndpoints(endpoints => endpoints.MapControllers());
+
+		app.UseHealthChecks("/healthchecks-data-ui", new HealthCheckOptions
+		{
+			Predicate = _ => true,
+			ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+		});
+
+		app.UseHealthChecksUI(options => options.UIPath = "/health");
+	}
 }

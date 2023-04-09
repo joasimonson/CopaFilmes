@@ -1,9 +1,6 @@
-﻿using System.Net;
+﻿namespace CopaFilmes.Api.Middlewares.Exceptions;
 
-namespace CopaFilmes.Api.Middlewares.Exceptions
+public class ExceptionResponse
 {
-    public class ExceptionResponse
-    {
-        public string Message { get; set; }
-    }
+	public string Message { get; set; }
 }

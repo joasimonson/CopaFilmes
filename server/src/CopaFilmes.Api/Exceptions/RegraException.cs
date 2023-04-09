@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace CopaFilmes.Api
+namespace CopaFilmes.Api;
+
+[Serializable]
+public class RegraException : Exception
 {
-    [Serializable]
-    public class RegraException : Exception
-    {
-        public RegraException(string message) : base(message)
-        {
-        }
-    }
+	public RegraException(string message) : base(message)
+	{
+	}
 }

@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CopaFilmes.Api.Servicos
+namespace CopaFilmes.Api.Servicos;
+
+public interface IFilmeServico
 {
-    public interface IFilmeServico
-    {
-        public Task<IEnumerable<FilmeModel>> ObterFilmesAsync();
-    }
+	public Task<IEnumerable<FilmeModel>> ObterFilmesAsync();
 }
