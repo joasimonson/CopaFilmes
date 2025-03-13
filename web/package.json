@@ -24,7 +24,7 @@
     "analyse": "node analyse.js"
   },
   "dependencies": {
-    "axios": "^0.21.4",
+    "axios": "^1.8.2",
     "bootstrap": "^4.6.0",
     "pullstate": "^1.23.0",
     "react": "^17.0.2",
@@ -32,7 +32,7 @@
     "react-dom": "^17.0.2",
     "react-global-configuration": "^1.4.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^4.0.3"
+    "react-scripts": "^5.0.0"
   },
   "devDependencies": {
     "@testing-library/dom": "^8.2.0",
